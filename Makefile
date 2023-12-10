@@ -244,7 +244,11 @@ endif
 
 #### Main Targets ###
 
-all: $(ROM)
+all:
+	python3 install_mod_assets.py
+	make -j$(nproc) build
+
+build: $(ROM)
 ifeq ($(COMPARE),1)
 	@md5sum $(ROM)
 	@md5sum -c checksum.md5
