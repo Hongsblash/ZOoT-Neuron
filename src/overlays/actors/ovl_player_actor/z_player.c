@@ -15313,3 +15313,5 @@ void func_80853148(PlayState* play, Actor* actor) {
         func_80835EA4(play, 0xB);
     }
 }
+
+// LinkAnimation_Once(PlayState* play, SkelAnime* skelAnime)
