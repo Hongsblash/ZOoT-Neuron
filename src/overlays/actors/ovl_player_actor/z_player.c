@@ -352,6 +352,7 @@ void Player_Action_80850AEC(Player* this, PlayState* play);
 void Player_Action_80850C68(Player* this, PlayState* play);
 void Player_Action_80850E84(Player* this, PlayState* play);
 void Player_Action_CsAction(Player* this, PlayState* play);
+void Player_TryWitchPalm(Player* this,PlayState* play);
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -708,7 +709,8 @@ static GetItemEntry sGetItemTable[] = {
     // GI_FARORES_WIND
     GET_ITEM(ITEM_FARORES_WIND, OBJECT_GI_GODDESS, GID_FARORES_WIND, 0xAE, 0x80, CHEST_ANIM_LONG),
     // GI_NAYRUS_LOVE
-    GET_ITEM(ITEM_NAYRUS_LOVE, OBJECT_GI_GODDESS, GID_NAYRUS_LOVE, 0xAF, 0x80, CHEST_ANIM_LONG),
+    // GET_ITEM(ITEM_NAYRUS_LOVE, OBJECT_GI_GODDESS, GID_NAYRUS_LOVE, 0xAF, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_NAYRUS_LOVE, OBJECT_GI_WITCHPALM, GID_NAYRUS_LOVE, 0xAF, 0x80, CHEST_ANIM_LONG),
     // GI_BULLET_BAG_30
     GET_ITEM(ITEM_BULLET_BAG_30, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG),
     // GI_BULLET_BAG_40
@@ -3237,6 +3239,8 @@ void Player_UseItem(PlayState* play, Player* this, s32 item) {
                 // Prevent some items from being used if player is out of ammo.
                 // Also prevent explosives from being used if there are 3 or more active (outside of bombchu bowling)
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            } else if (itemAction == PLAYER_IA_NAYRUS_LOVE) {
+                Player_TryWitchPalm(this, play);
             } else if (itemAction == PLAYER_IA_LENS_OF_TRUTH) {
                 // Handle Lens of Truth
                 if (Magic_RequestChange(play, 0, MAGIC_CONSUME_LENS)) {
@@ -5427,7 +5431,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
         LOG_HEX("size", size, "../z_player.c", 9090);
-        ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
+        // ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
 
         DmaMgr_RequestAsync(&this->giObjectDmaRequest, this->giObjectSegment, gObjectTable[objectId].vromStart, size, 0,
                             &this->giObjectLoadQueue, NULL, "../z_player.c", 9099);
@@ -9985,7 +9989,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.save.linkAge)]);
-    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
+    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0xC008, "../z_player.c", 17175) + 8) & ~0xF);
 
     respawnFlag = gSaveContext.respawnFlag;
 
@@ -10947,6 +10951,35 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
     if (this->unk_890 != 0) {
         this->unk_890--;
+    }
+
+    if (this->animationStarted) {
+        float totalAnimationFrames = this->skelAnime.endFrame; // Total frames in the animation
+        float fullRotationFrames = totalAnimationFrames * 0.8f; // Frames for full rotation
+        float rotationPerFrame = 360.0f / fullRotationFrames; // Rotation speed to complete 360 degrees in 80% of the animation
+
+        // Apply continuous rotation until the last frame
+        if (this->skelAnime.curFrame < totalAnimationFrames - 1) {
+            this->actor.shape.rot.y += (s16)(rotationPerFrame * (0x10000 / 300.0f));
+        }
+
+        // Check if the animation has finished
+        if (LinkAnimation_OnFrame(&this->skelAnime, totalAnimationFrames)) {
+            this->animationStarted = 0; // Reset flag
+
+            // Correct the final orientation
+            // Calculate the error from a full 360-degree rotation
+            s16 rotationError = (s16)(this->initialYaw - this->actor.shape.rot.y);
+            this->actor.shape.rot.y += rotationError;
+
+            // Trigger the transition to the new area
+            play->nextEntranceIndex = ENTR_TEST_ROOM_0;
+            play->transitionTrigger = TRANS_TRIGGER_START;
+            play->transitionType = TRANS_TYPE_FADE_BLACK;
+            this->actor.world.pos.x = 0;
+            this->actor.world.pos.y = 0;
+            this->actor.world.pos.z = 0;
+        }
     }
 
     func_808473D4(play, this);
@@ -15314,4 +15347,13 @@ void func_80853148(PlayState* play, Actor* actor) {
     }
 }
 
-// LinkAnimation_Once(PlayState* play, SkelAnime* skelAnime)
+
+void Player_TryWitchPalm(Player* this, PlayState* play) {
+    // Start the animation if it hasn't started yet
+    if (this->animationStarted == 0) {
+        this->initialYaw = this->actor.shape.rot.y; // Save the initial yaw
+        LinkAnimation_PlayOnce(play, &this->skelAnime, D_80854A58[this->av1.actionVar1]);
+        LinkAnimation_Once(play, &this->skelAnime, D_80854A58[this->av1.actionVar1]);
+        this->animationStarted = 1; // Set flag to true
+    }
+}

@@ -6050,6 +6050,13 @@ beginseg
 endseg
 
 beginseg
+    name "object_gi_witchpalm"
+    romalign 0x1000
+    include "build/assets/objects/object_gi_witchpalm/object_gi_witchpalm.o"
+    number 6
+endseg
+
+beginseg
     name "g_pn_01"
     romalign 0x1000
     include "build/assets/textures/place_title_cards/g_pn_01.o"
@@ -10391,6 +10398,20 @@ beginseg
     name "test01_room_0"
     romalign 0x1000
     include "build/assets/scenes/test_levels/test01/test01_room_0.o"
+    number 3
+endseg
+
+beginseg
+    name "test_room_scene"
+    romalign 0x1000
+    include "build/assets/scenes/test_room/test_room/test_room_scene.o"
+    number 2
+endseg
+
+beginseg
+    name "test_room_room_0"
+    romalign 0x1000
+    include "build/assets/scenes/test_room/test_room/test_room_room_0.o"
     number 3
 endseg
 
