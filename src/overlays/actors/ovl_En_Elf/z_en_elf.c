@@ -834,6 +834,37 @@ void EnElf_UpdateLights(EnElf* this, PlayState* play) {
     Actor_SetScale(&this->actor, this->actor.scale.x);
 }
 
+void EnElf_UpdateNaviLights(EnElf* this, PlayState* play) {
+    s16 glowLightRadius;
+    Player* player;
+
+    glowLightRadius = 100;
+
+    if (this->unk_2A8 == 8) {
+        glowLightRadius = 0;
+    }
+
+    if (this->fairyFlags & 0x20) {
+        // If Navi is close to the player, use the player's position and a purple light.
+        player = GET_PLAYER(play);
+        Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, player->actor.world.pos.x,
+                                  (s16)(player->actor.world.pos.y) + 60.0f, player->actor.world.pos.z,
+                                  75, 0, 130, 200); // Dark purple RGB values
+    } else {
+        // If Navi is not close to the player, use Navi's position and a vibrant red light.
+        Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
+                                  this->actor.world.pos.z, 255, 0, 0, -1); // Vibrant red RGB values
+    }
+
+    // For the glowing light, we'll also set it to vibrant red.
+    Lights_PointGlowSetInfo(&this->lightInfoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
+                            this->actor.world.pos.z, 255, 0, 0, glowLightRadius);
+
+    this->unk_2BC = Math_Atan2S(this->actor.velocity.z, this->actor.velocity.x);
+
+    Actor_SetScale(&this->actor, this->actor.scale.x);
+}
+
 void func_80A03CF8(EnElf* this, PlayState* play) {
     Vec3f nextPos;
     Vec3f prevPos;
@@ -982,7 +1013,7 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
         Math_SmoothStepToF(&this->actor.scale.x, 0.008f, 0.3f, 0.00080000004f, 0.000080000005f);
     }
 
-    EnElf_UpdateLights(this, play);
+    EnElf_UpdateNaviLights(this, play);
 }
 
 void EnElf_ChangeColor(Color_RGBAf* dest, Color_RGBAf* newColor, Color_RGBAf* curColor, f32 rate) {

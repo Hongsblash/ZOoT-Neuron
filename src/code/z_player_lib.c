@@ -1169,8 +1169,6 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
             }
 
             *dList = *(dLists + sDListsLodOffset);
-        } else if (limbIndex == PLAYER_LIMB_WAIST) {
-            *dList = *(this->waistDLists + sDListsLodOffset);
         }
     }
 

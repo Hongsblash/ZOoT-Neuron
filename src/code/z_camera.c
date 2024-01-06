@@ -7053,12 +7053,10 @@ void Camera_Init(Camera* camera, View* view, CollisionContext* colCtx, PlayState
             R_CAM_DATA(i) = sCamDataRegsInit[i];
         }
 
-        DebugCamera_Reset(camera, &D_8015BD80);
         sInitRegs = false;
         PREG(88) = -1;
     }
     camera->play = D_8015BD7C = play;
-    DebugCamera_Init(&D_8015BD80, camera);
     curUID = sNextUID;
     sNextUID++;
     while (curUID != 0) {
@@ -7282,16 +7280,6 @@ void Camera_PrintSettings(Camera* camera) {
         sp48[i] = '\0';
 
         sp48[camera->play->activeCamId] = 'a';
-        DebugCamera_ScreenTextColored(3, 22, DEBUG_CAM_TEXT_WHITE, sp58);
-        DebugCamera_ScreenTextColored(3, 22, DEBUG_CAM_TEXT_PEACH, sp48);
-        DebugCamera_ScreenTextColored(3, 23, DEBUG_CAM_TEXT_WHITE, "S:");
-        DebugCamera_ScreenTextColored(5, 23, DEBUG_CAM_TEXT_GOLD, sCameraSettingNames[camera->setting]);
-        DebugCamera_ScreenTextColored(3, 24, DEBUG_CAM_TEXT_WHITE, "M:");
-        DebugCamera_ScreenTextColored(5, 24, DEBUG_CAM_TEXT_GOLD, sCameraModeNames[camera->mode]);
-        DebugCamera_ScreenTextColored(3, 25, DEBUG_CAM_TEXT_WHITE, "F:");
-        DebugCamera_ScreenTextColored(
-            5, 25, DEBUG_CAM_TEXT_GOLD,
-            sCameraFunctionNames[sCameraSettings[camera->setting].cameraModes[camera->mode].funcIdx]);
 
         i = 0;
         if (camera->bgCamIndex < 0) {
@@ -7315,8 +7303,6 @@ void Camera_PrintSettings(Camera* camera) {
         sp50[i++] = ' ';
         sp50[i++] = ' ';
         sp50[i] = '\0';
-        DebugCamera_ScreenTextColored(3, 26, DEBUG_CAM_TEXT_WHITE, "I:");
-        DebugCamera_ScreenTextColored(5, 26, DEBUG_CAM_TEXT_GOLD, sp50);
     }
 }
 
@@ -7726,22 +7712,9 @@ Vec3s Camera_Update(Camera* camera) {
     // enable/disable debug cam
     if (CHECK_BTN_ALL(D_8015BD7C->state.input[2].press.button, BTN_START)) {
         gDebugCamEnabled ^= 1;
-        if (gDebugCamEnabled) {
-            DebugCamera_Enable(&D_8015BD80, camera);
-        } else if (camera->play->csCtx.state != CS_STATE_IDLE) {
+        if (camera->play->csCtx.state != CS_STATE_IDLE) {
             Cutscene_StopManual(camera->play, &camera->play->csCtx);
         }
-    }
-
-    // Debug cam update
-    if (gDebugCamEnabled) {
-        camera->play->view.fovy = D_8015BD80.fov;
-        DebugCamera_Update(&D_8015BD80, camera);
-        View_LookAt(&camera->play->view, &D_8015BD80.eye, &D_8015BD80.at, &D_8015BD80.unk_1C);
-        if (R_DEBUG_CAM_UPDATE) {
-            osSyncPrintf("camera: debug out\n");
-        }
-        return D_8015BD80.sub.unk_104A;
     }
 
     OREG(0) &= ~8;

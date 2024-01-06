@@ -378,7 +378,6 @@ beginseg
     include "build/src/code/z_fbdemo_circle.o"
     include "build/src/code/z_fbdemo_fade.o"
     include "build/src/code/shrink_window.o"
-    include "build/src/code/db_camera.o"
     include "build/src/code/code_800BB0A0.o"
     include "build/src/code/mempak.o"
     include "build/src/code/z_kaleido_manager.o"
@@ -407,7 +406,6 @@ beginseg
     include "build/src/code/sys_rumble.o"
     include "build/src/code/code_800D31A0.o"
     include "build/src/code/irqmgr.o"
-    include "build/src/code/debug_malloc.o"
     include "build/src/code/fault.o"
     include "build/src/code/fault_drawer.o"
 #ifndef NON_MATCHING
@@ -3374,6 +3372,12 @@ beginseg
     name "ovl_Shot_Sun"
     include "build/src/overlays/actors/ovl_Shot_Sun/z_shot_sun.o"
     include "build/src/overlays/actors/ovl_Shot_Sun/ovl_Shot_Sun_reloc.o"
+endseg
+
+beginseg
+    name "ovl_Npc_Test"
+    include "build/src/overlays/actors/ovl_Npc_Test/z_npc_test.o"
+    include "build/src/overlays/actors/ovl_Npc_Test/ovl_Npc_Test_reloc.o"
 endseg
 
 beginseg
@@ -10412,6 +10416,20 @@ beginseg
     name "test_room_room_0"
     romalign 0x1000
     include "build/assets/scenes/test_room/test_room/test_room_room_0.o"
+    number 3
+endseg
+
+beginseg
+    name "test_valley_scene"
+    romalign 0x1000
+    include "build/assets/scenes/test_valley/test_valley/test_valley_scene.o"
+    number 2
+endseg
+
+beginseg
+    name "test_valley_room_0"
+    romalign 0x1000
+    include "build/assets/scenes/test_valley/test_valley/test_valley_room_0.o"
     number 3
 endseg
 

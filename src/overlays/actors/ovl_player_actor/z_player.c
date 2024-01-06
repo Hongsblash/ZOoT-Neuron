@@ -9989,7 +9989,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.save.linkAge)]);
-    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0xC008, "../z_player.c", 17175) + 8) & ~0xF);
+    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0xFFFF, "../z_player.c", 17175) + 8) & ~0xF);
 
     respawnFlag = gSaveContext.respawnFlag;
 
@@ -13688,8 +13688,6 @@ s32 func_8084FCAC(Player* this, PlayState* play) {
         } else {
             speed = 20.0f;
         }
-
-        DebugCamera_ScreenText(3, 2, "DEBUG MODE");
 
         if (!CHECK_BTN_ALL(sControlInput->cur.button, BTN_L)) {
             if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_B)) {

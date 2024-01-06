@@ -76,6 +76,8 @@ void Object_InitContext(PlayState* play, ObjectContext* objectCtx) {
         objectCtx->slots[i].id = OBJECT_INVALID;
     }
 
+    spaceSize += 24 * 4096;
+
     osSyncPrintf(VT_FGCOL(GREEN));
     // "Object exchange bank data %8.3fKB"
     osSyncPrintf("オブジェクト入れ替えバンク情報 %8.3fKB\n", spaceSize / 1024.0f);

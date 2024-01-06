@@ -39,8 +39,6 @@ void Main(void* arg) {
     OSMesg irqMgrMsgBuf[60];
     uintptr_t systemHeapStart;
     uintptr_t fb;
-    void* debugHeapStart;
-    u32 debugHeapSize;
     s16* msg;
 
     osSyncPrintf("mainproc 実行開始\n"); // "Start running"
@@ -56,15 +54,6 @@ void Main(void* arg) {
     // "System heap initalization"
     osSyncPrintf("システムヒープ初期化 %08x-%08x %08x\n", systemHeapStart, fb, gSystemHeapSize);
     SystemHeap_Init((void*)systemHeapStart, gSystemHeapSize); // initializes the system heap
-    if (osMemSize >= 0x800000) {
-        debugHeapStart = SysCfb_GetFbEnd();
-        debugHeapSize = PHYS_TO_K0(0x600000) - (uintptr_t)debugHeapStart;
-    } else {
-        debugHeapSize = 0x400;
-        debugHeapStart = SystemArena_MallocDebug(debugHeapSize, "../main.c", 565);
-    }
-    osSyncPrintf("debug_InitArena(%08x, %08x)\n", debugHeapStart, debugHeapSize);
-    DebugArena_Init(debugHeapStart, debugHeapSize);
     Regs_Init();
 
     R_ENABLE_ARENA_DBG = 0;
