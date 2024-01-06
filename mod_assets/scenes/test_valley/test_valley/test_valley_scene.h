@@ -14,6 +14,7 @@ extern Vec3s test_valley_vertices[277];
 extern CollisionHeader test_valley_collisionHeader;
 extern SceneCmd* test_valley_room_0_alternateHeaders[];
 extern SceneCmd test_valley_room_0_header00[];
+extern s16 test_valley_room_0_header00_objectList[];
 extern ActorEntry test_valley_room_0_header00_actorList[];
 extern RoomShapeNormal test_valley_room_0_shapeHeader;
 extern RoomShapeDListsEntry test_valley_room_0_shapeDListEntry[1];

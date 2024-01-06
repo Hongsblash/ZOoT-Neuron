@@ -41051,23 +41051,36 @@ DEFINE_MESSAGE(0x71B2, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 )
 
 DEFINE_MESSAGE(0x71B3, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-" Message1 "
+"Oh. It's you.\n"
+"You're the one who vanquished my\n"
+"brother in the Royal Family Tomb."
 , "german", "french")
 
 DEFINE_MESSAGE(0x71B4, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-" Message1 "
+"Did you ever stop to think why\n"
+"there were spirits lurking around\n"
+"a sealed ROYAL tomb?"
 , "german", "french")
 
 DEFINE_MESSAGE(0x71B5, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-" Message1 "
+"Well?\n"
+"Do you have anything to say?\n"
+TWO_CHOICE  COLOR(ADJUSTABLE) "I'm sorry.\n"
+"Get over it." COLOR(DEFAULT)
 , "german", "french")
 
 DEFINE_MESSAGE(0x71B6, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-" Message1 "
+"Jerk."
 , "german", "french")
 
 DEFINE_MESSAGE(0x71B7, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
-" Message1 "
+"It's not as easy to bring \n"
+"spirits back, like it is with\n"
+"people..."
+, "german", "french")
+
+DEFINE_MESSAGE(0x71B8, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+"Go away..."
 , "german", "french")
 
 #ifdef DEFINE_MESSAGE_FFFC
