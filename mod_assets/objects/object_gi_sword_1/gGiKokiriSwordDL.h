@@ -1,0 +1,16 @@
+extern u64 gGiKokiriSwordDL_gLinkChildLeftFistAndKokiriSwordNearDL_hilite_1_rgba16_png_001__rgba16[];
+extern u64 gGiKokiriSwordDL_kokiri_hilt_texture_png_ci8[];
+extern u64 gGiKokiriSwordDL_kokiri_hilt_texture_png_pal_rgba16[];
+extern u64 gGiKokiriSwordDL_kokiri_handle_texture_ci8[];
+extern u64 gGiKokiriSwordDL_kokiri_handle_texture_pal_rgba16[];
+extern Vtx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_vtx_cull[8];
+extern Vtx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_vtx_0[215];
+extern Gfx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_tri_0[];
+extern Vtx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_vtx_1[461];
+extern Gfx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_tri_1[];
+extern Vtx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_vtx_2[27];
+extern Gfx gGiKokiriSwordDL_gGiKokiriSwordDL_mesh_layer_Opaque_tri_2[];
+extern Gfx mat_gGiKokiriSwordDL_f3dlite_material_014_layerOpaque[];
+extern Gfx mat_gGiKokiriSwordDL_hilt_layerOpaque[];
+extern Gfx mat_gGiKokiriSwordDL_handle_layerOpaque[];
+extern Gfx gGiKokiriSwordDL[];
