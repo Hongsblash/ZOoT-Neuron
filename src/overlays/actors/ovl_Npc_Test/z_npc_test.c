@@ -200,12 +200,12 @@ s16 NpcTest_UpdateTalkState(PlayState* play, Actor* thisx) {
                 // Handle the next part of the dialogue based on the current text ID
                 switch (thisx->textId) {
                     case NPCTEST_MESSAGE_STORY_1:
-                        // Advance the story to the next message
+                        // Advance message 1 to message 2
                         thisx->textId = NPCTEST_MESSAGE_STORY_2;
                         Message_ContinueTextbox(play, thisx->textId);
                         break;
                     case NPCTEST_MESSAGE_STORY_2:
-                        // Advance the story to the next message
+                        // Advance message 2 to message 3
                         thisx->textId = NPCTEST_MESSAGE_STORY_3;
                         Message_ContinueTextbox(play, thisx->textId);
                         break;
@@ -216,7 +216,7 @@ s16 NpcTest_UpdateTalkState(PlayState* play, Actor* thisx) {
                         talkState = NPC_TALK_STATE_IDLE;
                         break;
                     case NPCTEST_MESSAGE_GO_AWAY:
-                        // No infotable entry to set here, just end the dialogue
+                        // Just end the dialogue
                         talkState = NPC_TALK_STATE_IDLE;
                         break;
                 }
