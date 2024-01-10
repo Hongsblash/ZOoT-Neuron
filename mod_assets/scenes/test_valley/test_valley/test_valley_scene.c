@@ -31,7 +31,7 @@ RomFile test_valley_scene_roomList[] = {
 ActorEntry test_valley_scene_header00_playerEntryList[] = {
     {
         /* Actor ID   */ ACTOR_PLAYER,
-        /* Position   */ { 0, -120, 0 },
+        /* Position   */ { 0, -120, -159 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0FFF
     },

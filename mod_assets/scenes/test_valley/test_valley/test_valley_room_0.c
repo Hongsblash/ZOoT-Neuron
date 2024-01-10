@@ -10,8 +10,8 @@
 /**
  * Header Child Day (Default)
 */
-#define LENGTH_TEST_VALLEY_ROOM_0_HEADER00_OBJECTLIST 1
-#define LENGTH_TEST_VALLEY_ROOM_0_HEADER00_ACTORLIST 1
+#define LENGTH_TEST_VALLEY_ROOM_0_HEADER00_OBJECTLIST 2
+#define LENGTH_TEST_VALLEY_ROOM_0_HEADER00_ACTORLIST 2
 SceneCmd test_valley_room_0_header00[] = {
     SCENE_CMD_ECHO_SETTINGS(0x00),
     SCENE_CMD_ROOM_BEHAVIOR(0x00, 0x00, false, false),
@@ -25,9 +25,18 @@ SceneCmd test_valley_room_0_header00[] = {
 
 s16 test_valley_room_0_header00_objectList[LENGTH_TEST_VALLEY_ROOM_0_HEADER00_OBJECTLIST] = {
     OBJECT_RD,
+    OBJECT_HEAVY_OBJECT,
 };
 
 ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADER00_ACTORLIST] = {
+    // Bronze Boulder
+    {
+        /* Actor ID   */ ACTOR_OBJ_HAMISHI,
+        /* Position   */ { 1, -122, -2 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(270.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_NPC_TEST,

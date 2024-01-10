@@ -4021,8 +4021,11 @@ void func_80837918(Player* this, s32 quadIndex, u32 dmgFlags) {
 }
 
 static u32 D_80854488[][2] = {
-    { DMG_SLASH_MASTER, DMG_JUMP_MASTER }, { DMG_SLASH_KOKIRI, DMG_JUMP_KOKIRI }, { DMG_SLASH_GIANT, DMG_JUMP_GIANT },
-    { DMG_DEKU_STICK, DMG_JUMP_MASTER },   { DMG_HAMMER_SWING, DMG_HAMMER_JUMP },
+    { DMG_SLASH_MASTER, DMG_JUMP_MASTER },
+    { DMG_HAMMER_SWING, DMG_JUMP_KOKIRI }, // Modified line for Kokiri Sword
+    { DMG_SLASH_GIANT, DMG_JUMP_GIANT },
+    { DMG_DEKU_STICK, DMG_JUMP_MASTER },
+    { DMG_HAMMER_SWING, DMG_HAMMER_JUMP },
 };
 
 void func_80837948(PlayState* play, Player* this, s32 arg2) {
