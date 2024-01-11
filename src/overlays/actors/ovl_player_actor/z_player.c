@@ -10976,12 +10976,12 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
             this->actor.shape.rot.y += rotationError;
 
             // Trigger the transition to the new area
-            play->nextEntranceIndex = ENTR_TEST_ROOM_0;
-            play->transitionTrigger = TRANS_TRIGGER_START;
-            play->transitionType = TRANS_TYPE_FADE_BLACK;
-            this->actor.world.pos.x = 0;
-            this->actor.world.pos.y = 0;
-            this->actor.world.pos.z = 0;
+            // play->nextEntranceIndex = ENTR_TEST_ROOM_0;
+            // play->transitionTrigger = TRANS_TRIGGER_START;
+            // play->transitionType = TRANS_TYPE_FADE_BLACK;
+            // this->actor.world.pos.x = 0;
+            // this->actor.world.pos.y = 0;
+            // this->actor.world.pos.z = 0;
         }
     }
 

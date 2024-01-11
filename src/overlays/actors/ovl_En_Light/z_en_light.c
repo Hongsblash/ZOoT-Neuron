@@ -43,6 +43,7 @@ static FlameParams D_80A9E840[] = {
     { { 255, 255, 170, 255 }, { 255, 255, 0 }, 75 }, { { 255, 255, 170, 255 }, { 100, 255, 0 }, 75 },
     { { 255, 170, 255, 255 }, { 255, 0, 100 }, 75 }, { { 255, 170, 255, 255 }, { 100, 0, 255 }, 75 },
     { { 170, 255, 255, 255 }, { 0, 0, 255 }, 75 },   { { 170, 255, 255, 255 }, { 0, 150, 255 }, 75 },
+    { { 255, 200, 0, 255 }, { 255, 0, 0 }, 25 }, // New flame definition
 };
 
 void EnLight_Init(Actor* thisx, PlayState* play) {
@@ -54,13 +55,21 @@ void EnLight_Init(Actor* thisx, PlayState* play) {
         Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, yOffset + (s16)this->actor.world.pos.y,
                                   this->actor.world.pos.z, 255, 255, 180, -1);
     } else {
-        yOffset = (this->actor.params < 0) ? 1 : 40;
-        Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, yOffset + (s16)this->actor.world.pos.y,
-                                this->actor.world.pos.z, 255, 255, 180, -1);
+        if (this->actor.params == 0x0010) {
+            yOffset = 20; // Adjusted offset for the new flame size
+            Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, 
+                                    yOffset + (s16)this->actor.world.pos.y,
+                                    this->actor.world.pos.z, 255, 255, 180, 150); // Smaller radius
+        } else {
+            yOffset = (this->actor.params < 0) ? 1 : 40;
+            Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, 
+                                    yOffset + (s16)this->actor.world.pos.y,
+                                    this->actor.world.pos.z, 255, 255, 180, -1); // Original code
+        }
     }
 
     this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
-    Actor_SetScale(&this->actor, D_80A9E840[this->actor.params & 0xF].scale * 0.0001f);
+    Actor_SetScale(&this->actor, D_80A9E840[this->actor.params & 0x1F].scale * 0.0001f); // Updated bit masking
     this->timer = (s32)(Rand_ZeroOne() * 255.0f);
 
     if ((this->actor.params & 0x400) != 0) {
@@ -92,9 +101,16 @@ void EnLight_Update(Actor* thisx, PlayState* play) {
     s16 radius;
     EnLight* this = (EnLight*)thisx;
 
-    flameParams = &D_80A9E840[this->actor.params & 0xF];
+    flameParams = &D_80A9E840[this->actor.params & 0x1F];
     intensity = (Rand_ZeroOne() * 0.5f) + 0.5f;
-    radius = (this->actor.params < 0) ? 100 : 300;
+
+    // Check for the new flame parameter and adjust radius accordingly
+    if (this->actor.params == 0x0010) {
+        radius = 150; // Adjusted radius for the new flame size
+    } else {
+        radius = (this->actor.params < 0) ? 100 : 300;
+    }
+    
     Lights_PointSetColorAndRadius(&this->lightInfo, (flameParams->primColor.r * intensity),
                                   (flameParams->primColor.g * intensity), (flameParams->primColor.b * intensity),
                                   radius);
@@ -111,7 +127,7 @@ void EnLight_UpdateSwitch(Actor* thisx, PlayState* play) {
     EnLight* this = (EnLight*)thisx;
     f32 scale;
 
-    flameParams = &D_80A9E840[this->actor.params & 0xF];
+    flameParams = &D_80A9E840[this->actor.params & 0x1F];
     scale = this->actor.scale.x / ((f32)flameParams->scale * 0.0001);
 
     if ((this->actor.params & 0x800) != 0) {
@@ -156,7 +172,7 @@ void EnLight_Draw(Actor* thisx, PlayState* play) {
 
     if (1) {}
 
-    flameParams = &D_80A9E840[this->actor.params & 0xF];
+    flameParams = &D_80A9E840[this->actor.params & 0x1F];
 
     OPEN_DISPS(play->state.gfxCtx, "../z_en_light.c", 441);
 

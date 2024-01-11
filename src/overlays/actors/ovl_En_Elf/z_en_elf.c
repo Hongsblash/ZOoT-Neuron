@@ -845,20 +845,17 @@ void EnElf_UpdateNaviLights(EnElf* this, PlayState* play) {
     }
 
     if (this->fairyFlags & 0x20) {
-        // If Navi is close to the player, use the player's position and a purple light.
         player = GET_PLAYER(play);
         Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, player->actor.world.pos.x,
                                   (s16)(player->actor.world.pos.y) + 60.0f, player->actor.world.pos.z,
-                                  75, 0, 130, 200); // Dark purple RGB values
+                                  47, 79, 79, 200); // Custom values
     } else {
-        // If Navi is not close to the player, use Navi's position and a vibrant red light.
         Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
-                                  this->actor.world.pos.z, 255, 0, 0, -1); // Vibrant red RGB values
+                                  this->actor.world.pos.z, 72, 61, 139, -1); // Custom values
     }
 
-    // For the glowing light, we'll also set it to vibrant red.
     Lights_PointGlowSetInfo(&this->lightInfoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
-                            this->actor.world.pos.z, 255, 0, 0, glowLightRadius);
+                            this->actor.world.pos.z,  135, 206, 250, glowLightRadius); // Custom values
 
     this->unk_2BC = Math_Atan2S(this->actor.velocity.z, this->actor.velocity.x);
 
