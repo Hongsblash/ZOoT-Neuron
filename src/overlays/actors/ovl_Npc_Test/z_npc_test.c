@@ -124,9 +124,9 @@ void NpcTest_Init(Actor* thisx, PlayState* play) {
     NpcTest* this = (NpcTest*)thisx;
 
     ActorShape_Init(&thisx->shape, 0.0f, NULL, 0.0f);
-    Actor_SetFocus(thisx, 24.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoSkel, &gGibdoRedeadWipingTearsAnim, this->jointTable, this->morphTable, REDEAD_GIBDO_LIMB_MAX);
-    Animation_Change(&this->skelAnime, &gGibdoRedeadWipingTearsAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gGibdoRedeadWipingTearsAnim), ANIMMODE_LOOP, 0.0f);
+    Actor_SetFocus(thisx, 72.0f);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoSkel, &gGibdoSkelGgibdoredeadpeaceoutanimAnim, this->jointTable, this->morphTable, REDEAD_GIBDO_LIMB_MAX);
+    Animation_Change(&this->skelAnime, &gGibdoSkelGgibdoredeadpeaceoutanimAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gGibdoSkelGgibdoredeadpeaceoutanimAnim), ANIMMODE_LOOP, 0.0f);
 
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, thisx, &sCylinderInit);

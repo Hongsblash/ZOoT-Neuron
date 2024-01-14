@@ -122,4 +122,4 @@
 /* 0x6D */ DEFINE_SCENE(testroom_scene, none, SCENE_TESTROOM, SDC_DEFAULT, 0, 0)
 // Added scenes
 /* 0x6E */ DEFINE_SCENE(test_room_scene, none, SCENE_TEST_ROOM, SDC_ROYAL_FAMILYS_TOMB, 0, 0)
-/* 0x6E */ DEFINE_SCENE(test_valley_scene, none, SCENE_TEST_VALLEY, SDC_DEFAULT, 0, 0)
+/* 0x6E */ DEFINE_SCENE(test_valley_scene, g_pn_29, SCENE_TEST_VALLEY, SDC_DEFAULT, 0, 0)

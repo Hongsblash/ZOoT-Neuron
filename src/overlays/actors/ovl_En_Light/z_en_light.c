@@ -43,7 +43,7 @@ static FlameParams D_80A9E840[] = {
     { { 255, 255, 170, 255 }, { 255, 255, 0 }, 75 }, { { 255, 255, 170, 255 }, { 100, 255, 0 }, 75 },
     { { 255, 170, 255, 255 }, { 255, 0, 100 }, 75 }, { { 255, 170, 255, 255 }, { 100, 0, 255 }, 75 },
     { { 170, 255, 255, 255 }, { 0, 0, 255 }, 75 },   { { 170, 255, 255, 255 }, { 0, 150, 255 }, 75 },
-    { { 255, 200, 0, 255 }, { 255, 0, 0 }, 25 }, // New flame definition
+    { { 255, 200, 0, 255 }, { 255, 0, 0 }, 35 },     { { 0, 170, 255, 255 }, { 0, 0, 255 }, 35 },       // New small orange and blue flame definitions, 0x0010 and 0x0011
 };
 
 void EnLight_Init(Actor* thisx, PlayState* play) {
@@ -55,11 +55,12 @@ void EnLight_Init(Actor* thisx, PlayState* play) {
         Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, yOffset + (s16)this->actor.world.pos.y,
                                   this->actor.world.pos.z, 255, 255, 180, -1);
     } else {
-        if (this->actor.params == 0x0010) {
-            yOffset = 20; // Adjusted offset for the new flame size
+        // Code to execute if params is between 0x0010 and 0x001F, inclusive, for custom/new flames
+        if ((this->actor.params >= 0x0010) && (this->actor.params <= 0x001F)) {
+            yOffset = 25; // Adjusted offset for the new flame size
             Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, 
                                     yOffset + (s16)this->actor.world.pos.y,
-                                    this->actor.world.pos.z, 255, 255, 180, 150); // Smaller radius
+                                    this->actor.world.pos.z, 255, 255, 180, 150); // Smaller radius for new flame
         } else {
             yOffset = (this->actor.params < 0) ? 1 : 40;
             Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, 
@@ -104,9 +105,10 @@ void EnLight_Update(Actor* thisx, PlayState* play) {
     flameParams = &D_80A9E840[this->actor.params & 0x1F];
     intensity = (Rand_ZeroOne() * 0.5f) + 0.5f;
 
-    // Check for the new flame parameter and adjust radius accordingly
-    if (this->actor.params == 0x0010) {
-        radius = 150; // Adjusted radius for the new flame size
+    // Code to execute if params is between 0x0010 and 0x001F, inclusive, for custom/new flames
+    // Check for a new flame parameter and adjust radius accordingly
+    if ((this->actor.params >= 0x0010) && (this->actor.params <= 0x001F)) {
+    radius = 175; // Adjusted radius for the new flame size
     } else {
         radius = (this->actor.params < 0) ? 100 : 300;
     }
