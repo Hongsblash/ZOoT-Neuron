@@ -3381,6 +3381,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_Molly_npc"
+    include "build/src/overlays/actors/ovl_Molly_npc/z_molly_npc.o"
+    include "build/src/overlays/actors/ovl_Molly_npc/ovl_Molly_npc_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"
@@ -6050,6 +6056,13 @@ beginseg
     name "object_zl4"
     romalign 0x1000
     include "build/assets/objects/object_zl4/object_zl4.o"
+    number 6
+endseg
+
+beginseg
+    name "object_molly_npc"
+    romalign 0x1000
+    include "build/assets/objects/object_molly_npc/object_molly_npc.o"
     number 6
 endseg
 

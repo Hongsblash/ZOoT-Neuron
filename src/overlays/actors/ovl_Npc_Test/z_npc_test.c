@@ -1,7 +1,7 @@
 /*
  * File: z_npc_test.c
  * Overlay: ovl_Npc_Test
- * Description: Test NPC
+ * Description: Test NPC - Redead/Gibdo
  */
 
 #include "z_npc_test.h"
@@ -125,8 +125,17 @@ void NpcTest_Init(Actor* thisx, PlayState* play) {
 
     ActorShape_Init(&thisx->shape, 0.0f, NULL, 0.0f);
     Actor_SetFocus(thisx, 72.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoSkel, &gGibdoSkelGgibdoredeadpeaceoutanimAnim, this->jointTable, this->morphTable, REDEAD_GIBDO_LIMB_MAX);
-    Animation_Change(&this->skelAnime, &gGibdoSkelGgibdoredeadpeaceoutanimAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gGibdoSkelGgibdoredeadpeaceoutanimAnim), ANIMMODE_LOOP, 0.0f);
+
+    // Check for actor parameter 0x0010
+    if (this->actor.params & 0x0010) {
+        // Use gGibdoFemSkel if the parameter is set
+        SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoFemSkel, &gGibdoRedeadDance1Anim, this->jointTable, this->morphTable, REDEAD_GIBDO_LIMB_MAX);
+    } else {
+        // Use gGibdoSkel otherwise
+        SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoSkel, &gGibdoRedeadDance1Anim, this->jointTable, this->morphTable, REDEAD_GIBDO_LIMB_MAX);
+    }
+
+    Animation_Change(&this->skelAnime, &gGibdoRedeadDance1Anim, 1.0f, 0.0f, Animation_GetLastFrame(&gGibdoRedeadDance1Anim), ANIMMODE_LOOP, 0.0f);
 
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, thisx, &sCylinderInit);
@@ -212,7 +221,7 @@ s16 NpcTest_UpdateTalkState(PlayState* play, Actor* thisx) {
                         break;
                     case NPCTEST_MESSAGE_JERK:
                     case NPCTEST_MESSAGE_END:
-                        // Mark the appropriate infotable entry and end the dialogue
+                        // Mark the appropriate inftable entry and end the dialogue
                         SET_INFTABLE(INFTABLE_F4);
                         talkState = NPC_TALK_STATE_IDLE;
                         break;
