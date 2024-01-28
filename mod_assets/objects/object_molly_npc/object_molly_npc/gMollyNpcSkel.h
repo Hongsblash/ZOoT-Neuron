@@ -1,4 +1,4 @@
-extern Vtx gMollyNpcSkel_bone001_gMollyNpcSkelLimb_001_mesh_layer_Opaque_vtx_0[18];
+extern Vtx gMollyNpcSkel_bone001_mesh_layer_Opaque_vtx_0[18];
 extern Gfx gMollyNpcSkel_bone001_gMollyNpcSkelLimb_001_mesh_layer_Opaque_tri_0[];
 extern Vtx gMollyNpcSkel_bone002_gMollyNpcSkelLimb_002_mesh_layer_Opaque_vtx_0[55];
 extern Gfx gMollyNpcSkel_bone002_gMollyNpcSkelLimb_002_mesh_layer_Opaque_tri_0[];
