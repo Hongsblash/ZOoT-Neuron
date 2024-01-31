@@ -7,7 +7,7 @@
 #include "z_molly_npc.h"
 #include "assets/objects/object_molly_npc/object_molly_npc.h"
 
-// Makes it Z target-able (ACTOR_FLAG_0)
+// Makes it Z target-able: (ACTOR_FLAG_0)
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 void MollyNpc_Init(Actor* thisx, PlayState* play);
@@ -15,8 +15,8 @@ void MollyNpc_Destroy(Actor* thisx, PlayState* play);
 void MollyNpc_Update(Actor* thisx, PlayState* play);
 void MollyNpc_Draw(Actor* thisx, PlayState* play);
 
-// u16 MollyNpc_GetNextTextId(PlayState* play, Actor* thisx);
-// s16 MollyNpc_UpdateTalkState(PlayState* play, Actor* thisx);
+u16 MollyNpc_GetNextTextId(PlayState* play, Actor* thisx);
+s16 MollyNpc_UpdateTalkState(PlayState* play, Actor* thisx);
 
 ActorInit Molly_npc_InitVars = {
     /**/ ACTOR_MOLLY_NPC,
@@ -30,14 +30,13 @@ ActorInit Molly_npc_InitVars = {
     /**/ (ActorFunc)MollyNpc_Draw,
 };
 
-// typedef enum {
-//     NPCTEST_MESSAGE_STORY_1 = 0x71B3,
-//     NPCTEST_MESSAGE_STORY_2 = 0x71B4,
-//     NPCTEST_MESSAGE_STORY_3 = 0x71B5,
-//     NPCTEST_MESSAGE_JERK = 0x71B6,
-//     NPCTEST_MESSAGE_END = 0x71B7,
-//     NPCTEST_MESSAGE_GO_AWAY = 0x71B8
-// } MollyNpcMessageId;
+typedef enum {
+    NPCTEST_MESSAGE_WHAT = 0x71B9,
+    NPCTEST_MESSAGE_COMING_BACK = 0x71C0,
+    NPCTEST_MESSAGE_EXPLAINS = 0x71C1,
+    NPCTEST_MESSAGE_UNSURE = 0x71C2,
+    NPCTEST_MESSAGE_CURIOUS = 0x71C3,
+} MollyNpcMessageId;
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -63,10 +62,10 @@ s32 MollyNpc_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
     MollyNpc* this = (MollyNpc*)thisx;
 
     switch (limbIndex) {
-        case GMOLLYNPCSKEL_BONE_003_LIMB: // Head
+        case GMOLLYNPCSKEL_HEAD_LIMB: // Head
             rot->y += this->headYRotation;
             break;
-        case GMOLLYNPCSKEL_BONE_010_LIMB: // Torso
+        case GMOLLYNPCSKEL_MIDDLE_BACK_LIMB: // Torso
             rot->y += this->upperBodyYRotation;
             break;
     }
@@ -78,7 +77,7 @@ void MollyNpc_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* r
     static Vec3f sMultVec = { 800.0f, 500.0f, 0.0f };
     MollyNpc* this = (MollyNpc*)thisx;
 
-    if (limbIndex == GMOLLYNPCSKEL_BONE_010_LIMB) {
+    if (limbIndex == GMOLLYNPCSKEL_MIDDLE_BACK_LIMB) { // Torso
         Matrix_MultVec3f(&sMultVec, &this->actor.focus.pos);
     }
 }
@@ -87,7 +86,7 @@ void MollyNpc_Init(Actor* thisx, PlayState* play) {
     MollyNpc* this = (MollyNpc*)thisx;
 
     ActorShape_Init(&thisx->shape, 0.0f, NULL, 0.0f);
-    Actor_SetFocus(thisx, 72.0f);
+    Actor_SetFocus(thisx, 80.0f);
 
     SkelAnime_InitFlex(play, &this->skelAnime, &gMollyNpcSkel, &gMollyNpcIdleAnim, this->jointTable, this->morphTable, GMOLLYNPCSKEL_NUM_LIMBS);
 
@@ -109,14 +108,14 @@ void MollyNpc_Update(Actor* thisx, PlayState* play) {
     MollyNpc* this = (MollyNpc*)thisx;
 
     SkelAnime_Update(&this->skelAnime);
-    // Npc_UpdateTalking(
-    //     play,
-    //     &this->actor,
-    //     &this->interactInfo.talkState,
-    //     50.0f,
-    //     MollyNpc_GetNextTextId,
-    //     MollyNpc_UpdateTalkState
-    // );
+    Npc_UpdateTalking(
+        play,
+        &this->actor,
+        &this->interactInfo.talkState,
+        50.0f,
+        MollyNpc_GetNextTextId,
+        MollyNpc_UpdateTalkState
+    );
     
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider);
@@ -127,6 +126,8 @@ void MollyNpc_Draw(Actor* thisx, PlayState* play) {
     static Vec3f D_80AE494C = { 300.0f, 0.0f, 0.0f };
     static Vec3f sShadowScale = { 0.25f, 0.25f, 0.25f };
     Vec3f thisPos = thisx->world.pos;
+    GfxPrint printer;
+    Gfx* gfx;
 
     OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
 
@@ -137,57 +138,73 @@ void MollyNpc_Draw(Actor* thisx, PlayState* play) {
         SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                             MollyNpc_OverrideLimbDraw, MollyNpc_PostLimbDraw, this, POLY_OPA_DISP);
 
+    // CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
+
+    // OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
+
+    // gfx = POLY_OPA_DISP + 1;
+    // gSPDisplayList(OVERLAY_DISP++, gfx);
+
+    // GfxPrint_Init(&printer);
+    // GfxPrint_Open(&printer, gfx);
+
+    // GfxPrint_SetColor(&printer, 255, 0, 255, 255);
+    // GfxPrint_SetPos(&printer, 10, 10);
+    // GfxPrint_Printf(&printer, "Molly_npc Loaded");
+
+    // gfx = GfxPrint_Close(&printer);
+    // GfxPrint_Destroy(&printer);
+
+    // gSPEndDisplayList(gfx++);
+    // gSPBranchList(POLY_OPA_DISP, gfx);
+    // POLY_OPA_DISP = gfx;
+
     CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
 
 }
 
-// u16 MollyNpc_GetNextTextId(PlayState* play, Actor* thisx) {
-//     if (GET_INFTABLE(INFTABLE_F4)) {
-//         return NPCTEST_MESSAGE_GO_AWAY;
-//     } else {
-//         return NPCTEST_MESSAGE_STORY_1;
-//     }
-// }
+u16 MollyNpc_GetNextTextId(PlayState* play, Actor* thisx) {
+    if (GET_INFTABLE(INFTABLE_E0)) {
+        return NPCTEST_MESSAGE_CURIOUS;
+    } else {
+        return NPCTEST_MESSAGE_WHAT;
+    }
+}
 
-// s16 MollyNpc_UpdateTalkState(PlayState* play, Actor* thisx) {
-//     s16 talkState = NPC_TALK_STATE_TALKING;
+s16 MollyNpc_UpdateTalkState(PlayState* play, Actor* thisx) {
+    s16 talkState = NPC_TALK_STATE_TALKING;
 
-//     switch (Message_GetState(&play->msgCtx)) {
-//         case TEXT_STATE_CHOICE:
-//             if (Message_ShouldAdvance(play)) {
-//                 // Set the next text ID based on the player's choice
-//                 thisx->textId = play->msgCtx.choiceIndex == 0 ? NPCTEST_MESSAGE_END : NPCTEST_MESSAGE_JERK;
-//                 // Continue the dialogue with the new text ID
-//                 Message_ContinueTextbox(play, thisx->textId);
-//             }
-//             break;
-//         case TEXT_STATE_DONE:
-//             if (Message_ShouldAdvance(play)) {
-//                 // Handle the next part of the dialogue based on the current text ID
-//                 switch (thisx->textId) {
-//                     case NPCTEST_MESSAGE_STORY_1:
-//                         // Advance message 1 to message 2
-//                         thisx->textId = NPCTEST_MESSAGE_STORY_2;
-//                         Message_ContinueTextbox(play, thisx->textId);
-//                         break;
-//                     case NPCTEST_MESSAGE_STORY_2:
-//                         // Advance message 2 to message 3
-//                         thisx->textId = NPCTEST_MESSAGE_STORY_3;
-//                         Message_ContinueTextbox(play, thisx->textId);
-//                         break;
-//                     case NPCTEST_MESSAGE_JERK:
-//                     case NPCTEST_MESSAGE_END:
-//                         // Mark the appropriate inftable entry and end the dialogue
-//                         SET_INFTABLE(INFTABLE_F4);
-//                         talkState = NPC_TALK_STATE_IDLE;
-//                         break;
-//                     case NPCTEST_MESSAGE_GO_AWAY:
-//                         // Just end the dialogue
-//                         talkState = NPC_TALK_STATE_IDLE;
-//                         break;
-//                 }
-//             }
-//             break;
-//     }
-//     return talkState;
-// }
+    switch (Message_GetState(&play->msgCtx)) {
+        case TEXT_STATE_CHOICE:
+            if (Message_ShouldAdvance(play)) {
+                // Set the next text ID based on the player's choice
+                thisx->textId = play->msgCtx.choiceIndex == 0 ? NPCTEST_MESSAGE_EXPLAINS : NPCTEST_MESSAGE_UNSURE;
+                // Continue the dialogue with the new text ID
+                Message_ContinueTextbox(play, thisx->textId);
+            }
+            break;
+        case TEXT_STATE_DONE:
+            if (Message_ShouldAdvance(play)) {
+                // Handle the next part of the dialogue based on the current text ID
+                switch (thisx->textId) {
+                    case NPCTEST_MESSAGE_WHAT:
+                        // Advance message 1 to message 2
+                        thisx->textId = NPCTEST_MESSAGE_COMING_BACK;
+                        Message_ContinueTextbox(play, thisx->textId);
+                        break;
+                    case NPCTEST_MESSAGE_UNSURE:
+                    case NPCTEST_MESSAGE_EXPLAINS:
+                        // Mark the appropriate inftable entry and end the dialogue
+                        SET_INFTABLE(INFTABLE_E0);
+                        talkState = NPC_TALK_STATE_IDLE;
+                        break;
+                    case NPCTEST_MESSAGE_CURIOUS:
+                        // Just end the dialogue
+                        talkState = NPC_TALK_STATE_IDLE;
+                        break;
+                }
+            }
+            break;
+    }
+    return talkState;
+}

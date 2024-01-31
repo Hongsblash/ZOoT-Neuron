@@ -41080,6 +41080,32 @@ DEFINE_MESSAGE(0x71B8, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 "Gotta get me my zombie gains."
 , "german", "french")
 
+DEFINE_MESSAGE(0x71B9, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+"What is happening to me?\n"
+"My husk is falling off."
+, "german", "french")
+
+DEFINE_MESSAGE(0x71C0, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+"Am I...\n"
+"Coming back from the dead?\n"
+TWO_CHOICE  COLOR(ADJUSTABLE) "Yes\n"
+"No" COLOR(DEFAULT)
+, "german", "french")
+
+DEFINE_MESSAGE(0x71C1, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+"Oh... that explains it.\n"
+"...I don't remember my boobs\n"
+"being so big..."
+, "german", "french")
+
+DEFINE_MESSAGE(0x71C2, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+"I wonder what's happening then..."
+, "german", "french")
+
+DEFINE_MESSAGE(0x71C3, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
+"Why are my boobs so big?"
+, "german", "french")
+
 #ifdef DEFINE_MESSAGE_FFFC
 DEFINE_MESSAGE(0xFFFC, TEXTBOX_TYPE_BLACK, TEXTBOX_POS_VARIABLE,
 "0123456789\n"
