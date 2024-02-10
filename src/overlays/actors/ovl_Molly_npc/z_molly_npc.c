@@ -135,7 +135,7 @@ void MollyNpc_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->collider, thisx, &sCylinderInit);
     Collider_InitQuad(play, &this->swordCollider);
     Collider_SetQuad(play, &this->swordCollider, &this->actor, &sSwordColliderInit);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gMollyNpcSkel, &gMollyNpcWalkAnim, this->jointTable, this->morphTable, GMOLLYNPCSKEL_NUM_LIMBS);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gMollyNpcSkel, &gMollyNpcIdleAnim, this->jointTable, this->morphTable, GMOLLYNPCSKEL_NUM_LIMBS);
 
     this->actor.colChkInfo.damageTable = &sDamageTable;
 
@@ -176,14 +176,12 @@ void MollyNpc_RotateTowardPoint(MollyNpc* this, Vec3f* point, s16 step) {
 void MollyNpc_SetupIdle(MollyNpc* this, PlayState* play) {
     this->actor.speed = 0.0f;
     this->actor.velocity.y = 0.0f;
-    Animation_MorphToLoop(&this->skelAnime, &gMollyNpcWalkAnim, -3.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gMollyNpcIdleAnim, -3.0f);
     this->actionFunc = MollyNpc_Idle;
 }
 
-#define MOLLYNPC_FLEE_RADIUS 200.0f
-
 void MollyNpc_SetupNotice(MollyNpc* this, PlayState* play) {
-    Animation_PlayOnce(&this->skelAnime, &gMollyNpcWalkAnim);
+    Animation_PlayOnce(&this->skelAnime, &gMollyNpcIdleAnim);
     this->actionFunc = MollyNpc_Notice;
 }
 
@@ -194,13 +192,6 @@ void MollyNpc_SetupStartRunFromNotice(MollyNpc* this, PlayState* play) {
 
 void MollyNpc_SetupRun(MollyNpc* this, PlayState* play) {
     s16 angle;
-
-    if (this->fleeTimer != 0) {
-        angle = this->actor.yawTowardsPlayer + DEG_TO_BINANG(180.0f) +
-                Rand_S16Offset(DEG_TO_BINANG(-45.0f), DEG_TO_BINANG(90.0f));
-        this->fleePos.x = (Math_CosS(angle) * MOLLYNPC_FLEE_RADIUS) + this->actor.home.pos.x;
-        this->fleePos.z = (Math_SinS(angle) * MOLLYNPC_FLEE_RADIUS) + this->actor.home.pos.z;
-    }
 
     Animation_MorphToLoop(&this->skelAnime, &gMollyNpcWalkAnim, 0.0f);
     this->actionFunc = MollyNpc_Run;
@@ -226,13 +217,13 @@ void MollyNpc_SetupAttack(MollyNpc* this, PlayState* play) {
 void MollyNpc_SetupDamaged(MollyNpc* this, PlayState* play) {
     this->actor.speed = -4.0f;
     this->actor.world.rot.y = this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
-    Animation_MorphToPlayOnce(&this->skelAnime, &gMollyNpcWalkAnim, 0.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gMollyNpcIdleAnim, 0.0f);
     this->actionFunc = MollyNpc_Damaged;
 }
 
 void MollyNpc_SetupStunned(MollyNpc* this, PlayState* play) {
     this->actor.speed = 0.0f;
-    Animation_Change(&this->skelAnime, &gMollyNpcWalkAnim, 0.0f, 3.0f, 0.0f, ANIMMODE_ONCE, 0.0f);
+    Animation_Change(&this->skelAnime, &gMollyNpcIdleAnim, 0.0f, 3.0f, 0.0f, ANIMMODE_ONCE, 0.0f);
     this->actionFunc = MollyNpc_Stunned;
 }
 
@@ -240,7 +231,7 @@ void MollyNpc_SetupDie(MollyNpc* this, PlayState* play) {
     this->actor.speed = 0.0f;
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->actor.world.rot.y = this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
-    Animation_MorphToPlayOnce(&this->skelAnime, &gMollyNpcWalkAnim, 0.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gMollyNpcIdleAnim, 0.0f);
     this->actionFunc = MollyNpc_Die;
 }
 
@@ -250,6 +241,9 @@ void MollyNpc_SetupDie(MollyNpc* this, PlayState* play) {
 
 void MollyNpc_Idle(MollyNpc* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
+
+    this->swordState = 0;
+
     SkelAnime_Update(&this->skelAnime);
 
     if (this->actor.xzDistToPlayer < MOLLYNPC_NOTICE_RADIUS) {
@@ -262,6 +256,8 @@ void MollyNpc_Idle(MollyNpc* this, PlayState* play) {
 void MollyNpc_Notice(MollyNpc* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     u8 animDone = SkelAnime_Update(&this->skelAnime);
+
+    this->swordState = 0;
 
     MollyNpc_RotateTowardPoint(this, &player->actor.world.pos, DEG_TO_BINANG(15.0f));
 
@@ -278,6 +274,8 @@ void MollyNpc_Notice(MollyNpc* this, PlayState* play) {
 
 void MollyNpc_StartRunFromNotice(MollyNpc* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
+
+    this->swordState = 0;
 
     Math_SmoothStepToF(&this->actor.speed, 4.0f, 0.1f, 1.0f, 0.0f);
 
@@ -297,6 +295,8 @@ void MollyNpc_Run(MollyNpc* this, PlayState* play) {
     u8 readyToAttack = Actor_IsFacingAndNearPlayer(&this->actor, MOLLYNPC_ATTACK_RADIUS, DEG_TO_BINANG(35.0f)) ||
                        Actor_IsFacingAndNearPlayer(&this->actor, MOLLYNPC_ATTACK_RADIUS * 0.5f, DEG_TO_BINANG(75.0f));
 
+    this->swordState = 0;
+
     SkelAnime_Update(&this->skelAnime);
     Math_SmoothStepToF(&this->actor.speed, 4.0f, 0.1f, 1.0f, 0.0f);
 
@@ -312,20 +312,17 @@ void MollyNpc_Run(MollyNpc* this, PlayState* play) {
         return;
     }
 
-    if (DECR(this->fleeTimer) == 0 || Actor_WorldDistXZToPoint(&this->actor, &this->fleePos) < 100.0f) {
-        this->fleeTimer = 0;
-        this->targetPos = player->actor.world.pos;
-    } else {
-        this->targetPos = this->fleePos;
-    }
+    this->targetPos = player->actor.world.pos;
 
-    if (readyToAttack && this->fleeTimer == 0) {
+    if (readyToAttack) {
         MollyNpc_SetupAttack(this, play);
     }
 }
 
 void MollyNpc_EndRun(MollyNpc* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
+
+    this->swordState = 0;
 
     if (SkelAnime_Update(&this->skelAnime)) {
         MollyNpc_SetupIdle(this, play);
@@ -339,22 +336,21 @@ void MollyNpc_Attack(MollyNpc* this, PlayState* play) {
     Math_SmoothStepToF(&this->actor.speed, 0.0f, 0.1f, 1.0f, 0.0f);
 
     if (SkelAnime_Update(&this->skelAnime)) {
-        this->fleeTimer = 2 * 20;
-        this->swordState = 0;
         MollyNpc_SetupRun(this, play);
     }
 }
 
 void MollyNpc_Damaged(MollyNpc* this, PlayState* play) {
+    this->swordState = 0;
     Math_SmoothStepToF(&this->actor.speed, 0.0f, 3.0f, 0.5f, 0.0f);
 
     if (SkelAnime_Update(&this->skelAnime)) {
-        this->fleeTimer = 6 * 20;
         MollyNpc_SetupRun(this, play);
     }
 }
 
 void MollyNpc_Stunned(MollyNpc* this, PlayState* play) {
+    this->swordState = 0;
     SkelAnime_Update(&this->skelAnime);
     if (this->actor.colorFilterTimer == 0) {
         if (this->actor.colChkInfo.health == 0) {
@@ -370,7 +366,9 @@ void MollyNpc_Die(MollyNpc* this, PlayState* play) {
     Vec3f effectVel = { 0.0f, 4.0f, 0.0f };
     Vec3f effectPos = this->actor.world.pos;
 
-    if (SkelAnime_Update(&this->skelAnime) || this->drowned) {
+    this->swordState = 0;
+
+    if (SkelAnime_Update(&this->skelAnime)) {
         Actor_SetScale(&this->actor, this->actor.scale.x * 0.8f);
 
         if (this->actor.scale.x <= 0.001f) {
@@ -383,22 +381,9 @@ void MollyNpc_Die(MollyNpc* this, PlayState* play) {
     }
 }
 
-void MollyNpc_CheckDrowned(MollyNpc* this, PlayState* play) {
-    if (!this->drowned && (this->actor.bgCheckFlags & BGCHECKFLAG_WATER) && (this->actor.yDistToWater > 5.0f)) {
-        Actor_SetDropFlag(&this->actor, &this->collider.info, true);
-        Actor_PlaySfx(&this->actor, NA_SE_EN_EIER_ATTACK);
-        Enemy_StartFinishingBlow(play, &this->actor);
-        this->drowned = true;
-        this->actor.gravity = -0.1f;
-        this->actionFunc = MollyNpc_SetupDie;
-        return;
-    }
-}
-
 void MollyNpc_CheckDamage(MollyNpc* this, PlayState* play) {
-    MollyNpc_CheckDrowned(this, play);
 
-    if (!this->drowned && this->collider.base.acFlags & AC_HIT) {
+    if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
         Actor_SetDropFlag(&this->actor, &this->collider.info, true);
 
@@ -463,34 +448,40 @@ void MollyNpc_Update(Actor* thisx, PlayState* play) {
     }
 }
 
+s32 MollyNpc_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    MollyNpc* this = (MollyNpc*)thisx;
+    // if (limbIndex == GMOLLYNPCSKEL_SWORD_LIMB) {
+    //     if (this->skelAnime.animation == &gMollyNpcIdleAnim) {
+    //         *dList = NULL;
+    //     }
+    // }
+    return false;
+}
+
 void MollyNpc_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
-    static Vec3f sMultVec = { 800.0f, 500.0f, 0.0f };
-    static Vec3f D_80864658 = { 300.0f, 0.0f, 0.0f };
-    static Vec3f D_80864664 = { 3400.0f, 0.0f, 0.0f };
-    static Vec3f D_80864670 = { 0.0f, 0.0f, 0.0f };
-    static Vec3f D_8086467C = { 7000.0f, 1000.0f, 0.0f };
-    static Vec3f D_80864688 = { 3000.0f, -2000.0f, -1000.0f };
-    static Vec3f D_80864694 = { 3000.0f, -2000.0f, 1000.0f };
-    static Vec3f D_808646A0 = { -1300.0f, 1100.0f, 0.0f };
-    Vec3f sp70;
-    Vec3f sp64;
+    static Vec3f swordTipOffset = { -300.0f, 4000.0f, 500.0f };
+    static Vec3f swordHiltOffset = { 400.0f, 0.0f, 0.0f };
+    static Vec3f swordQuadOffset1 = { 1600.0f, 4000.0f, 0.0f };
+    static Vec3f swordQuadOffset0 = { -3000.0f, 2000.0f, 1300.0f };
+    static Vec3f swordQuadOffset3 = { -3000.0f, 2000.0f, -1300.0f };
+    static Vec3f swordQuadOffset2 = { 1000.0f, -1000.0f, 0.0f };
+    Vec3f swordTip;
+    Vec3f swordHilt;
     MollyNpc* this = (MollyNpc*)thisx;
 
     if (limbIndex == GMOLLYNPCSKEL_SWORD_LIMB) {
-        Matrix_MultVec3f(&D_8086467C, &this->swordCollider.dim.quad[1]);
-        Matrix_MultVec3f(&D_80864688, &this->swordCollider.dim.quad[0]);
-        Matrix_MultVec3f(&D_80864694, &this->swordCollider.dim.quad[3]);
-        Matrix_MultVec3f(&D_808646A0, &this->swordCollider.dim.quad[2]);
-
+        Matrix_MultVec3f(&swordQuadOffset1, &this->swordCollider.dim.quad[1]);
+        Matrix_MultVec3f(&swordQuadOffset0, &this->swordCollider.dim.quad[0]);
+        Matrix_MultVec3f(&swordQuadOffset3, &this->swordCollider.dim.quad[3]);
+        Matrix_MultVec3f(&swordQuadOffset2, &this->swordCollider.dim.quad[2]);
         Collider_SetQuadVertices(&this->swordCollider, &this->swordCollider.dim.quad[0],
                                  &this->swordCollider.dim.quad[1], &this->swordCollider.dim.quad[2],
                                  &this->swordCollider.dim.quad[3]);
-        
-        Matrix_MultVec3f(&D_80864664, &sp70);
-        Matrix_MultVec3f(&D_80864670, &sp64);
+        Matrix_MultVec3f(&swordTipOffset, &swordTip);
+        Matrix_MultVec3f(&swordHiltOffset, &swordHilt);
 
         if (this->swordState >= 1) {
-            EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &sp70, &sp64);
+            EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &swordTip, &swordHilt);
         } else if (this->swordState >= 0) {
             EffectBlure_AddSpace(Effect_GetByIndex(this->effectIndex));
             this->swordState = -1;
@@ -523,7 +514,7 @@ void MollyNpc_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 8, &D_80116280[2]);
     POLY_OPA_DISP =
         SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                            NULL, MollyNpc_PostLimbDraw, this, POLY_OPA_DISP);
+                            MollyNpc_OverrideLimbDraw, MollyNpc_PostLimbDraw, this, POLY_OPA_DISP);
 
     // CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
 

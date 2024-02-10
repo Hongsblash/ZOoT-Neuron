@@ -25,14 +25,14 @@ SceneCmd sand_room_room_0_header00[] = {
 
 s16 sand_room_room_0_header00_objectList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_OBJECTLIST] = {
     OBJECT_BOX,
-    OBJECT_MOLLY_NPC,
+    OBJECT_MILK_LADY,
 };
 
 ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_ACTORLIST] = {
     // Custom Actor
     {
-        /* Actor ID   */ ACTOR_MOLLY_NPC,
-        /* Position   */ { 0, 0, -205 },
+        /* Actor ID   */ ACTOR_MILK_LADY,
+        /* Position   */ { 0, 0, -504 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },

@@ -20,9 +20,6 @@ typedef struct MollyNpc {
     s32 effectIndex;
     Vec3f targetPos;
     s16 targetYaw;
-    u16 fleeTimer;
-    Vec3f fleePos;
-    u8 drowned;
     MollyNpcActionFunc actionFunc;
     s16 alpha;
 

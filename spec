@@ -3387,6 +3387,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_Milk_Lady"
+    include "build/src/overlays/actors/ovl_Milk_Lady/z_Milk_Lady.o"
+    include "build/src/overlays/actors/ovl_Milk_Lady/ovl_Milk_Lady_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"
@@ -6063,6 +6069,13 @@ beginseg
     name "object_molly_npc"
     romalign 0x1000
     include "build/assets/objects/object_molly_npc/object_molly_npc.o"
+    number 6
+endseg
+
+beginseg
+    name "object_milk_lady"
+    romalign 0x1000
+    include "build/assets/objects/object_milk_lady/object_milk_lady.o"
     number 6
 endseg
 
