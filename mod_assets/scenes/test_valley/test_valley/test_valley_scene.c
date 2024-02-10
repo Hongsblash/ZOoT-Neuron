@@ -52,8 +52,8 @@ TransitionActorEntry test_valley_scene_header00_transitionActors[] = {
     {
         /* Room & Cam Index (Front, Back) */ { 255, 0x00, 0, 0x00 },
         /* Actor ID                       */ ACTOR_EN_DOOR,
-        /* Position                       */ { 103, -129, -215 },
-        /* Rotation Y                     */ DEG_TO_BINANG(316.000),
+        /* Position                       */ { -191, 62, -375 },
+        /* Rotation Y                     */ DEG_TO_BINANG(35.502),
         /* Parameters                     */ 0x0000
     },
 
@@ -61,8 +61,8 @@ TransitionActorEntry test_valley_scene_header00_transitionActors[] = {
     {
         /* Room & Cam Index (Front, Back) */ { 255, 0x00, 0, 0x00 },
         /* Actor ID                       */ ACTOR_EN_DOOR,
-        /* Position                       */ { -191, 62, -375 },
-        /* Rotation Y                     */ DEG_TO_BINANG(35.502),
+        /* Position                       */ { 103, -129, -215 },
+        /* Rotation Y                     */ DEG_TO_BINANG(316.000),
         /* Parameters                     */ 0x0000
     },
 };

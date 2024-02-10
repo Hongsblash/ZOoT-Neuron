@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "global.h"
+#include "assets/objects/object_molly_npc/object_molly_npc.h"
 
 struct MollyNpc;
 
@@ -10,15 +11,21 @@ typedef void (*MollyNpcActionFunc)(struct MollyNpc*, PlayState* play);
 
 typedef struct MollyNpc {
     Actor actor;
-    MollyNpcActionFunc actionFunc;
-    NpcInteractInfo interactInfo;
     SkelAnime skelAnime;
-    Vec3s jointTable[11];
-    Vec3s morphTable[11];
-    s16 headYRotation;
-    s16 upperBodyYRotation;
-    s16 alpha;
+    Vec3s jointTable[GMOLLYNPCSKEL_NUM_LIMBS];
+    Vec3s morphTable[GMOLLYNPCSKEL_NUM_LIMBS];
     ColliderCylinder collider;
+    ColliderQuad swordCollider;
+    s8 swordState;
+    s32 effectIndex;
+    Vec3f targetPos;
+    s16 targetYaw;
+    u16 fleeTimer;
+    Vec3f fleePos;
+    u8 drowned;
+    MollyNpcActionFunc actionFunc;
+    s16 alpha;
+
 } MollyNpc; 
 
 #endif

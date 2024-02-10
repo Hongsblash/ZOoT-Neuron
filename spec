@@ -10447,6 +10447,20 @@ beginseg
 endseg
 
 beginseg
+    name "sand_room_scene"
+    romalign 0x1000
+    include "build/assets/scenes/sand_room/sand_room/sand_room_scene.o"
+    number 2
+endseg
+
+beginseg
+    name "sand_room_room_0"
+    romalign 0x1000
+    include "build/assets/scenes/sand_room/sand_room/sand_room_room_0.o"
+    number 3
+endseg
+
+beginseg
     name "bump_texture_static"
     romalign 0x1000
     include "build/baserom/bump_texture_static.o"

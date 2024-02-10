@@ -34,27 +34,19 @@ s16 test_valley_room_0_header00_objectList[LENGTH_TEST_VALLEY_ROOM_0_HEADER00_OB
 };
 
 ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADER00_ACTORLIST] = {
+    // Crate
+    {
+        /* Actor ID   */ ACTOR_OBJ_KIBAKO2,
+        /* Position   */ { 195, -150, -46 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(92.379), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_NPC_TEST,
         /* Position   */ { 420, 39, -350 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(305.590), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0010
-    },
-
-    // Collectable Item
-    {
-        /* Actor ID   */ ACTOR_EN_ITEM00,
-        /* Position   */ { -43, 43, 512 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(208.740), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0001
-    },
-
-    // Flame
-    {
-        /* Actor ID   */ ACTOR_EN_LIGHT,
-        /* Position   */ { 517, 117, -125 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(269.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0010
     },
 
@@ -74,44 +66,12 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
         /* Parameters */ 0x0000
     },
 
-    // Circle of Bushes
-    {
-        /* Actor ID   */ ACTOR_OBJ_MURE2,
-        /* Position   */ { -106, -150, -14 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0002
-    },
-
-    // Rock
-    {
-        /* Actor ID   */ ACTOR_EN_ISHI,
-        /* Position   */ { 342, 39, -435 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0110
-    },
-
     // Flame
     {
         /* Actor ID   */ ACTOR_EN_LIGHT,
-        /* Position   */ { -243, 116, -318 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(34.222), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0011
-    },
-
-    // Rock
-    {
-        /* Actor ID   */ ACTOR_EN_ISHI,
-        /* Position   */ { 348, 39, -396 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0110
-    },
-
-    // Crate
-    {
-        /* Actor ID   */ ACTOR_OBJ_KIBAKO2,
-        /* Position   */ { 195, -150, -46 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(92.379), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
+        /* Position   */ { 45, -73, -257 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(315.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0010
     },
 
     // Collectable Item
@@ -122,18 +82,18 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
         /* Parameters */ 0x0000
     },
 
-    // Collectable Item
+    // Flame
     {
-        /* Actor ID   */ ACTOR_EN_ITEM00,
-        /* Position   */ { -25, 219, -25 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(269.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0002
+        /* Actor ID   */ ACTOR_EN_LIGHT,
+        /* Position   */ { -243, 116, -318 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(34.222), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0011
     },
 
     // Breakable Pot
     {
         /* Actor ID   */ ACTOR_OBJ_TSUBO,
-        /* Position   */ { -60, 40, -432 },
+        /* Position   */ { -116, 40, -392 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(34.222), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0100
     },
@@ -141,9 +101,9 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
     // Collectable Item
     {
         /* Actor ID   */ ACTOR_EN_ITEM00,
-        /* Position   */ { 150, -148, 119 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(280.959), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
+        /* Position   */ { -43, 43, 512 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(208.740), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0001
     },
 
     // Collectable Item
@@ -152,22 +112,6 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
         /* Position   */ { 180, -148, 60 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(280.959), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
-    },
-
-    // Rock
-    {
-        /* Actor ID   */ ACTOR_EN_ISHI,
-        /* Position   */ { 138, 39, -501 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0110
-    },
-
-    // Breakable Pot
-    {
-        /* Actor ID   */ ACTOR_OBJ_TSUBO,
-        /* Position   */ { -88, 40, -411 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(34.222), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0100
     },
 
     // Collectable Item
@@ -181,15 +125,31 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_MOLLY_NPC,
-        /* Position   */ { 482, 39, -257 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(305.590), DEG_TO_BINANG(0.000) },
+        /* Position   */ { 132, -150, -131 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(315.758), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Collectable Item
+    {
+        /* Actor ID   */ ACTOR_EN_ITEM00,
+        /* Position   */ { 150, -148, 119 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(280.959), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
 
     // Breakable Pot
     {
         /* Actor ID   */ ACTOR_OBJ_TSUBO,
-        /* Position   */ { -116, 40, -392 },
+        /* Position   */ { -60, 40, -432 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(34.222), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0100
+    },
+
+    // Breakable Pot
+    {
+        /* Actor ID   */ ACTOR_OBJ_TSUBO,
+        /* Position   */ { -88, 40, -411 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(34.222), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0100
     },
@@ -197,7 +157,15 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
     // Rock
     {
         /* Actor ID   */ ACTOR_EN_ISHI,
-        /* Position   */ { 451, 39, 179 },
+        /* Position   */ { 348, 39, -396 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0110
+    },
+
+    // Rock
+    {
+        /* Actor ID   */ ACTOR_EN_ISHI,
+        /* Position   */ { 342, 39, -435 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0110
     },
@@ -210,11 +178,43 @@ ActorEntry test_valley_room_0_header00_actorList[LENGTH_TEST_VALLEY_ROOM_0_HEADE
         /* Parameters */ 0x0110
     },
 
+    // Rock
+    {
+        /* Actor ID   */ ACTOR_EN_ISHI,
+        /* Position   */ { 138, 39, -501 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0110
+    },
+
+    // Rock
+    {
+        /* Actor ID   */ ACTOR_EN_ISHI,
+        /* Position   */ { 451, 39, 179 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0110
+    },
+
+    // Collectable Item
+    {
+        /* Actor ID   */ ACTOR_EN_ITEM00,
+        /* Position   */ { -25, 219, -25 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(269.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0002
+    },
+
+    // Circle of Bushes
+    {
+        /* Actor ID   */ ACTOR_OBJ_MURE2,
+        /* Position   */ { -106, -150, -14 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(234.613), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0002
+    },
+
     // Flame
     {
         /* Actor ID   */ ACTOR_EN_LIGHT,
-        /* Position   */ { 45, -73, -257 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(315.000), DEG_TO_BINANG(0.000) },
+        /* Position   */ { 517, 117, -125 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(269.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0010
     },
 };
