@@ -200,3 +200,5 @@ extern LodLimb gLinkTorsoLimb;
 extern void* gLinkAdultSkelLimbs[];
 extern FlexSkeletonHeader gLinkAdultSkel;
 #endif
+
+#include "gLinkAdultSkel.h"

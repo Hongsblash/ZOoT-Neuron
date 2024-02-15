@@ -52,12 +52,12 @@ void MagicWind_Init(Actor* thisx, PlayState* play) {
     this->actor.room = -1;
     switch (this->actor.params) {
         case 0:
-            SkelCurve_SetAnim(&this->skelCurve, &sAnim, 0.0f, 60.0f, 0.0f, 1.0f);
+            SkelCurve_SetAnim(&this->skelCurve, &sAnim, 0.0f, 60.0f, 0.0f, 1.5f);
             this->timer = 29;
             MagicWind_SetupAction(this, MagicWind_WaitForTimer);
             break;
         case 1:
-            SkelCurve_SetAnim(&this->skelCurve, &sAnim, 60.0f, 0.0f, 60.0f, -1.0f);
+            SkelCurve_SetAnim(&this->skelCurve, &sAnim, 60.0f, 0.0f, 60.0f, -1.5f);
             MagicWind_SetupAction(this, MagicWind_Shrink);
             // "Means start"
             LOG_STRING("表示開始", "../z_magic_wind.c", 486);

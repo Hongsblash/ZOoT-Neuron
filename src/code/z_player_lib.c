@@ -839,20 +839,20 @@ void* sMouthTextures[] = {
 #else
 // Defining `AVOID_UB` will use a 2D array instead and properly use the child link pointers to allow for shifting.
 void* sEyeTextures[][8] = {
-    { gLinkAdultEyesOpenTex, gLinkAdultEyesHalfTex, gLinkAdultEyesClosedfTex, gLinkAdultEyesRollLeftTex,
-      gLinkAdultEyesRollRightTex, gLinkAdultEyesShockTex, gLinkAdultEyesUnk1Tex, gLinkAdultEyesUnk2Tex },
+    { gLinkAdultSkel_eyes_open_ci8_png_001_ci8, gLinkAdultSkel_eyes_half_ci8_png_001_ci8, gLinkAdultSkel_eyes_closed_ci8_png_001_ci8, gLinkAdultSkel_eyes_roll_left_ci8_png_001_ci8,
+      gLinkAdultSkel_eyes_roll_right_ci8_png_001_ci8, gLinkAdultSkel_eyes_shock_ci8_png_001_ci8, gLinkAdultSkel_eyes_unk_1_ci8_png_001_ci8, gLinkAdultSkel_eyes_unk_2_ci8_png_001_ci8 },
     { gLinkChildEyesOpenTex, gLinkChildEyesHalfTex, gLinkChildEyesClosedfTex, gLinkChildEyesRollLeftTex,
       gLinkChildEyesRollRightTex, gLinkChildEyesShockTex, gLinkChildEyesUnk1Tex, gLinkChildEyesUnk2Tex },
 };
 
 void* sMouthTextures[][4] = {
-    { gLinkAdultMouth1Tex, gLinkAdultMouth2Tex, gLinkAdultMouth3Tex, gLinkAdultMouth4Tex },
+    { gLinkAdultSkel_mouth_1_ci8_png_001_ci8, gLinkAdultSkel_mouth_2_ci8_png_001_ci8, gLinkAdultSkel_mouth_3_ci8_png_001_ci8, gLinkAdultSkel_mouth_4_ci8_png_001_ci8 },
     { gLinkChildMouth1Tex, gLinkChildMouth2Tex, gLinkChildMouth3Tex, gLinkChildMouth4Tex },
 };
 #endif
 
 Color_RGB8 sTunicColors[PLAYER_TUNIC_MAX] = {
-    { 30, 105, 27 }, // PLAYER_TUNIC_KOKIRI
+    { 99, 136, 89 }, // PLAYER_TUNIC_KOKIRI
     { 100, 20, 0 },  // PLAYER_TUNIC_GORON
     { 0, 60, 100 },  // PLAYER_TUNIC_ZORA
 };
@@ -1702,8 +1702,8 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         if ((type == PLAYER_MODELTYPE_SHEATH_18) || (type == PLAYER_MODELTYPE_SHEATH_19)) {
             dListOffset = playerSwordAndShield[1] * 4;
         }
-    } else if (limbIndex == PLAYER_LIMB_WAIST) {
-        type = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_WAIST];
+    // } else if (limbIndex == PLAYER_LIMB_WAIST) {
+    //     type = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_WAIST];
     } else {
         return false;
     }

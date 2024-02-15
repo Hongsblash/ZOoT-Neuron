@@ -15346,8 +15346,12 @@ void Player_TryWitchPalm(Player* this, PlayState* play) {
     // Start the animation if it hasn't started yet
     if (this->animationStarted == 0) {
         this->initialYaw = this->actor.shape.rot.y; // Save the initial yaw
+        func_80839FFC(this, play);
+        Camera_SetFinishedFlag(Play_GetCamera(play, CAM_ID_MAIN));
         LinkAnimation_PlayOnce(play, &this->skelAnime, D_80854A58[this->av1.actionVar1]);
         LinkAnimation_Once(play, &this->skelAnime, D_80854A58[this->av1.actionVar1]);
+        Actor_Spawn(&play->actorCtx, play, D_80854700[0], this->actor.world.pos.x, this->actor.world.pos.y,
+                       this->actor.world.pos.z, 0, 0, 0, 0);
         this->animationStarted = 1; // Set flag to true
     }
 }
