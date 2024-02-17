@@ -1,5 +1,6 @@
 #include "global.h"
 #include "terminal.h"
+#include "rainbow.h"
 
 SpeedMeter D_801664D0;
 VisCvg sVisCvg;
@@ -244,6 +245,8 @@ void GameState_Update(GameState* gameState) {
     GameState_SetFrameBuffer(gfxCtx);
 
     gameState->main(gameState);
+
+    Rainbow_Update(&gRainbow); 
 
     func_800C4344(gameState);
 

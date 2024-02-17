@@ -57,6 +57,7 @@
 #include "gfx.h"
 #include "jpeg.h"
 #include "prerender.h"
+#include "rainbow.h"
 
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 240

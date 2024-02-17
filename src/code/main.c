@@ -1,5 +1,6 @@
 #include "global.h"
 #include "terminal.h"
+#include "rainbow.h"
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -24,6 +25,7 @@ StackEntry sIrqMgrStackInfo;
 AudioMgr gAudioMgr;
 OSMesgQueue sSerialEventQueue;
 OSMesg sSerialMsgBuf[1];
+Rainbow gRainbow;
 
 void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_FGCOL(GREEN));
@@ -54,6 +56,7 @@ void Main(void* arg) {
     // "System heap initalization"
     osSyncPrintf("システムヒープ初期化 %08x-%08x %08x\n", systemHeapStart, fb, gSystemHeapSize);
     SystemHeap_Init((void*)systemHeapStart, gSystemHeapSize); // initializes the system heap
+    Rainbow_Init(&gRainbow, 8);
     Regs_Init();
 
     R_ENABLE_ARENA_DBG = 0;
