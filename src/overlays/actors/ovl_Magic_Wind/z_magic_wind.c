@@ -92,7 +92,7 @@ void MagicWind_WaitForTimer(MagicWind* this, PlayState* play) {
 
     // "Means start"
     LOG_STRING("表示開始", "../z_magic_wind.c", 539);
-    Player_PlaySfx(player, NA_SE_PL_MAGIC_WIND_NORMAL);
+    Player_PlaySfx(player, NA_SE_PL_MAGIC_FIRE);
     MagicWind_UpdateAlpha(1.0f);
     MagicWind_SetupAction(this, MagicWind_Grow);
     SkelCurve_Update(play, &this->skelCurve);

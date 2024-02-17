@@ -5455,7 +5455,11 @@ void func_8083AF44(PlayState* play, Player* this, s32 magicSpell) {
     //! magic value, it will be consumed to zero.
     Magic_RequestChange(play, sMagicSpellCosts[magicSpell], MAGIC_CONSUME_WAIT_PREVIEW);
 
-    LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_tame, 0.83f);
+    if (this->itemAction == PLAYER_IA_FARORES_WIND) {
+        LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_kaze3, 0.83f);
+    } else {
+        LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, &gPlayerAnim_link_magic_tame, 0.83f);
+    }
 
     if (magicSpell == 5) {
         this->subCamId = OnePointCutscene_Init(play, 1100, -101, NULL, CAM_ID_MAIN);
@@ -10957,32 +10961,32 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     }
 
     if (this->animationStarted) {
-        float totalAnimationFrames = this->skelAnime.endFrame; // Total frames in the animation
-        float fullRotationFrames = totalAnimationFrames * 0.8f; // Frames for full rotation
-        float rotationPerFrame = 360.0f / fullRotationFrames; // Rotation speed to complete 360 degrees in 80% of the animation
+        // float totalAnimationFrames = this->skelAnime.endFrame; // Total frames in the animation
+        // float fullRotationFrames = totalAnimationFrames * 0.8f; // Frames for full rotation
+        // float rotationPerFrame = 360.0f / fullRotationFrames; // Rotation speed to complete 360 degrees in 80% of the animation
 
-        // Apply continuous rotation until the last frame
-        if (this->skelAnime.curFrame < totalAnimationFrames - 1) {
-            this->actor.shape.rot.y += (s16)(rotationPerFrame * (0x10000 / 300.0f));
-        }
+        // // Apply continuous rotation until the last frame
+        // if (this->skelAnime.curFrame < totalAnimationFrames - 1) {
+        //     this->actor.shape.rot.y += (s16)(rotationPerFrame * (0x10000 / 300.0f));
+        // }
 
-        // Check if the animation has finished
-        if (LinkAnimation_OnFrame(&this->skelAnime, totalAnimationFrames)) {
+        // // Check if the animation has finished
+        // if (LinkAnimation_OnFrame(&this->skelAnime, totalAnimationFrames)) {
             this->animationStarted = 0; // Reset flag
 
-            // Correct the final orientation
-            // Calculate the error from a full 360-degree rotation
-            s16 rotationError = (s16)(this->initialYaw - this->actor.shape.rot.y);
-            this->actor.shape.rot.y += rotationError;
+        //     // Correct the final orientation
+        //     // Calculate the error from a full 360-degree rotation
+        //     s16 rotationError = (s16)(this->initialYaw - this->actor.shape.rot.y);
+        //     this->actor.shape.rot.y += rotationError;
 
-            // Trigger the transition to the new area
-            // play->nextEntranceIndex = ENTR_TEST_ROOM_0;
-            // play->transitionTrigger = TRANS_TRIGGER_START;
-            // play->transitionType = TRANS_TYPE_FADE_BLACK;
-            // this->actor.world.pos.x = 0;
-            // this->actor.world.pos.y = 0;
-            // this->actor.world.pos.z = 0;
-        }
+        //     // Trigger the transition to the new area
+        //     // play->nextEntranceIndex = ENTR_TEST_ROOM_0;
+        //     // play->transitionTrigger = TRANS_TRIGGER_START;
+        //     // play->transitionType = TRANS_TYPE_FADE_BLACK;
+        //     // this->actor.world.pos.x = 0;
+        //     // this->actor.world.pos.y = 0;
+        //     // this->actor.world.pos.z = 0;
+        // }
     }
 
     func_808473D4(play, this);
@@ -13944,19 +13948,19 @@ void Player_Action_8085076C(Player* this, PlayState* play) {
 }
 
 static LinkAnimationHeader* D_80854A58[] = {
-    &gPlayerAnim_link_magic_kaze1,
+    &gPlayerAnim_link_magic_kaze2,              // Reversing animation
     &gPlayerAnim_link_magic_honoo1,
     &gPlayerAnim_link_magic_tamashii1,
 };
 
 static LinkAnimationHeader* D_80854A64[] = {
-    &gPlayerAnim_link_magic_kaze2,
+    &gPlayerAnim_link_magic_kaze2,              // Reversing animation
     &gPlayerAnim_link_magic_honoo2,
     &gPlayerAnim_link_magic_tamashii2,
 };
 
 static LinkAnimationHeader* D_80854A70[] = {
-    &gPlayerAnim_link_magic_kaze3,
+    &gPlayerAnim_link_magic_kaze1,              // Reversing animation
     &gPlayerAnim_link_magic_honoo3,
     &gPlayerAnim_link_magic_tamashii3,
 };
@@ -14041,9 +14045,36 @@ void Player_Action_808507F4(Player* this, PlayState* play) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_28 | PLAYER_STATE1_29);
                 }
             } else if (D_80854A7C[this->av1.actionVar1] < this->av2.actionVar2++) {
-                LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A70[this->av1.actionVar1], 0.83f);
-                this->yaw = this->actor.shape.rot.y;
-                this->av1.actionVar1 = -1;
+                    if (this->itemAction == PLAYER_IA_FARORES_WIND) {
+                        Vec3f shockPos;
+                        Vec3f* randBodyPart;
+                        s32 shockScale;
+
+                        this->shockTimer--;
+                        this->unk_892 += this->shockTimer;
+
+
+                        shockScale = this->shockTimer * 2;
+                        this->unk_892 -= 20;
+
+                        if (shockScale > 40) {
+                            shockScale = 40;
+                        }
+
+                        randBodyPart = this->bodyPartsPos + (s32)Rand_ZeroFloat(PLAYER_BODYPART_MAX - 0.1f);
+                        shockPos.x = (Rand_CenteredFloat(5.0f) + randBodyPart->x) - this->actor.world.pos.x;
+                        shockPos.y = (Rand_CenteredFloat(5.0f) + randBodyPart->y) - this->actor.world.pos.y;
+                        shockPos.z = (Rand_CenteredFloat(5.0f) + randBodyPart->z) - this->actor.world.pos.z;
+
+                        EffectSsFhgFlash_SpawnShock(play, &this->actor, &shockPos, shockScale, FHGFLASH_SHOCK_PLAYER);
+                        LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A70[this->av1.actionVar1], 0.83f);
+                        this->yaw = this->actor.shape.rot.y;
+                        this->av1.actionVar1 = -1;
+                    } else {
+                        LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime, D_80854A70[this->av1.actionVar1], 0.83f);
+                        this->yaw = this->actor.shape.rot.y;
+                        this->av1.actionVar1 = -1;
+                    }
             }
         }
     }
@@ -15343,15 +15374,46 @@ void func_80853148(PlayState* play, Actor* actor) {
 
 
 void Player_TryWitchPalm(Player* this, PlayState* play) {
+    static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
+    static Color_RGBA8 primColor = { 255, 255, 255, 0 };
+    static Color_RGBA8 envColor = { 0, 128, 128, 0 };
+    s32 linkAge = gSaveContext.save.linkAge;
+    Vec3f sparklePos;
+    Vec3f sp34;
+    Vec3s* ptr;
+
+    Vec3f shockPos;
+    Vec3f* randBodyPart;
+    s32 shockScale;
+
+    this->shockTimer--;
+    this->unk_892 += this->shockTimer;
+
+
+    shockScale = this->shockTimer * 2;
+    this->unk_892 -= 20;
+
+    if (shockScale > 40) {
+        shockScale = 40;
+    }
+
+    randBodyPart = this->bodyPartsPos + (s32)Rand_ZeroFloat(PLAYER_BODYPART_MAX - 0.1f);
+    shockPos.x = (Rand_CenteredFloat(5.0f) + randBodyPart->x) - this->actor.world.pos.x;
+    shockPos.y = (Rand_CenteredFloat(5.0f) + randBodyPart->y) - this->actor.world.pos.y;
+    shockPos.z = (Rand_CenteredFloat(5.0f) + randBodyPart->z) - this->actor.world.pos.z;
+
+    EffectSsFhgFlash_SpawnShock(play, &this->actor, &shockPos, shockScale, FHGFLASH_SHOCK_PLAYER);
+    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &zeroVec, &zeroVec, &primColor, &envColor, 600, -10);
+
     // Start the animation if it hasn't started yet
     if (this->animationStarted == 0) {
         this->initialYaw = this->actor.shape.rot.y; // Save the initial yaw
-        func_80839FFC(this, play);
-        Camera_SetFinishedFlag(Play_GetCamera(play, CAM_ID_MAIN));
         LinkAnimation_PlayOnce(play, &this->skelAnime, D_80854A58[this->av1.actionVar1]);
         LinkAnimation_Once(play, &this->skelAnime, D_80854A58[this->av1.actionVar1]);
         Actor_Spawn(&play->actorCtx, play, D_80854700[0], this->actor.world.pos.x, this->actor.world.pos.y,
                        this->actor.world.pos.z, 0, 0, 0, 0);
         this->animationStarted = 1; // Set flag to true
     }
+
+
 }
