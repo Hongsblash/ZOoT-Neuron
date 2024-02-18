@@ -1,0 +1,8 @@
+#include "gMilkMalonSkel.h"
+#include "gMilkMalonBoobaAnim.h"
+#include "gMilkMalonAttackAnim.h"
+#include "gMilkMalonNoticeAnim.h"
+#include "gMilkMalonWalkAnim.h"
+#include "gMilkMalonDieAnim.h"
+#include "gMilkMalonDamagedAnim.h"
+#include "gMilkMalonBlockAnim.h"

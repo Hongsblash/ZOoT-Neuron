@@ -137,8 +137,8 @@ void EffectSsFhgFlash_DrawShock(PlayState* play, u32 index, EffectSs* this) {
     }
 
     gDPPipeSync(POLY_XLU_DISP++);
-    gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, this->rAlpha);
-    gDPSetEnvColor(POLY_XLU_DISP++, 150, 0, 0, 0);
+    gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, this->rAlpha);
+    gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 0);
     Matrix_RotateZ((this->rXZRot / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_fhg_flash.c", 395),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

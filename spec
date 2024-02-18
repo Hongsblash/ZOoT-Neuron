@@ -3388,9 +3388,9 @@ beginseg
 endseg
 
 beginseg
-    name "ovl_Milk_Lady"
-    include "build/src/overlays/actors/ovl_Milk_Lady/z_Milk_Lady.o"
-    include "build/src/overlays/actors/ovl_Milk_Lady/ovl_Milk_Lady_reloc.o"
+    name "ovl_Milk_Malon"
+    include "build/src/overlays/actors/ovl_Milk_Malon/z_milk_malon.o"
+    include "build/src/overlays/actors/ovl_Milk_Malon/ovl_Milk_Malon_reloc.o"
 endseg
 
 beginseg
@@ -6074,9 +6074,9 @@ beginseg
 endseg
 
 beginseg
-    name "object_milk_lady"
+    name "object_milk_malon"
     romalign 0x1000
-    include "build/assets/objects/object_milk_lady/object_milk_lady.o"
+    include "build/assets/objects/object_milk_malon/object_milk_malon.o"
     number 6
 endseg
 
@@ -10471,6 +10471,20 @@ beginseg
     name "sand_room_room_0"
     romalign 0x1000
     include "build/assets/scenes/sand_room/sand_room/sand_room_room_0.o"
+    number 3
+endseg
+
+beginseg
+    name "milk_ranch_scene"
+    romalign 0x1000
+    include "build/assets/scenes/milk_ranch/milk_ranch/milk_ranch_scene.o"
+    number 2
+endseg
+
+beginseg
+    name "milk_ranch_room_0"
+    romalign 0x1000
+    include "build/assets/scenes/milk_ranch/milk_ranch/milk_ranch_room_0.o"
     number 3
 endseg
 

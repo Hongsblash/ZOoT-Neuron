@@ -411,4 +411,4 @@
 /* 0x0191 */ DEFINE_OBJECT(object_zl4, OBJECT_ZL4)
              DEFINE_OBJECT(object_gi_witchpalm, OBJECT_GI_WITCHPALM)
              DEFINE_OBJECT(object_molly_npc, OBJECT_MOLLY_NPC)
-             DEFINE_OBJECT(object_milk_lady, OBJECT_MILK_LADY)
+             DEFINE_OBJECT(object_milk_malon, OBJECT_MILK_MALON)

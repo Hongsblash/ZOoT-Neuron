@@ -10,7 +10,7 @@
 /**
  * Header Child Day (Default)
 */
-#define LENGTH_SAND_ROOM_ROOM_0_HEADER00_OBJECTLIST 2
+#define LENGTH_SAND_ROOM_ROOM_0_HEADER00_OBJECTLIST 3
 #define LENGTH_SAND_ROOM_ROOM_0_HEADER00_ACTORLIST 1
 SceneCmd sand_room_room_0_header00[] = {
     SCENE_CMD_ECHO_SETTINGS(0x00),
@@ -25,14 +25,15 @@ SceneCmd sand_room_room_0_header00[] = {
 
 s16 sand_room_room_0_header00_objectList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_OBJECTLIST] = {
     OBJECT_BOX,
-    OBJECT_MILK_LADY,
+    OBJECT_MILK_MALON,
+    OBJECT_FZ,
 };
 
 ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_ACTORLIST] = {
     // Custom Actor
     {
-        /* Actor ID   */ ACTOR_MILK_LADY,
-        /* Position   */ { 0, 0, -504 },
+        /* Actor ID   */ ACTOR_MILK_MALON,
+        /* Position   */ { 0, 0, -180 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },

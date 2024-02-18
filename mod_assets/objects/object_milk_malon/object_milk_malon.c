@@ -1,0 +1,11 @@
+#include "ultra64.h"
+#include "global.h"
+
+#include "gMilkMalonSkel.c"
+#include "gMilkMalonBoobaAnim.c"
+#include "gMilkMalonAttackAnim.c"
+#include "gMilkMalonNoticeAnim.c"
+#include "gMilkMalonWalkAnim.c"
+#include "gMilkMalonDieAnim.c"
+#include "gMilkMalonDamagedAnim.c"
+#include "gMilkMalonBlockAnim.c"
