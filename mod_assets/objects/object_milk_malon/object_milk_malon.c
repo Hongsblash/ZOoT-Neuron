@@ -9,3 +9,8 @@
 #include "gMilkMalonDieAnim.c"
 #include "gMilkMalonDamagedAnim.c"
 #include "gMilkMalonBlockAnim.c"
+#include "gMilkMalonJumpAnim.c"
+#include "gMilkMalonSetupShootAnim.c"
+#include "gMilkMalonShootAnim.c"
+#include "gMilkNutDL.c"
+#include "gMilkMalonDanceAnim.c"

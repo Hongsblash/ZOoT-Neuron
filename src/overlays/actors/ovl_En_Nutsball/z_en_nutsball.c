@@ -11,6 +11,7 @@
 #include "assets/objects/object_shopnuts/object_shopnuts.h"
 #include "assets/objects/object_dns/object_dns.h"
 #include "assets/objects/object_dnk/object_dnk.h"
+#include "assets/objects/object_milk_malon/object_milk_malon.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -55,11 +56,11 @@ static ColliderCylinderInit sCylinderInit = {
 };
 
 static s16 sObjectIds[] = {
-    OBJECT_DEKUNUTS, OBJECT_HINTNUTS, OBJECT_SHOPNUTS, OBJECT_DNS, OBJECT_DNK,
+    OBJECT_MILK_MALON, OBJECT_DEKUNUTS, OBJECT_HINTNUTS, OBJECT_SHOPNUTS, OBJECT_DNS, OBJECT_DNK,
 };
 
 static Gfx* sDLists[] = {
-    gDekuNutsDekuNutDL, gHintNutsNutDL, gBusinessScrubDekuNutDL, gDntJijiNutDL, gDntStageNutDL,
+    gMilkNutDL, gDekuNutsDekuNutDL, gHintNutsNutDL, gBusinessScrubDekuNutDL, gDntJijiNutDL, gDntStageNutDL,
 };
 
 void EnNutsball_Init(Actor* thisx, PlayState* play) {
@@ -132,9 +133,15 @@ void func_80ABBBA8(EnNutsball* this, PlayState* play) {
         sp40.y = this->actor.world.pos.y + 4;
         sp40.z = this->actor.world.pos.z;
 
-        EffectSsHahen_SpawnBurst(play, &sp40, 6.0f, 0, 7, 3, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
-        SfxSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
-        Actor_Kill(&this->actor);
+        if (sObjectIds[NUTSBALL_GET_TYPE(&this->actor)] == OBJECT_MILK_MALON) {
+            EffectSsGSplash_Spawn(play, &sp40, NULL, NULL, 2, 500);
+            SfxSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
+            Actor_Kill(&this->actor);
+        } else {
+            EffectSsHahen_SpawnBurst(play, &sp40, 6.0f, 0, 7, 3, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
+            SfxSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
+            Actor_Kill(&this->actor);
+        }
     } else {
         if (this->timer == -300) {
             Actor_Kill(&this->actor);

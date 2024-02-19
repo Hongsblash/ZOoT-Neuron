@@ -6,3 +6,8 @@
 #include "gMilkMalonDieAnim.h"
 #include "gMilkMalonDamagedAnim.h"
 #include "gMilkMalonBlockAnim.h"
+#include "gMilkMalonJumpAnim.h"
+#include "gMilkMalonSetupShootAnim.h"
+#include "gMilkMalonShootAnim.h"
+#include "gMilkNutDL.h"
+#include "gMilkMalonDanceAnim.h"

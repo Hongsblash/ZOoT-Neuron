@@ -16,6 +16,7 @@ typedef struct MilkMalon {
     Vec3s morphTable[GMILKMALONSKEL_NUM_LIMBS];
     ColliderCylinder collider;
     ColliderQuad swordCollider;
+    ColliderCylinder shieldCollider;
     s8 swordState;
     s32 effectIndex;
     Vec3f targetPos;
@@ -23,6 +24,8 @@ typedef struct MilkMalon {
     MilkMalonActionFunc actionFunc;
     s16 alpha;
     s32 timer;
+    s16 animFlagAndTimer;
+    s16 shotsPerRound;
 } MilkMalon; 
 
 #endif
