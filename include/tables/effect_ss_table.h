@@ -44,3 +44,4 @@
 /* 0x22 */ DEFINE_EFFECT_SS(Effect_Ss_Dead_Ds, EFFECT_SS_DEAD_DS)
 /* 0x23 */ DEFINE_EFFECT_SS(Effect_Ss_Dead_Sound, EFFECT_SS_DEAD_SOUND)
 /* 0x24 */ DEFINE_EFFECT_SS(Effect_Ss_Ice_Smoke, EFFECT_SS_ICE_SMOKE)
+           DEFINE_EFFECT_SS(Effect_Ss_Mm_Milk, EFFECT_SS_MM_MILK)

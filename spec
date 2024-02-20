@@ -1796,6 +1796,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_Effect_Ss_Mm_Milk"
+    include "build/src/overlays/effects/ovl_Effect_Ss_Mm_Milk/z_eff_ss_mm_milk.o"
+    include "build/src/overlays/effects/ovl_Effect_Ss_Mm_Milk/ovl_Effect_Ss_Mm_Milk_reloc.o"
+endseg
+
+beginseg
     name "ovl_Elf_Msg"
     include "build/src/overlays/actors/ovl_Elf_Msg/z_elf_msg.o"
     include "build/src/overlays/actors/ovl_Elf_Msg/ovl_Elf_Msg_reloc.o"

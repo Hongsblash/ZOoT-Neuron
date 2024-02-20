@@ -10,4 +10,7 @@
 #include "gMilkMalonSetupShootAnim.h"
 #include "gMilkMalonShootAnim.h"
 #include "gMilkNutDL.h"
+#include "gMilkEnergyBallDL.h"
 #include "gMilkMalonDanceAnim.h"
+#include "gMilkMalonFloatAnim.h"
+#include "gMilkMalonChargeLightBallAnim.h"

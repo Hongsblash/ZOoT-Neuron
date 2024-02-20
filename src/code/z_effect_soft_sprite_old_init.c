@@ -35,6 +35,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Dead_Ds/z_eff_ss_dead_ds.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "overlays/effects/ovl_Effect_Ss_Ice_Smoke/z_eff_ss_ice_smoke.h"
+#include "overlays/effects/ovl_Effect_Ss_Mm_Milk/z_eff_ss_mm_milk.h"
 
 static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
 
@@ -1203,4 +1204,45 @@ void EffectSsIceSmoke_Spawn(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f*
     initParams.scale = scale;
 
     EffectSs_Spawn(play, EFFECT_SS_ICE_SMOKE, 128, &initParams);
+}
+
+// EffectSsMmMilk Spawn Functions
+
+/**
+ * Spawn a milk ball effect
+ *
+ * param changes the color of the ball. Refer to MmMilkMilkBallParam for the options.
+ * Note: this type requires OBJECT_MILK_MALON to be loaded
+ */
+void EffectSsMmMilk_SpawnMilkBall(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, s16 scale, u8 param) {
+    EffectSsFhgFlashInitParams initParams;
+
+    Math_Vec3f_Copy(&initParams.pos, pos);
+    Math_Vec3f_Copy(&initParams.velocity, velocity);
+    Math_Vec3f_Copy(&initParams.accel, accel);
+    initParams.scale = scale;
+    initParams.param = param;
+    initParams.type = MMMILK_MILKBALL;
+
+    EffectSs_Spawn(play, EFFECT_SS_MM_MILK, 128, &initParams);
+}
+
+/**
+ * Spawn a purple milk splash effect (a ball of milk spashes).
+ *
+ * @param actor If param is `MMMILK_SPLASH_PG`, the Milk Malon actor. Unused otherwise.
+ * @param pos If param is `MMMILK_SPLASH_NO_ACTOR`, the position of the effect. Unused otherwise.
+ * @param scale The effect will be around `scale*20/100` units wide (randomized).
+ * @param param Determines what the effect attaches to. See `MmMilkMilkBallParam`.
+ */
+void EffectSsMmMilk_SpawnSplash(PlayState* play, Actor* actor, Vec3f* pos, s16 scale, u8 param) {
+    EffectSsFhgFlashInitParams initParams;
+
+    initParams.actor = actor;
+    Math_Vec3f_Copy(&initParams.pos, pos);
+    initParams.scale = scale;
+    initParams.param = param;
+    initParams.type = MMMILK_SPLASH;
+
+    EffectSs_Spawn(play, EFFECT_SS_MM_MILK, 64, &initParams);
 }

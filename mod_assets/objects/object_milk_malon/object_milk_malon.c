@@ -13,4 +13,7 @@
 #include "gMilkMalonSetupShootAnim.c"
 #include "gMilkMalonShootAnim.c"
 #include "gMilkNutDL.c"
+#include "gMilkEnergyBallDL.c"
 #include "gMilkMalonDanceAnim.c"
+#include "gMilkMalonFloatAnim.c"
+#include "gMilkMalonChargeLightBallAnim.c"
