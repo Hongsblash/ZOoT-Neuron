@@ -37,24 +37,40 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
     // Cow
     {
         /* Actor ID   */ ACTOR_EN_COW,
+        /* Position   */ { 230, 0, 215 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(180.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Cow
+    {
+        /* Actor ID   */ ACTOR_EN_COW,
         /* Position   */ { -160, 0, 205 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(43.742), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Custom Actor
+    {
+        /* Actor ID   */ ACTOR_MILK_MALON,
+        /* Position   */ { 0, 0, -180 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
 
     // Greenery
     {
         /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -274, 0, -192 },
+        /* Position   */ { 246, 0, -241 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x000B
     },
 
-    // Cow
+    // Greenery
     {
-        /* Actor ID   */ ACTOR_EN_COW,
-        /* Position   */ { 230, 0, 215 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(180.000), DEG_TO_BINANG(0.000) },
+        /* Actor ID   */ ACTOR_EN_WOOD02,
+        /* Position   */ { -228, 0, -237 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
 
@@ -69,25 +85,9 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
     // Greenery
     {
         /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { 246, 0, -241 },
+        /* Position   */ { -274, 0, -192 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x000B
-    },
-
-    // Custom Actor
-    {
-        /* Actor ID   */ ACTOR_MILK_MALON,
-        /* Position   */ { 0, 0, -180 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
-    },
-
-    // Greenery
-    {
-        /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -228, 0, -237 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
     },
 };
 

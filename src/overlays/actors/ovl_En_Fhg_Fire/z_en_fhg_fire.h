@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "global.h"
+#include "assets/objects/object_milk_malon/object_milk_malon.h"
 
 struct EnFhgFire;
 

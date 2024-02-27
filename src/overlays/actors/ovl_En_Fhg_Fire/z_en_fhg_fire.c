@@ -10,6 +10,9 @@
 #include "overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h"
 #include "overlays/actors/ovl_En_fHG/z_en_fhg.h"
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
+#include "overlays/effects/ovl_Effect_Ss_Mm_Milk/z_eff_ss_mm_milk.h"
+#include "overlays/actors/ovl_Milk_Malon/z_milk_malon.h"
+#include "assets/objects/object_milk_malon/object_milk_malon.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -422,22 +425,23 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
     u8 killMode = BALL_FIZZLE;
     u8 canBottleReflect1;
     Player* player = GET_PLAYER(play);
+    MilkMalon* bossGnd = (MilkMalon*)this->actor.parent;
 
     if (this->work[FHGFIRE_KILL_TIMER] != 0) {
         this->work[FHGFIRE_KILL_TIMER]--;
         if (this->work[FHGFIRE_KILL_TIMER] == 0) {
             Actor_Kill(&this->actor);
+            bossGnd->energyBallActive = false;
             return;
         }
     } else {
         s32 canBottleReflect2;
-        BossGanondrof* bossGnd = (BossGanondrof*)this->actor.parent;
 
         dxPG = bossGnd->targetPos.x - this->actor.world.pos.x;
         dyPG = bossGnd->targetPos.y - this->actor.world.pos.y;
         dzPG = bossGnd->targetPos.z - this->actor.world.pos.z;
         dxL = player->actor.world.pos.x - this->actor.world.pos.x;
-        dyL = player->actor.world.pos.y + 40.0f - this->actor.world.pos.y;
+        dyL = player->actor.world.pos.y - this->actor.world.pos.y + 20.0f;
         dzL = player->actor.world.pos.z - this->actor.world.pos.z;
         Actor_UpdateVelocityXYZ(&this->actor);
         Actor_UpdatePos(&this->actor);
@@ -501,7 +505,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                         if (bossGnd->flyMode == GND_FLY_NEUTRAL) {
                             angleModX = Rand_CenteredFloat(0x2000);
                             angleModY = Rand_CenteredFloat(0x2000);
-                            this->actor.speed = 15.0f;
+                            // this->actor.speed = 15.0f;
                         } else {
                             angleModX = 0;
                             angleModY = 0;
@@ -517,15 +521,35 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                                 this->actor.speed += 1.0f;
                             }
                         }
-                        this->actor.world.rot.y = RAD_TO_BINANG(Math_FAtan2F(dxPG, dzPG)) + angleModY;
-                        this->actor.world.rot.x =
-                            RAD_TO_BINANG(Math_FAtan2F(dyPG, sqrtf((dxPG * dxPG) + (dzPG * dzPG)))) + angleModX;
+                        // Instead of simply inverting the direction, calculate the new direction towards MilkMalon
+                        Vec3f directionToMilkMalon;
+                        // f32 speed = 4.0f; // Adjust the speed as necessary
+
+                        // Calculate the direction vector towards MilkMalon
+                        directionToMilkMalon.x = bossGnd->actor.world.pos.x - this->actor.world.pos.x;
+                        directionToMilkMalon.y = bossGnd->actor.world.pos.y - this->actor.world.pos.y + 40.0f;
+                        directionToMilkMalon.z = bossGnd->actor.world.pos.z - this->actor.world.pos.z;
+
+                        // Normalize the direction vector (if normalization is allowed; otherwise, adjust using N64 data types and methods)
+                        // Calculate the angle using atan2 and adjust for N64's binary angle system (assuming normalization is skipped for compatibility)
+                        s16 newYAngle = RAD_TO_BINANG(Math_FAtan2F(directionToMilkMalon.x, directionToMilkMalon.z));
+                        s16 newXAngle = RAD_TO_BINANG(Math_FAtan2F(directionToMilkMalon.y, sqrtf(directionToMilkMalon.x * directionToMilkMalon.x + directionToMilkMalon.z * directionToMilkMalon.z)));
+
+                        // Set the ball's new direction and speed
+                        this->actor.world.rot.y = newYAngle;
+                        this->actor.world.rot.x = newXAngle;
+                        // this->actor.speed = speed;
                         this->work[FHGFIRE_FIRE_MODE] = FHGFIRE_LIGHT_BLUE;
                         this->work[FHGFIRE_FX_TIMER] = 2;
                         Audio_PlaySfxGeneral(NA_SE_IT_SWORD_REFLECT_MG, &player->actor.projectedPos, 4,
                                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                              &gSfxDefaultReverb);
-                        Rumble_Request(this->actor.xyzDistToPlayerSq, 180, 20, 100);
+
+                        Collider_UpdateCylinder(&this->actor, &this->collider);
+                        osSyncPrintf("BEFORE setAC   %d\n", this->collider.base.shape);
+                        CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
+                        osSyncPrintf("AFTER  setAC\n");
+                        // Rumble_Request(this->actor.xyzDistToPlayerSq, 180, 20, 100);
                     }
                 } else if (sqrtf(SQ(dxL) + SQ(dyL) + SQ(dzL)) <= 25.0f) {
                     killMode = BALL_BURST;
@@ -536,32 +560,56 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                     func_8002F698(play, &this->actor, 3.0f, this->actor.world.rot.y, 0.0f, 3, 0x10);
                 }
                 break;
+
+            // THIS IS WHERE YOU NEED TO IMPLEMENT THE LOGIC TO CHECK WHETHER THE LIGHTBALL IS NEAR MILKY MALON
+            // THIS IS WORKING, YOU TRIED THIS 4:09PM 24/02/2024, YOU JUST NEED TO GET IT TO CHECK WHETHER IT'S SUPER CLOSE
+            // OR COLLIDIING WITH MALON.
+
             case FHGFIRE_LIGHT_BLUE:
-                if ((bossGnd->flyMode == GND_FLY_RETURN) && (this->work[FHGFIRE_RETURN_COUNT] < 100)) {
-                    this->actor.world.rot.y = RAD_TO_BINANG(Math_FAtan2F(dxPG, dzPG));
-                    if ((sqrtf(SQ(dxPG) + SQ(dzPG)) < (150.0f + (this->actor.speed * 8.0f)))) {
+                if (this->actor.speed <= 11.0f) {
+                    // Calculate the distance between the energy ball and MilkMalon
+                    f32 dx = bossGnd->actor.world.pos.x - this->actor.world.pos.x;
+                    f32 dy = bossGnd->actor.world.pos.y - this->actor.world.pos.y + 40.0f;
+                    f32 dz = bossGnd->actor.world.pos.z - this->actor.world.pos.z;
+                    f32 distanceToMalon = sqrtf(dx * dx + dy * dy + dz * dz);
+                    
+                    osSyncPrintf("Distance to Malon: %f\n", distanceToMalon);
+
+                    // Check if the distance is less than or equal to 30.0f
+                    if (distanceToMalon <= 40.0f) {
+                        osSyncPrintf("Energy ball is close to Malon. Preparing to reflect back to Link.\n");
                         this->work[FHGFIRE_FIRE_MODE] = FHGFIRE_LIGHT_REFLECT;
                         bossGnd->returnSuccess = true;
+                        bossGnd->energyBallActive = true;
                         this->work[FHGFIRE_TIMER] = 8;
                     }
-                } else {
-                    if (this->work[FHGFIRE_RETURN_COUNT] >= 100) {
-                        if ((sqrtf(SQ(dxPG) + SQ(dyPG) + SQ(dzPG)) < 100.0f)) {
-                            bossGnd->returnSuccess = true;
-                        }
-                        this->actor.world.rot.y = RAD_TO_BINANG(Math_FAtan2F(dxPG, dzPG));
-                        this->actor.world.rot.x = RAD_TO_BINANG(Math_FAtan2F(dyPG, sqrtf(SQ(dxPG) + SQ(dzPG))));
-                    }
-                    if ((fabsf(dxPG) < 30.0f) && (fabsf(dzPG) < 30.0f) && (fabsf(dyPG) < 45.0f)) {
+                } else if (this->actor.speed >= 12.0f) {
+                    f32 dx = bossGnd->actor.world.pos.x - this->actor.world.pos.x;
+                    f32 dy = bossGnd->actor.world.pos.y - this->actor.world.pos.y + 40.0f;
+                    f32 dz = bossGnd->actor.world.pos.z - this->actor.world.pos.z;
+                    f32 distanceToMalon = sqrtf(dx * dx + dy * dy + dz * dz);
+
+                    // if (this->work[FHGFIRE_RETURN_COUNT] >= 100) {
+                    //     if ((sqrtf(SQ(dxPG) + SQ(dyPG) + SQ(dzPG)) < 100.0f)) {
+                    //         bossGnd->returnSuccess = true;
+                    //     }
+                    //     this->actor.world.rot.y = RAD_TO_BINANG(Math_FAtan2F(dxPG, dzPG));
+                    //     this->actor.world.rot.x = RAD_TO_BINANG(Math_FAtan2F(dyPG, sqrtf(SQ(dxPG) + SQ(dzPG))));
+                    // }
+                    if (distanceToMalon < 40.0f) {
                         killMode = BALL_IMPACT;
-                        bossGnd->returnCount = this->work[FHGFIRE_RETURN_COUNT] + 1;
+                        bossGnd->returnCount = 20;
                         Audio_PlaySfxGeneral(NA_SE_EN_FANTOM_HIT_THUNDER, &bossGnd->actor.projectedPos, 4,
                                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                              &gSfxDefaultReverb);
-                        Audio_PlaySfxGeneral(NA_SE_EN_FANTOM_DAMAGE, &bossGnd->actor.projectedPos, 4,
+                        Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_DAMAGE_VOICE, &bossGnd->actor.projectedPos, 4,
                                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                              &gSfxDefaultReverb);
                     }
+                }
+                if (this->actor.xzDistToPlayer > 500.0f) {
+                    Actor_Kill(&this->actor);
+                    bossGnd->energyBallActive = false;
                 }
                 break;
             case FHGFIRE_LIGHT_REFLECT:
@@ -680,9 +728,12 @@ void EnFhgFire_PhantomWarp(EnFhgFire* this, PlayState* play) {
     osSyncPrintf("EFC 2\n");
 }
 
-void EnFhgFire_Update(Actor* thisx, PlayState* play) {
+void EnFhgFire_Update(Actor* thisx, PlayState* play) {    
     s32 pad;
     EnFhgFire* this = (EnFhgFire*)thisx;
+
+    osSyncPrintf("FireBall Actor Position: x: %.2f, y: %.2f, z: %.2f\n", this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z);
+    osSyncPrintf("FireBall Collider Position: x: %.2f, y: %.2f, z: %.2f\n", this->collider.dim.pos.x, this->collider.dim.pos.y, this->collider.dim.pos.z);
 
     this->work[FHGFIRE_VARIANCE_TIMER]++;
 
@@ -703,6 +754,8 @@ static void* sDustTextures[] = {
 void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnFhgFire* this = (EnFhgFire*)thisx;
+    GfxPrint printer;
+    Gfx* gfx;
 
     OPEN_DISPS(play->state.gfxCtx, "../z_en_fhg_fire.c", 1723);
 
@@ -721,7 +774,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[FHGFIRE_ALPHA]);
 
         if (this->work[FHGFIRE_FIRE_MODE] > FHGFIRE_LIGHT_GREEN) {
-            gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 255, 0);
+            gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 0);
         } else {
             gDPSetEnvColor(POLY_XLU_DISP++, 165, 255, 75, 0);
         }
@@ -758,4 +811,38 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
     }
 
     CLOSE_DISPS(play->state.gfxCtx, "../z_en_fhg_fire.c", 1900);
+
+    OPEN_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
+
+    gfx = POLY_OPA_DISP + 1;
+    gSPDisplayList(OVERLAY_DISP++, gfx);
+
+    GfxPrint_Init(&printer);
+    GfxPrint_Open(&printer, gfx);
+
+    GfxPrint_SetColor(&printer, 20, 128, 0, 255);
+    GfxPrint_SetPos(&printer, 1, 11);
+    GfxPrint_Printf(&printer, "x: %.2f", this->actor.world.pos.x);
+
+    GfxPrint_SetColor(&printer, 20, 128, 0, 255);
+    GfxPrint_SetPos(&printer, 1, 12);
+    GfxPrint_Printf(&printer, "y: %.2f", this->actor.world.pos.y);
+
+    GfxPrint_SetColor(&printer, 20, 128, 0, 255);
+    GfxPrint_SetPos(&printer, 1, 13);
+    GfxPrint_Printf(&printer, "z: %.2f", this->actor.world.pos.z);
+
+    GfxPrint_SetColor(&printer, 146, 0, 128, 255);
+    GfxPrint_SetPos(&printer, 1, 15);
+    GfxPrint_Printf(&printer, "ballSpeed: %.2f", this->actor.speed);
+
+    gfx = GfxPrint_Close(&printer);
+    GfxPrint_Destroy(&printer);
+
+    gSPEndDisplayList(gfx++);
+    gSPBranchList(POLY_OPA_DISP, gfx);
+    POLY_OPA_DISP = gfx;
+
+    CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
+
 }

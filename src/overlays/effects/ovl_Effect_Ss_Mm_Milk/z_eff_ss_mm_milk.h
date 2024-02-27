@@ -34,7 +34,7 @@ typedef enum {
 typedef enum {
     /* 0x00 */ MMMILK_SPLASH_NO_ACTOR, // Don't attach to any actor. Stays at a fixed position.
     /* 0x01 */ MMMILK_SPLASH_PLAYER,   // Move to a random Player body part every frame.
-    /* 0x02 */ MMMILK_SPLASH_PG        // Move to a random Phantom Ganon body part every frame.
+    /* 0x02 */ MMMILK_SPLASH_MM        // Move to a random Phantom Ganon body part every frame.
 } MmMilkSplashParam;
 
 #endif

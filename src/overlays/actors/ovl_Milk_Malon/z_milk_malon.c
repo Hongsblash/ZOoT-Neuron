@@ -4,13 +4,12 @@
  * Description: Milk Malon - Enemy
  */
 
-// Need to finish setting up the blocking functionality
-// Need to get the attack function to face link before lunging
-
 #include "z_milk_malon.h"
 #include "assets/objects/object_milk_malon/object_milk_malon.h"
 #include "assets/objects/object_dekunuts/object_dekunuts.h"
 #include "src/overlays/effects/ovl_Effect_Ss_Mm_Milk/z_eff_ss_mm_milk.h"
+#include "overlays/actors/ovl_En_Fhg_Fire/z_en_fhg_fire.h"
+// #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 
 // Makes it Z target-able: (ACTOR_FLAG_0)
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
@@ -34,12 +33,20 @@ void MilkMalon_JumpBack(MilkMalon* this, PlayState* play);
 void MilkMalon_Shoot(MilkMalon* this, PlayState* play);
 void MilkMalon_FloatInAir(MilkMalon* this, PlayState* play);
 void MilkMalon_ChargeLightBall(MilkMalon* this, PlayState* play);
+void MilkMalon_Throw(MilkMalon* this, PlayState* play);
+void MilkMalon_Return(MilkMalon* this, PlayState* play);
+void MilkMalon_Vulnerable(MilkMalon* this, PlayState* play);
 
 typedef enum {
     MILKMALON_DMGEFF_NONE,
     MILKMALON_DMGEFF_STUN,
     MILKMALON_DMGEFF_DEFAULT,
 } MilkMalonDamageEffect;
+
+typedef enum {
+    /* 0 */ STUNNED_FALL,
+    /* 1 */ STUNNED_GROUND
+} MilkMalonStunnedAction;
 
 static DamageTable sDamageTable = {
     /* Deku nut      */ DMG_ENTRY(0, MILKMALON_DMGEFF_STUN),
@@ -78,7 +85,7 @@ static DamageTable sDamageTable = {
 
 ActorInit Milk_Malon_InitVars = {
     /**/ ACTOR_MILK_MALON,
-    /**/ ACTORCAT_NPC,
+    /**/ ACTORCAT_ENEMY,
     /**/ FLAGS,
     /**/ OBJECT_MILK_MALON,
     /**/ sizeof(MilkMalon),
@@ -90,7 +97,7 @@ ActorInit Milk_Malon_InitVars = {
 
 static ColliderCylinderInit sCylinderInit = {
     {
-        COLTYPE_HIT5,
+        COLTYPE_HIT3,
         AT_ON | AT_TYPE_ENEMY,
         AC_ON | AC_TYPE_PLAYER,
         OC1_ON | OC1_TYPE_ALL,
@@ -105,7 +112,7 @@ static ColliderCylinderInit sCylinderInit = {
         BUMP_ON,
         OCELEM_ON,
     },
-    { 20, 70, 0, { 0, 0, 0 } },
+    { 20, 70, -50, { 0, 0, 0 } },
 };
 
 static ColliderQuadInit sSwordColliderInit = {
@@ -160,8 +167,8 @@ void MilkMalon_Init(Actor* thisx, PlayState* play) {
     this->actor.colChkInfo.mass = MASS_HEAVY;
     this->actor.colChkInfo.health = 15;
     this->actor.gravity = -1.0f;
-    this->floatTimer = 0.0f;
     this->floatMagnitude = 100.0f; // Initial float magnitude
+    this->energyBallActive = false;
 
     // Actor shape and focus initialization
     ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 15.0f);
@@ -249,7 +256,7 @@ void MilkMalon_MaintainFloat(MilkMalon* this, PlayState* play) {
     Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EN_FANTOM_FLOAT - SFX_FLAG);
 }
 
-// SETUP FUNCTIONS
+// PHASE 1 SETUP FUNCTIONS
 
 void MilkMalon_SetupIdle(MilkMalon* this, PlayState* play) {
     this->actor.speed = 0.0f;
@@ -269,8 +276,6 @@ void MilkMalon_SetupStartRunFromNotice(MilkMalon* this, PlayState* play) {
 }
 
 void MilkMalon_SetupRun(MilkMalon* this, PlayState* play) {
-    s16 angle;
-
     Animation_MorphToLoop(&this->skelAnime, &gMilkMalonWalkAnim, -1.0f);
     this->actionFunc = MilkMalon_Run;
 }
@@ -335,6 +340,8 @@ void MilkMalon_SetupShoot(MilkMalon* this) {
     this->actionFunc = MilkMalon_Shoot;
 }
 
+// PHASE 2 SETUP FUNCTIONS
+
 void MilkMalon_SetupFloatInAir(MilkMalon* this, PlayState* play) {
     Animation_PlayOnceSetSpeed(&this->skelAnime, &gMilkMalonFloatAnim, 0.75f);
     this->actionFunc = MilkMalon_FloatInAir;
@@ -347,51 +354,43 @@ void MilkMalon_SetupChargeLightBall(MilkMalon* this, PlayState* play) {
     this->lightBallTimer = 25;
 }
 
-// MAIN
+void MilkMalon_SetupThrow(MilkMalon* this, PlayState* play) {
+    Animation_MorphToPlayOnce(&this->skelAnime, &gMilkMalonThrowAnim, -5.0f);
+    this->actionFunc = MilkMalon_Throw;
+}
+
+void MilkMalon_SetupReturn(MilkMalon* this, PlayState* play) {
+    static AnimationHeader* returnAnim[] = { &gMilkMalonReflectAnim1, &gMilkMalonReflectAnim2 };
+    s16 rand = Rand_ZeroOne() * 1.99f;
+
+    this->returnEndFrame = Animation_GetLastFrame(returnAnim[rand]);
+    Animation_MorphToPlayOnce(&this->skelAnime, returnAnim[rand], 0.0f);
+    this->returnFlag = true;
+    this->actionFunc = MilkMalon_Return;
+}
+
+void MilkMalon_SetupVulnerable(MilkMalon* this, PlayState* play) {
+    if (this->actionFunc != MilkMalon_Vulnerable) {
+        this->vulnerableEndFrame = Animation_GetLastFrame(&gMilkMalonDamagedAnim);
+        Animation_MorphToLoop(&this->skelAnime, &gMilkMalonDamagedAnim, 0.0f);
+        if (this->vulnerableTimer == 0) {
+            this->vulnerableTimer = 150;
+        }
+    } else {
+        this->vulnerableEndFrame = Animation_GetLastFrame(&gMilkMalonDamagedAnim);
+        Animation_MorphToLoop(&this->skelAnime, &gMilkMalonDamagedAnim, 0.0f);
+    }
+
+    this->actionFunc = MilkMalon_Vulnerable;
+    this->damageState = STUNNED_FALL;
+}
+
+// PHASE 1 MAIN
 
 #define MILKMALON_HOME_RADIUS 450.0f
 #define MILKMALON_NOTICE_RADIUS 200.0f
 #define MILKMALON_SHOOT_RADIUS 200.0f
 #define MILKMALON_ATTACK_RADIUS 100.0f
-
-void MilkMalon_ChargeLightBall(MilkMalon* this, PlayState* play) {
-    SkelAnime_Update(&this->skelAnime);
-
-    MilkMalon_MaintainFloat(this, play);
-
-    if (this->skelAnime.curFrame < 17) {
-        this->envLightMode = 1;
-    }
-
-    if (this->skelAnime.curFrame == 10) {
-        this->lightBallTimer = 10;
-        Actor_PlaySfx(&this->actor, NA_SE_EN_GANON_SPARK);
-    }
-
-    if (this->skelAnime.curFrame == 18) {
-        MilkMalon_SetupFloatInAir(this, play);
-    }
-}
-
-void MilkMalon_FloatInAir(MilkMalon* this, PlayState* play) {
-    u8 animDone = SkelAnime_Update(&this->skelAnime);
-    f32 sinValue, cosValue;
-    f32 centerX = this->actor.home.pos.x; 
-    f32 centerZ = this->actor.home.pos.z;
-    f32 radius = 50.0f;
-    f32 floatTimerScaled = this->floatTimer * 1500;
-
-    // Call helper function to maintain floating
-    MilkMalon_MaintainFloat(this, play);
-
-    if (Actor_IsFacingPlayer(&this->actor, DEG_TO_BINANG(20.0f)) && animDone) {
-        if (this->actor.xzDistToPlayer < MILKMALON_NOTICE_RADIUS) {
-            MilkMalon_SetupChargeLightBall(this, play);
-        } else {
-            MilkMalon_SetupFloatInAir(this, play);
-        }
-    }
-}
 
 void MilkMalon_Shoot(MilkMalon* this, PlayState* play) {
     Vec3f spawnPos;
@@ -616,12 +615,117 @@ void MilkMalon_Attack(MilkMalon* this, PlayState* play) {
     }
 }
 
+// PHASE 2 MAIN
+
+void MilkMalon_FloatInAir(MilkMalon* this, PlayState* play) {
+    u8 animDone = SkelAnime_Update(&this->skelAnime);
+
+    // Maintain floating
+    MilkMalon_MaintainFloat(this, play);
+
+    if (this->returnSuccess) {
+        this->returnSuccess = false;
+        MilkMalon_SetupReturn(this, play);
+    }
+
+    // Check if player is facing and no energy ball is active before deciding next action
+    if (Actor_IsFacingPlayer(&this->actor, DEG_TO_BINANG(20.0f)) && animDone) {
+        if (this->actor.xzDistToPlayer < MILKMALON_SHOOT_RADIUS  && !this->energyBallActive) {
+            MilkMalon_SetupChargeLightBall(this, play);
+        } else {
+            MilkMalon_SetupFloatInAir(this, play);
+        }
+    }
+}
+
+void MilkMalon_ChargeLightBall(MilkMalon* this, PlayState* play) {
+    SkelAnime_Update(&this->skelAnime);
+
+    MilkMalon_MaintainFloat(this, play);
+
+    if (this->skelAnime.curFrame < 17.0f) {
+        this->envLightMode = 1;
+    }
+
+    if (this->skelAnime.curFrame == 10.0f) {
+        this->lightBallTimer = 10;
+        Actor_PlaySfx(&this->actor, NA_SE_EN_GANON_SPARK);
+    }
+
+    if (this->skelAnime.curFrame == 18.0f) {
+        MilkMalon_SetupThrow(this, play);
+    }
+}
+
+void MilkMalon_Throw(MilkMalon* this, PlayState* play) {
+    SkelAnime_Update(&this->skelAnime);
+
+    if (Animation_OnFrame(&this->skelAnime, 25.0f)) {
+        MilkMalon_SetupFloatInAir(this, play);
+    }
+
+    MilkMalon_MaintainFloat(this, play);
+
+    if (Animation_OnFrame(&this->skelAnime, 14.0f)) {
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->ballPos.x, this->ballPos.y,
+                           this->ballPos.z, 0, 0, 0, FHGFIRE_ENERGY_BALL);
+        Actor_PlaySfx(&this->actor, NA_SE_EN_FANTOM_MASIC2);
+        Actor_PlaySfx(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DAMAGE);
+        this->energyBallActive = true;
+    }
+}
+
+void MilkMalon_Return(MilkMalon* this, PlayState* play) {
+    SkelAnime_Update(&this->skelAnime);
+    MilkMalon_MaintainFloat(this, play);
+
+    if (Animation_OnFrame(&this->skelAnime, 5.0f)) {
+        Actor_PlaySfx(&this->actor, NA_SE_EN_FANTOM_VOICE);
+    }
+
+    if (Animation_OnFrame(&this->skelAnime, this->returnEndFrame)) {
+        MilkMalon_SetupFloatInAir(this, play);
+    }
+
+    if (this->returnSuccess) {
+        this->returnSuccess = false;
+        MilkMalon_SetupReturn(this, play);
+    }
+}
+
+void MilkMalon_Vulnerable(MilkMalon* this, PlayState* play) {
+    SkelAnime_Update(&this->skelAnime);
+    this->actor.gravity = -0.2f;
+    if (this->actor.world.pos.y <= 5.0f) {
+        if (this->damageState == STUNNED_FALL) {
+            Animation_MorphToLoop(&this->skelAnime, &gMilkMalonDamagedAnim, -3.0f);
+            this->damageState = STUNNED_GROUND;
+        }
+        this->actor.gravity = -1.0f;
+        if (Animation_OnFrame(&this->skelAnime, this->vulnerableEndFrame)) {
+            Actor_PlaySfx(&this->actor, NA_SE_EN_FANTOM_DAMAGE2);
+        }
+        this->actor.flags |= ACTOR_FLAG_10;
+    }
+    if (this->vulnerableTimer == 0) {
+        MilkMalon_SetupFloatInAir(this, play);
+        this->actor.gravity = -1.0f;
+    }
+    Actor_MoveXZGravity(&this->actor);
+}
+
+// ALL PHASES MAIN
+
 void MilkMalon_Damaged(MilkMalon* this, PlayState* play) {
     this->swordState = 0;
     Math_SmoothStepToF(&this->actor.speed, 0.0f, 3.0f, 0.5f, 0.0f);
 
     if (SkelAnime_Update(&this->skelAnime)) {
-        MilkMalon_SetupRun(this, play);
+        if (this->vulnerableTimer != 0) {
+            MilkMalon_SetupVulnerable(this, play);
+        } else {
+            MilkMalon_SetupRun(this, play);
+        }
     }
 }
 
@@ -661,10 +765,11 @@ void MilkMalon_CheckDamage(MilkMalon* this, PlayState* play) {
     if (this->shieldCollider.base.acFlags & AC_BOUNCED) {
         this->shieldCollider.base.acFlags &= ~AC_BOUNCED;
         this->collider.base.acFlags &= ~AC_HIT;
+
     } else if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
         Actor_SetDropFlag(&this->actor, &this->collider.info, true);
-
+        
         if ((this->actionFunc != MilkMalon_Die) && (this->actionFunc != MilkMalon_Damaged)) {
             switch (this->actor.colChkInfo.damageEffect) {
                 case MILKMALON_DMGEFF_STUN:
@@ -699,10 +804,15 @@ void MilkMalon_CheckDamage(MilkMalon* this, PlayState* play) {
 void MilkMalon_Update(Actor* thisx, PlayState* play) {
     MilkMalon* this = (MilkMalon*)thisx;
 
+    osSyncPrintf("Actor Position: x: %.2f, y: %.2f, z: %.2f\n", this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z);
+    osSyncPrintf("Collider Position: x: %.2f, y: %.2f, z: %.2f\n", this->collider.dim.pos.x, this->collider.dim.pos.y, this->collider.dim.pos.z);
+
     MilkMalon_CheckDamage(this, play);
     this->actionFunc(this, play);
 
-    Collider_UpdateCylinder(&this->actor, &this->collider);
+    this->collider.dim.pos.x = (f32)this->actor.world.pos.x;
+    this->collider.dim.pos.y = (f32)this->actor.world.pos.y;
+    this->collider.dim.pos.z = (f32)this->actor.world.pos.z;
 
     Actor_MoveXZGravity(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 30.0f, 20.0f, 35.0f, 
@@ -716,16 +826,28 @@ void MilkMalon_Update(Actor* thisx, PlayState* play) {
     if (this->actionFunc == MilkMalon_Attack) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
-    if (this->actionFunc != MilkMalon_StopAndBlock) {
+    if (this->actionFunc == MilkMalon_StopAndBlock) {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->shieldCollider.base);
     }
-
+    
     if (this->swordState >= 1) {
         if (!(this->swordCollider.base.atFlags & AT_BOUNCED)) {
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->swordCollider.base);
         } else {
             this->swordCollider.base.atFlags &= ~AT_BOUNCED;
         }
+    }
+
+    if (this->vulnerableTimer != 0) {
+        this->vulnerableTimer--;
+    }
+
+    if (this->returnCount > 0) { // This variable needs to be updated, it isn't a return count and is only being used for the effect's length
+        EffectSsMmMilk_SpawnSplash(play, &this->actor, &this->actor.world.pos, 45, MMMILK_SPLASH_MM);
+        if (this->returnCount == 19) {
+            this->actionFunc = MilkMalon_SetupVulnerable;
+        }
+        this->returnCount--;
     }
 
     if (this->lightBallTimer != 0) {
@@ -735,7 +857,6 @@ void MilkMalon_Update(Actor* thisx, PlayState* play) {
         static Color_RGBA8 envColor = { 255, 255, 255, 200 };
         Vec3f vel = { 0.0f, 0.0f, 0.0f };
         Vec3f accel = { 0.0f, -0.08f, 0.0f }; // Acceleration adjusted for gravity effect
-        Vec3f ballPos;
         Vec3f relativePos; // Relative position of the ball in actor's hand
         f32 angleRadians;
         s32 i;
@@ -749,14 +870,14 @@ void MilkMalon_Update(Actor* thisx, PlayState* play) {
         angleRadians = (this->actor.shape.rot.y / (f32)0x8000) * M_PI;
 
         // Calculate new position of the milk ball based on actor's rotation
-        ballPos.x = this->actor.world.pos.x + relativePos.x * cosf(angleRadians) + relativePos.z * sinf(angleRadians);
-        ballPos.y = this->actor.world.pos.y + relativePos.y;
-        ballPos.z = this->actor.world.pos.z - relativePos.x * sinf(angleRadians) + relativePos.z * cosf(angleRadians);
+        this->ballPos.x = this->actor.world.pos.x + relativePos.x * cosf(angleRadians) + relativePos.z * sinf(angleRadians);
+        this->ballPos.y = this->actor.world.pos.y + relativePos.y;
+        this->ballPos.z = this->actor.world.pos.z - relativePos.x * sinf(angleRadians) + relativePos.z * cosf(angleRadians);
 
         // EffectSsLightning_Spawn(play, &ballPos, &primColor, &envColor, 60, 0, 6, 0); 
-        EffectSsMmMilk_SpawnSplash(play, &this, &ballPos, 20, MMMILK_SPLASH_NO_ACTOR);
+        EffectSsMmMilk_SpawnSplash(play, &this, &this->ballPos, 20, MMMILK_SPLASH_NO_ACTOR);
         for (i = 0; i < 2; i++) {
-            EffectSsMmMilk_SpawnMilkBall(play, &ballPos, &vel, &accel, (s16)(Rand_ZeroOne() * 80.0f) + 200, MMMILK_MILKBALL_WHITE1);
+            EffectSsMmMilk_SpawnMilkBall(play, &this->ballPos, &vel, &accel, (s16)(Rand_ZeroOne() * 80.0f) + 200, MMMILK_MILKBALL_WHITE1);
         }
     }
 }
@@ -769,7 +890,9 @@ s32 MilkMalon_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
             // Hide the hammer in specific conditions
             if (this->skelAnime.animation == &gMilkMalonFloatAnim || 
                 this->skelAnime.animation == &gMilkMalonChargeLightBallAnim || 
-                this->actionFunc == MilkMalon_Shoot) {
+                this->skelAnime.animation == &gMilkMalonThrowAnim ||
+                this->actionFunc == MilkMalon_Shoot ||
+                this->actionFunc == MilkMalon_Return) {
                 *dList = NULL; // Hides the hammer during the float animation or when shooting
             }
             break;
@@ -781,7 +904,7 @@ s32 MilkMalon_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
             }
             break;
     }
-    return false; 
+    return 0; 
 }
 
 void MilkMalon_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
@@ -838,6 +961,10 @@ void MilkMalon_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
         this->actor.focus.pos.y = (s16)headFocusPos.y;
         this->actor.focus.pos.z = (s16)headFocusPos.z;
     }
+
+    if (limbIndex <= 25) {
+        Matrix_MultVec3f(&zeroVec, &this->bodyPartsPos[limbIndex - 1]);
+    }
 }
 
 
@@ -868,15 +995,22 @@ void MilkMalon_Draw(Actor* thisx, PlayState* play) {
     GfxPrint_Init(&printer);
     GfxPrint_Open(&printer, gfx);
 
+    GfxPrint_SetColor(&printer, 150, 0, 0, 255);
+    GfxPrint_SetPos(&printer, 1, 7);
+    GfxPrint_Printf(&printer, "health: %u", this->actor.colChkInfo.health);
+
     GfxPrint_SetColor(&printer, 255, 0, 255, 255);
-    GfxPrint_SetPos(&printer, 3, 8);
-    // Print the current frame as a full floating-point number
+    GfxPrint_SetPos(&printer, 1, 8);
     GfxPrint_Printf(&printer, "end: %.2f", this->skelAnime.endFrame);
 
     // Set the color to teal for the next line
-    GfxPrint_SetColor(&printer, 0, 128, 128, 255); // Last value (255) is for alpha
-    GfxPrint_SetPos(&printer, 3, 10);
+    GfxPrint_SetColor(&printer, 0, 128, 128, 255);
+    GfxPrint_SetPos(&printer, 1, 9);
     GfxPrint_Printf(&printer, "cur: %.2f", this->skelAnime.curFrame);
+
+    GfxPrint_SetColor(&printer, 128, 56, 0, 255);
+    GfxPrint_SetPos(&printer, 1, 10);
+    GfxPrint_Printf(&printer, "vulnTimer: %u", this->vulnerableTimer);
 
     gfx = GfxPrint_Close(&printer);
     GfxPrint_Destroy(&printer);
@@ -886,5 +1020,4 @@ void MilkMalon_Draw(Actor* thisx, PlayState* play) {
     POLY_OPA_DISP = gfx;
 
     CLOSE_DISPS(play->state.gfxCtx, __FILE__, __LINE__);
-
 }

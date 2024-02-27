@@ -7,6 +7,7 @@
 #include "z_eff_ss_fhg_flash.h"
 #include "overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h"
 #include "assets/objects/object_fhg/object_fhg.h"
+#include "overlays/actors/ovl_Milk_Malon/z_milk_malon.h"
 
 #define rAlpha regs[0]
 #define rObjectSlot regs[2]

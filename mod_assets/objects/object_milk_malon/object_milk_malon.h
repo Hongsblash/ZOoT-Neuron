@@ -14,3 +14,6 @@
 #include "gMilkMalonDanceAnim.h"
 #include "gMilkMalonFloatAnim.h"
 #include "gMilkMalonChargeLightBallAnim.h"
+#include "gMilkMalonThrowAnim.h"
+#include "gMilkMalonReflectAnim1.h"
+#include "gMilkMalonReflectAnim2.h"

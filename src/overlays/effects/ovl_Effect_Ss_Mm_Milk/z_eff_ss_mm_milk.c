@@ -5,7 +5,7 @@
  */
 
 #include "z_eff_ss_mm_milk.h"
-#include "overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h"
+#include "overlays/actors/ovl_Milk_Malon/z_milk_malon.h"
 #include "assets/objects/object_fhg/object_fhg.h"
 #include "assets/objects/object_milk_malon/object_milk_malon.h"
 
@@ -71,7 +71,7 @@ u32 EffectSsMmMilk_Init(PlayState* play, u32 index, EffectSs* this, void* initPa
         this->rParam = initParams->param;
 
         if (initParams->param != MMMILK_SPLASH_NO_ACTOR) {
-            this->pos = farAwayVec; // Set the initial position to where the effect cannot be seen
+            this->pos = farAwayVec;
             this->gfx = SEGMENTED_TO_VIRTUAL(sMilkSplashDL);
         } else {
             this->pos = initParams->pos;
@@ -176,7 +176,7 @@ void EffectSsMmMilk_UpdateMilkBall(PlayState* play, u32 index, EffectSs* this) {
 void EffectSsMmMilk_UpdateSplash(PlayState* play, u32 index, EffectSs* this) {
     s16 randBodyPart;
     Player* player;
-    BossGanondrof* phantomGanon;
+    MilkMalon* milkMalon;
     s16 rotStep;
 
     // Simulate gravity
@@ -192,12 +192,12 @@ void EffectSsMmMilk_UpdateSplash(PlayState* play, u32 index, EffectSs* this) {
         this->pos.x = player->bodyPartsPos[randBodyPart].x + Rand_CenteredFloat(10.0f);
         this->pos.y = player->bodyPartsPos[randBodyPart].y + Rand_CenteredFloat(15.0f);
         this->pos.z = player->bodyPartsPos[randBodyPart].z + Rand_CenteredFloat(10.0f);
-    } else if (this->rParam == MMMILK_SPLASH_PG) {
-        phantomGanon = (BossGanondrof*)this->actor;
+    } else if (this->rParam == MMMILK_SPLASH_MM) {
+        milkMalon = (MilkMalon*)this->actor;
         randBodyPart = Rand_ZeroFloat(23.9f);
-        this->pos.x = phantomGanon->bodyPartsPos[randBodyPart].x + Rand_CenteredFloat(15.0f);
-        this->pos.y = phantomGanon->bodyPartsPos[randBodyPart].y + Rand_CenteredFloat(20.0f);
-        this->pos.z = phantomGanon->bodyPartsPos[randBodyPart].z + Rand_CenteredFloat(15.0f);
+        this->pos.x = milkMalon->bodyPartsPos[randBodyPart].x + Rand_CenteredFloat(15.0f);
+        this->pos.y = milkMalon->bodyPartsPos[randBodyPart].y + Rand_CenteredFloat(20.0f);
+        this->pos.z = milkMalon->bodyPartsPos[randBodyPart].z + Rand_CenteredFloat(15.0f);
     }
 
     if (this->life < 100) {
