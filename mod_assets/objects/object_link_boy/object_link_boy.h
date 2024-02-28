@@ -202,3 +202,4 @@ extern FlexSkeletonHeader gLinkAdultSkel;
 #endif
 
 #include "gLinkAdultSkel.h"
+#include "gLinkAdultRightHandHoldingMilkCannonNearDL.h"

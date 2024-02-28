@@ -46,7 +46,7 @@ u8 sActionModelGroups[PLAYER_IA_MAX] = {
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_MAGIC_SPELL_16
     PLAYER_MODELGROUP_BOW_SLINGSHOT,    // PLAYER_IA_MAGIC_SPELL_17
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_FARORES_WIND
-    PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_NAYRUS_LOVE
+    PLAYER_MODELGROUP_MILKCANNON,          // PLAYER_IA_NAYRUS_LOVE
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_DINS_FIRE
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_DEKU_NUT
     PLAYER_MODELGROUP_OCARINA,          // PLAYER_IA_OCARINA_FAIRY
@@ -151,6 +151,9 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
       PLAYER_MODELTYPE_WAIST },
     /* PLAYER_MODELGROUP_SWORD */
     { PLAYER_ANIMTYPE_0, PLAYER_MODELTYPE_LH_SWORD, PLAYER_MODELTYPE_RH_OPEN, PLAYER_MODELTYPE_SHEATH_19,
+      PLAYER_MODELTYPE_WAIST },
+    /* PLAYER_MODELGROUP_MILKCANNON */
+    { PLAYER_ANIMTYPE_4, PLAYER_MODELTYPE_LH_OPEN, PLAYER_MODELTYPE_RH_MILKCANNON, PLAYER_MODELTYPE_SHEATH_18,
       PLAYER_MODELTYPE_WAIST },
 };
 
@@ -356,6 +359,13 @@ Gfx* sPlayerRightHandHookshotDLs[] = {
     gLinkChildRightHandFarDL,
 };
 
+Gfx* sPlayerRightHandMilkCannonDLs[] = {
+    gLinkAdultRightHandHoldingMilkCannonNearDL,
+    gLinkChildRightHandNearDL,
+    gLinkAdultRightHandHoldingMilkCannonNearDL, // The 'far' display list exists but is not used
+    gLinkChildRightHandFarDL,
+};
+
 Gfx* sPlayerLeftHandHammerDLs[] = {
     gLinkAdultLeftHandHoldingHammerNearDL,
     gLinkChildLeftHandNearDL,
@@ -420,6 +430,7 @@ Gfx** sPlayerDListGroups[PLAYER_MODELTYPE_MAX] = {
     sPlayerRightHandOcarinaDLs,       // PLAYER_MODELTYPE_RH_OCARINA
     sPlayerRightHandOotDLs,           // PLAYER_MODELTYPE_RH_OOT
     sPlayerRightHandHookshotDLs,      // PLAYER_MODELTYPE_RH_HOOKSHOT
+    sPlayerRightHandMilkCannonDLs,      // PLAYER_MODELTYPE_RH_MILKCANNON
     D_80125E78,                       // PLAYER_MODELTYPE_SHEATH_16
     D_80125E88,                       // PLAYER_MODELTYPE_SHEATH_17
     D_80125D28,                       // PLAYER_MODELTYPE_SHEATH_18
@@ -705,6 +716,10 @@ int Player_HoldsHookshot(Player* this) {
     return (this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT);
 }
 
+int Player_HoldsMilkCannon(Player* this) {
+    return (this->heldItemAction == PLAYER_IA_NAYRUS_LOVE);
+}
+
 int func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
@@ -895,8 +910,8 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.save.linkAge][mouthIndex]));
 #endif
 
-    color = &gRainbow.color; // Use the rainbow color for the tunic
-
+    // color = &gRainbow.color; // Use the rainbow color for the tunic
+    color = &sTunicColors[tunic];
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
     sDListsLodOffset = lod * 2;
@@ -1192,9 +1207,13 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
             *dList = sFirstPersonForearmDLs[(void)0, gSaveContext.save.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
-            *dList = Player_HoldsHookshot(this)
-                         ? gLinkAdultRightHandHoldingHookshotFarDL
-                         : sFirstPersonRightHandHoldingWeaponDLs[(void)0, gSaveContext.save.linkAge];
+            if (Player_HoldsMilkCannon(this)) {
+                *dList = gLinkAdultRightHandHoldingMilkCannonNearDL;
+            } else if (Player_HoldsHookshot(this)) {
+                *dList = gLinkAdultRightHandHoldingHookshotFarDL;
+            } else {
+                *dList = sFirstPersonRightHandHoldingWeaponDLs[(void)0, gSaveContext.save.linkAge];
+            }
         } else {
             *dList = NULL;
         }

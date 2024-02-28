@@ -6094,6 +6094,13 @@ beginseg
 endseg
 
 beginseg
+    name "object_gi_milkcannon"
+    romalign 0x1000
+    include "build/assets/objects/object_gi_milkcannon/object_gi_milkcannon.o"
+    number 6
+endseg
+
+beginseg
     name "g_pn_01"
     romalign 0x1000
     include "build/assets/textures/place_title_cards/g_pn_01.o"

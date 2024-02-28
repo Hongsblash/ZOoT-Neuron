@@ -78,6 +78,7 @@
 #include "assets/objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "assets/objects/object_st/object_st.h"
 #include "assets/objects/object_gi_witchpalm/object_gi_witchpalm.h"
+#include "assets/objects/object_gi_milkcannon/object_gi_milkcannon.h"
 
 // "Get Item" Model Draw Functions
 void GetItem_DrawMaskOrBombchu(PlayState* play, s16 drawId);
@@ -329,7 +330,7 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiFaroresWindColorDL, gGiMagicSpellOrbDL } },
     // nayru's Love, OBJECT_GI_GODDESS
     // { GetItem_DrawMagicSpell, { gGiMagicSpellDiamondDL, gGiNayrusLoveColorDL, gGiMagicSpellOrbDL } },
-    { GetItem_DrawOpa0, { gGiWitchPalmDL } },
+    { GetItem_DrawOpa0, { gGiMilkCannonDL } },
     // blue fire, OBJECT_GI_FIRE
     { GetItem_DrawBlueFire, { gGiBlueFireChamberstickDL, gGiBlueFireFlameDL } },
     // bugs, OBJECT_GI_INSECT

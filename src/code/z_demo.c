@@ -30,6 +30,8 @@
 
 #include "assets/scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 
+#include "assets/scenes/sand_room/sand_room/sand_room_scene.h"
+
 u16 sCurTextId = 0;
 u16 sCurOcarinaAction = 0;
 
@@ -108,6 +110,7 @@ EntranceCutscene sEntranceCutsceneTable[] = {
     { ENTR_GERUDOS_FORTRESS_17, 0, EVENTCHKINF_C7, gGerudoFortressFirstCaptureCs },
     { ENTR_DEATH_MOUNTAIN_CRATER_1, 2, EVENTCHKINF_B9, gDeathMountainCraterIntroCs },
     { ENTR_KOKIRI_FOREST_12, 2, EVENTCHKINF_C6, gKokiriForestDekuSproutCs },
+    { ENTR_SAND_ROOM_0, 2, 0x0F, milkMalonIntro },
 };
 
 void* sUnusedEntranceCsList[] = {

@@ -493,8 +493,6 @@ void MilkMalon_Idle(MilkMalon* this, PlayState* play) {
     if (this->actor.xzDistToPlayer < MILKMALON_NOTICE_RADIUS) {
         MilkMalon_SetupNotice(this, play);
     }
-
-    MilkMalon_SetupFloatInAir(this, play);
 }
 
 void MilkMalon_Notice(MilkMalon* this, PlayState* play) {
@@ -803,6 +801,16 @@ void MilkMalon_CheckDamage(MilkMalon* this, PlayState* play) {
 
 void MilkMalon_Update(Actor* thisx, PlayState* play) {
     MilkMalon* this = (MilkMalon*)thisx;
+    CsCmdActorCue* cue;
+
+    if (play->csCtx.state != CS_STATE_IDLE) {
+        cue = play->csCtx.actorCues[0];
+
+        if (cue->id == 1) {
+            f32 frameCount = Animation_GetLastFrame(&gMilkMalonDanceAnim);
+            Animation_Change(&this->skelAnime, &gMilkMalonDanceAnim, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
+        }
+    }
 
     osSyncPrintf("Actor Position: x: %.2f, y: %.2f, z: %.2f\n", this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z);
     osSyncPrintf("Collider Position: x: %.2f, y: %.2f, z: %.2f\n", this->collider.dim.pos.x, this->collider.dim.pos.y, this->collider.dim.pos.z);

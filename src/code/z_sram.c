@@ -300,8 +300,8 @@ void Sram_InitDebugSave(void) {
         gSaveContext.save.info.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
         if (gSaveContext.fileNum == 0xFF) {
-            gSaveContext.save.info.equips.buttonItems[1] = ITEM_SLINGSHOT;
-            gSaveContext.save.info.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
+            gSaveContext.save.info.equips.buttonItems[1] = ITEM_MASK_ZORA;
+            // gSaveContext.save.info.equips.cButtonSlots[0] = SLOT_SLINGSHOT;
             Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_DEKU);
         }
     }

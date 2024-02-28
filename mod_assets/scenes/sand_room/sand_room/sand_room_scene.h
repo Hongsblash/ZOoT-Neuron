@@ -13,6 +13,7 @@ extern SurfaceType sand_room_polygonTypes[];
 extern CollisionPoly sand_room_polygons[];
 extern Vec3s sand_room_vertices[427];
 extern CollisionHeader sand_room_collisionHeader;
+extern CutsceneData milkMalonIntro[];
 extern SceneCmd* sand_room_room_0_alternateHeaders[];
 extern SceneCmd sand_room_room_0_header00[];
 extern s16 sand_room_room_0_header00_objectList[];
@@ -79,7 +80,7 @@ extern Vtx sand_room_dl_spot01_room_0DL_003B48_mesh_001_mesh_layer_Opaque_vtx_cu
 extern Vtx sand_room_dl_spot01_room_0DL_003B48_mesh_001_mesh_layer_Opaque_vtx_0[32];
 extern Gfx sand_room_dl_spot01_room_0DL_003B48_mesh_001_mesh_layer_Opaque_tri_0[];
 extern Vtx sand_room_dl_spot01_room_0DL_003B48_mesh_002_mesh_layer_Opaque_vtx_cull[8];
-extern Vtx sand_room_dl_spot01_room_0DL_003B48_mesh_002_mesh_layer_Opaque_vtx_0[748];
+extern Vtx sand_room_dl_spot01_room_0DL_003B48_mesh_002_mesh_layer_Opaque_vtx_0[749];
 extern Gfx sand_room_dl_spot01_room_0DL_003B48_mesh_002_mesh_layer_Opaque_tri_0[];
 extern Vtx sand_room_dl_spot01_room_0DL_003B48_mesh_002_mesh_layer_Opaque_vtx_1[37];
 extern Gfx sand_room_dl_spot01_room_0DL_003B48_mesh_002_mesh_layer_Opaque_tri_1[];

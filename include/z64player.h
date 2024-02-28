@@ -245,6 +245,7 @@ typedef enum {
     /* 0x0D */ PLAYER_MODELGROUP_OOT, // ocarina of time
     /* 0x0E */ PLAYER_MODELGROUP_BOTTLE, // bottles (drawn separately)
     /* 0x0F */ PLAYER_MODELGROUP_SWORD, // hold sword and no shield, even if one is equipped
+               PLAYER_MODELGROUP_MILKCANNON,
     /* 0x10 */ PLAYER_MODELGROUP_MAX
 } PlayerModelGroup;
 
@@ -276,6 +277,7 @@ typedef enum {
     /* 0x0D */ PLAYER_MODELTYPE_RH_OCARINA, // holding ocarina (child: fairy ocarina, adult: OoT)
     /* 0x0E */ PLAYER_MODELTYPE_RH_OOT, // holding OoT
     /* 0x0F */ PLAYER_MODELTYPE_RH_HOOKSHOT, // holding hookshot (child: empty hand)
+               PLAYER_MODELTYPE_RH_MILKCANNON,
     // sheath
     /* 0x10 */ PLAYER_MODELTYPE_SHEATH_16, // sheathed kokiri/master sword?
     /* 0x11 */ PLAYER_MODELTYPE_SHEATH_17, // empty sheath?
