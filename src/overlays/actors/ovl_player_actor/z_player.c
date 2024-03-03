@@ -22,6 +22,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "assets/objects/object_link_child/object_link_child.h"
+#include "assets/objects/object_link_boy/object_link_boy.h"
 
 // Some player animations are played at this reduced speed, for reasons yet unclear.
 // This is called "adjusted" for now.
@@ -11420,15 +11421,21 @@ static BunnyEarKinematics sBunnyEarKinematics;
 
 static Vec3s D_80858AD8[25];
 
-static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
+static Vec3s D_80854864 = { 0, 0, 0 };
+
+static Gfx* sMaskDlistsChild[PLAYER_MASK_MAX - 1] = {
     gLinkChildKeatonMaskDL, gLinkChildSkullMaskDL, gLinkChildSpookyMaskDL, gLinkChildBunnyHoodDL,
     gLinkChildGoronMaskDL,  gLinkChildZoraMaskDL,  gLinkChildGerudoMaskDL, gLinkChildMaskOfTruthDL,
 };
 
-static Vec3s D_80854864 = { 0, 0, 0 };
+static Gfx* sMaskDlistsAdult[PLAYER_MASK_MAX - 1] = {
+    gLinkChildKeatonMaskDL, gLinkChildSkullMaskDL, gLinkChildSpookyMaskDL, gLinkChildBunnyHoodDL,
+    gLinkChildGoronMaskDL,  gLinkAdultZoraMaskDL,  gLinkChildGerudoMaskDL, gLinkChildMaskOfTruthDL,
+};
 
 void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList, OverrideLimbDrawOpa overrideLimbDraw) {
     static s32 D_8085486C = 255;
+    Gfx** currentMaskDList;
 
     OPEN_DISPS(play->state.gfxCtx, "../z_player.c", 19228);
 
@@ -11438,6 +11445,9 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
     Player_DrawImpl(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, lod,
                     this->currentTunic, this->currentBoots, this->actor.shape.face, overrideLimbDraw,
                     Player_PostLimbDrawGameplay, this);
+
+    // Determine which mask list to use based on Link's age
+    currentMaskDList = LINK_IS_CHILD ? sMaskDlistsChild : sMaskDlistsAdult;
 
     if ((overrideLimbDraw == Player_OverrideLimbDrawGameplayDefault) && (this->currentMask != PLAYER_MASK_NONE)) {
         Mtx* bunnyEarMtx = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Mtx));
@@ -11462,7 +11472,7 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             Matrix_ToMtx(bunnyEarMtx, "../z_player.c", 19279);
         }
 
-        gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
+        gSPDisplayList(POLY_OPA_DISP++, currentMaskDList[this->currentMask - 1]);
     }
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&

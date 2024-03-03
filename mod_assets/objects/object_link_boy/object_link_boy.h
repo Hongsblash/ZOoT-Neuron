@@ -213,3 +213,4 @@ extern FlexSkeletonHeader gLinkAdultSkel;
 #include "gLinkAdultRightHandHoldingSlingshotNearDL.h"
 #include "gLinkAdultSlingshotStringDL.h"
 #include "gLinkAdultRightHandHoldingSlingshotFirstPersonDL.h"
+#include "gLinkAdultZoraMaskDL.h"

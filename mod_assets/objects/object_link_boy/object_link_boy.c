@@ -5804,3 +5804,4 @@ LodLimb gLinkTorsoLimb = {
 #include "gLinkAdultRightHandHoldingSlingshotNearDL.c"
 #include "gLinkAdultSlingshotStringDL.c"
 #include "gLinkAdultRightHandHoldingSlingshotFirstPersonDL.c"
+#include "gLinkAdultZoraMaskDL.c"
