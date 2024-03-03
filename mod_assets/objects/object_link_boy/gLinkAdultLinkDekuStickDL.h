@@ -1,0 +1,9 @@
+extern u64 gLinkAdultLinkDekuStickDL_deku_stick_i8_png_001_i8[];
+extern Vtx gLinkAdultLinkDekuStickDL_gLinkAdultLinkDekuStickDL_mesh_layer_Opaque_vtx_cull[8];
+extern Vtx gLinkAdultLinkDekuStickDL_gLinkAdultLinkDekuStickDL_mesh_layer_Opaque_vtx_0[86];
+extern Gfx gLinkAdultLinkDekuStickDL_gLinkAdultLinkDekuStickDL_mesh_layer_Opaque_tri_0[];
+extern Vtx gLinkAdultLinkDekuStickDL_gLinkAdultLinkDekuStickDL_mesh_layer_Opaque_vtx_1[18];
+extern Gfx gLinkAdultLinkDekuStickDL_gLinkAdultLinkDekuStickDL_mesh_layer_Opaque_tri_1[];
+extern Gfx mat_gLinkAdultLinkDekuStickDL_f3dlite_material_001_layerOpaque[];
+extern Gfx mat_gLinkAdultLinkDekuStickDL_f3dlite_material_002_layerOpaque[];
+extern Gfx gLinkAdultLinkDekuStickDL[];

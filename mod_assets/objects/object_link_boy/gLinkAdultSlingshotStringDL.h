@@ -1,0 +1,5 @@
+extern Vtx gLinkAdultSlingshotStringDL_gLinkAdultSlingshotStringDL_mesh_layer_Opaque_vtx_cull[8];
+extern Vtx gLinkAdultSlingshotStringDL_gLinkAdultSlingshotStringDL_mesh_layer_Opaque_vtx_0[12];
+extern Gfx gLinkAdultSlingshotStringDL_gLinkAdultSlingshotStringDL_mesh_layer_Opaque_tri_0[];
+extern Gfx mat_gLinkAdultSlingshotStringDL_f3dlite_material_001_layerOpaque[];
+extern Gfx gLinkAdultSlingshotStringDL[];
