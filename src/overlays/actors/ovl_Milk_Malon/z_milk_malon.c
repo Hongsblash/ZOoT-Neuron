@@ -85,7 +85,7 @@ static DamageTable sDamageTable = {
 
 ActorInit Milk_Malon_InitVars = {
     /**/ ACTOR_MILK_MALON,
-    /**/ ACTORCAT_ENEMY,
+    /**/ ACTORCAT_BOSS,
     /**/ FLAGS,
     /**/ OBJECT_MILK_MALON,
     /**/ sizeof(MilkMalon),
@@ -207,7 +207,7 @@ void MilkMalon_Init(Actor* thisx, PlayState* play) {
     Effect_Add(play, &this->effectIndex, EFFECT_BLURE1, 0, 0, &slashBlure);
 
     // Set the initial action function
-    this->actionFunc = MilkMalon_Idle;
+    MilkMalon_SetupIdle(this, play);
 }
 
 void MilkMalon_Destroy(Actor* thisx, PlayState* play) {
@@ -803,14 +803,16 @@ void MilkMalon_Update(Actor* thisx, PlayState* play) {
     MilkMalon* this = (MilkMalon*)thisx;
     CsCmdActorCue* cue;
 
-    if (play->csCtx.state != CS_STATE_IDLE) {
-        cue = play->csCtx.actorCues[0];
+    osSyncPrintf("Cutscene test");
 
-        if (cue->id == 1) {
-            f32 frameCount = Animation_GetLastFrame(&gMilkMalonDanceAnim);
-            Animation_Change(&this->skelAnime, &gMilkMalonDanceAnim, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
-        }
-    }
+    // if (play->csCtx.state != CS_STATE_IDLE) {
+    //     cue = play->csCtx.actorCues[0];
+
+    //     if (cue->id == 1) {
+    //         f32 frameCount = Animation_GetLastFrame(&gMilkMalonDanceAnim);
+    //         Animation_Change(&this->skelAnime, &gMilkMalonDanceAnim, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
+    //     }
+    // }
 
     osSyncPrintf("Actor Position: x: %.2f, y: %.2f, z: %.2f\n", this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z);
     osSyncPrintf("Collider Position: x: %.2f, y: %.2f, z: %.2f\n", this->collider.dim.pos.x, this->collider.dim.pos.y, this->collider.dim.pos.z);

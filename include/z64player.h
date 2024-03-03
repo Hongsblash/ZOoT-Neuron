@@ -235,7 +235,8 @@ typedef enum {
     /* 0x03 */ PLAYER_MODELGROUP_DEFAULT, // non-specific models, for items that don't have particular link models
     /* 0x04 */ PLAYER_MODELGROUP_4, // unused, same as PLAYER_MODELGROUP_DEFAULT
     /* 0x05 */ PLAYER_MODELGROUP_BGS, // biggoron sword
-    /* 0x06 */ PLAYER_MODELGROUP_BOW_SLINGSHOT, // bow/slingshot
+    /* 0x06 */ PLAYER_MODELGROUP_BOW, // bow
+               PLAYER_MODELGROUP_SLINGSHOT, // slingshot
     /* 0x07 */ PLAYER_MODELGROUP_EXPLOSIVES, // bombs, bombchus, same as PLAYER_MODELGROUP_DEFAULT
     /* 0x08 */ PLAYER_MODELGROUP_BOOMERANG,
     /* 0x09 */ PLAYER_MODELGROUP_HOOKSHOT,
@@ -272,8 +273,8 @@ typedef enum {
     /* 0x08 */ PLAYER_MODELTYPE_RH_OPEN, // empty open hand
     /* 0x09 */ PLAYER_MODELTYPE_RH_CLOSED, // empty closed hand
     /* 0x0A */ PLAYER_MODELTYPE_RH_SHIELD, // holding a shield (including no shield)
-    /* 0x0B */ PLAYER_MODELTYPE_RH_BOW_SLINGSHOT, // holding bow/slingshot
-    /* 0x0C */ PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2, // unused, same as PLAYER_MODELTYPE_RH_BOW_SLINGSHOT
+    /* 0x0B */ PLAYER_MODELTYPE_RH_BOW, // holding bow/slingshot
+    /* 0x0C */ PLAYER_MODELTYPE_RH_SLINGSHOT, // unused, same as PLAYER_MODELTYPE_RH_BOW_SLINGSHOT
     /* 0x0D */ PLAYER_MODELTYPE_RH_OCARINA, // holding ocarina (child: fairy ocarina, adult: OoT)
     /* 0x0E */ PLAYER_MODELTYPE_RH_OOT, // holding OoT
     /* 0x0F */ PLAYER_MODELTYPE_RH_HOOKSHOT, // holding hookshot (child: empty hand)

@@ -34,6 +34,14 @@ s16 sand_room_room_0_header00_objectList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_OBJECT
 };
 
 ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_ACTORLIST] = {
+    // Greenery
+    {
+        /* Actor ID   */ ACTOR_EN_WOOD02,
+        /* Position   */ { -274, 0, -192 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x000B
+    },
+
     // Cow
     {
         /* Actor ID   */ ACTOR_EN_COW,
@@ -50,14 +58,6 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
         /* Parameters */ 0x0000
     },
 
-    // Greenery
-    {
-        /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { 246, 0, -241 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x000B
-    },
-
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_MILK_MALON,
@@ -69,15 +69,7 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
     // Greenery
     {
         /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -263, 0, -272 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x000B
-    },
-
-    // Greenery
-    {
-        /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -274, 0, -192 },
+        /* Position   */ { 246, 0, -241 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x000B
     },
@@ -88,6 +80,14 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
         /* Position   */ { -228, 0, -237 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
+    },
+
+    // Greenery
+    {
+        /* Actor ID   */ ACTOR_EN_WOOD02,
+        /* Position   */ { -263, 0, -272 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x000B
     },
 };
 

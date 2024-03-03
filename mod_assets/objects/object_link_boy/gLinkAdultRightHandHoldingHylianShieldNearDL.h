@@ -1,4 +1,5 @@
-extern u64 gLinkAdultRightHandHoldingHylianShieldNearDL_hylian_shield_rgba16[];
+extern u64 gLinkAdultRightHandHoldingHylianShieldNearDL_shadow_shield1_ci8[];
+extern u64 gLinkAdultRightHandHoldingHylianShieldNearDL_shadow_shield1_pal_rgba16[];
 extern u64 gLinkAdultRightHandHoldingHylianShieldNearDL_al_hand_ci8[];
 extern u64 gLinkAdultRightHandHoldingHylianShieldNearDL_al_hand_pal_rgba16[];
 extern u64 gLinkAdultRightHandHoldingHylianShieldNearDL_fingers_2_ci8_ci4[];
