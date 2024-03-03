@@ -901,6 +901,12 @@ Color_RGB8 sTunicColors[PLAYER_TUNIC_MAX] = {
     { 0, 60, 100 },  // PLAYER_TUNIC_ZORA
 };
 
+Color_RGB8 sTopHatTunicColors[PLAYER_TUNIC_MAX] = {
+    { 32, 32, 32 },
+    { 32, 32, 32 },
+    { 32, 32, 32 },
+};
+
 Color_RGB8 sGauntletColors[] = {
     { 255, 255, 255 },
     { 254, 207, 15 },
@@ -939,8 +945,15 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.save.linkAge][mouthIndex]));
 #endif
 
-    // color = &gRainbow.color; // Use the rainbow color for the tunic
-    color = &sTunicColors[tunic];
+    Player* player = GET_PLAYER(play);
+
+    if (player->currentMask == PLAYER_MASK_ZORA) {
+        color = &sTopHatTunicColors[tunic];
+    } else {
+        // color = &gRainbow.color; // Use the rainbow color for the tunic
+        color = &sTunicColors[tunic];
+    }
+
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
     sDListsLodOffset = lod * 2;

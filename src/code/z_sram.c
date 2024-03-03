@@ -188,7 +188,7 @@ static SavePlayerData sDebugSavePlayerData = {
 };
 
 static ItemEquips sDebugSaveEquips = {
-    { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_BOMB, ITEM_OCARINA_FAIRY }, // buttonItems
+    { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_BOMB, ITEM_MASK_ZORA }, // buttonItems
     { SLOT_BOW, SLOT_BOMB, SLOT_OCARINA },                          // cButtonSlots
     // equipment
     (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) | (EQUIP_VALUE_SHIELD_HYLIAN << (EQUIP_TYPE_SHIELD * 4)) |
