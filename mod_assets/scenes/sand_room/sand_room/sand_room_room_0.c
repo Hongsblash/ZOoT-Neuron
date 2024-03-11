@@ -34,14 +34,6 @@ s16 sand_room_room_0_header00_objectList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_OBJECT
 };
 
 ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_ACTORLIST] = {
-    // Greenery
-    {
-        /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -274, 0, -192 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x000B
-    },
-
     // Cow
     {
         /* Actor ID   */ ACTOR_EN_COW,
@@ -50,20 +42,12 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
         /* Parameters */ 0x0000
     },
 
-    // Cow
+    // Greenery
     {
-        /* Actor ID   */ ACTOR_EN_COW,
-        /* Position   */ { -160, 0, 205 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(43.742), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
-    },
-
-    // Custom Actor
-    {
-        /* Actor ID   */ ACTOR_MILK_MALON,
-        /* Position   */ { 0, 0, -180 },
+        /* Actor ID   */ ACTOR_EN_WOOD02,
+        /* Position   */ { -274, 0, -192 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
+        /* Parameters */ 0x000B
     },
 
     // Greenery
@@ -77,17 +61,33 @@ ActorEntry sand_room_room_0_header00_actorList[LENGTH_SAND_ROOM_ROOM_0_HEADER00_
     // Greenery
     {
         /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -228, 0, -237 },
+        /* Position   */ { -263, 0, -272 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x000B
+    },
+
+    // Cow
+    {
+        /* Actor ID   */ ACTOR_EN_COW,
+        /* Position   */ { -160, 0, 205 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(43.742), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
 
     // Greenery
     {
         /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { -263, 0, -272 },
+        /* Position   */ { -228, 0, -237 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x000B
+        /* Parameters */ 0x0000
+    },
+
+    // Custom Actor
+    {
+        /* Actor ID   */ ACTOR_MILK_MALON,
+        /* Position   */ { 0, 0, -180 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
     },
 };
 

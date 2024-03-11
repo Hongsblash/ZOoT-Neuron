@@ -231,7 +231,8 @@ typedef enum {
 typedef enum {
     /* 0x00 */ PLAYER_MODELGROUP_0, // unused (except for a bug in `Player_OverrideLimbDrawPause`)
     /* 0x01 */ PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD,  //hold sword only. used for holding sword only as child link with hylian shield equipped
-    /* 0x02 */ PLAYER_MODELGROUP_SWORD_AND_SHIELD, // hold sword and shield or just sword if no shield is equipped
+    /* 0x02 */ PLAYER_MODELGROUP_KOKIRISWORD_AND_SHIELD, // hold sword and shield or just sword if no shield is equipped
+               PLAYER_MODELGROUP_MASTERSWORD_AND_SHIELD,
     /* 0x03 */ PLAYER_MODELGROUP_DEFAULT, // non-specific models, for items that don't have particular link models
     /* 0x04 */ PLAYER_MODELGROUP_4, // unused, same as PLAYER_MODELGROUP_DEFAULT
     /* 0x05 */ PLAYER_MODELGROUP_BGS, // biggoron sword
@@ -263,8 +264,8 @@ typedef enum {
     // left hand
     /* 0x00 */ PLAYER_MODELTYPE_LH_OPEN, // empty open hand
     /* 0x01 */ PLAYER_MODELTYPE_LH_CLOSED, // empty closed hand
-    /* 0x02 */ PLAYER_MODELTYPE_LH_SWORD, // holding kokiri/master sword
-    /* 0x03 */ PLAYER_MODELTYPE_LH_SWORD_2, // unused, same as PLAYER_MODELTYPE_LH_SWORD
+    /* 0x02 */ PLAYER_MODELTYPE_LH_KOKIRISWORD, // holding kokiri
+    /* 0x03 */ PLAYER_MODELTYPE_LH_MASTERSWORD, // holding master sword
     /* 0x04 */ PLAYER_MODELTYPE_LH_BGS, // holding bgs/broken giant knife (child: master sword)
     /* 0x05 */ PLAYER_MODELTYPE_LH_HAMMER, // holding hammer (child: empty hand)
     /* 0x06 */ PLAYER_MODELTYPE_LH_BOOMERANG, // holding boomerang (adult: empty hand)
@@ -862,6 +863,15 @@ typedef struct Player {
     /* 0x0A88 */ Vec3f unk_A88; // previous body part 0 position
                  u8 animationStarted;
                  s16 initialYaw;
+                 u8 spookySwapDone;
+                 Actor* spawnedActor;
+                 u8 startGerudoAttack;
+                 u8 chargeGerudoSpinAttack;
+                 u8 gerudoBlock;
+                 u8 gerudoSideWalk;
+                 u8 gerudoJump;
+                 f32 bButtonHoldDuration;
+                 Color_RGB8* tunicColor;
 } Player; // size = 0xA94
 
 #endif

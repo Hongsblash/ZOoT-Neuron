@@ -2,6 +2,8 @@
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "assets/objects/object_link_boy/object_link_boy.h"
 #include "assets/objects/object_link_child/object_link_child.h"
+#include "assets/objects/object_link_zora/object_link_zora.h"
+#include "assets/objects/object_milk_malon/object_milk_malon.h"
 
 // typedef struct {
 //     /* 0x00 */ Gfx* dList;
@@ -20,7 +22,7 @@ typedef struct {
     Vec3f pos;  // Position Vector for the Bow string
 } BowStringData;
 
-FlexSkeletonHeader* gPlayerSkelHeaders[] = { &gLinkAdultSkel, &gLinkChildSkel };
+FlexSkeletonHeader* gPlayerSkelHeaders[] = { &gLinkAdultSkel, &gLinkChildSkel};
 
 s16 sBootData[PLAYER_BOOTS_MAX][17] = {
     { 200, 1000, 300, 700, 550, 270, 600, 350, 800, 600, -100, 600, 590, 750, 125, 200, 130 },
@@ -36,8 +38,8 @@ u8 sActionModelGroups[PLAYER_IA_MAX] = {
     PLAYER_MODELGROUP_DEFAULT,          // PLAYER_IA_NONE
     PLAYER_MODELGROUP_SWORD,            // PLAYER_IA_SWORD_CS
     PLAYER_MODELGROUP_10,               // PLAYER_IA_FISHING_POLE
-    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_IA_SWORD_MASTER
-    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_IA_SWORD_KOKIRI
+    PLAYER_MODELGROUP_MASTERSWORD_AND_SHIELD, // PLAYER_IA_SWORD_MASTER
+    PLAYER_MODELGROUP_KOKIRISWORD_AND_SHIELD, // PLAYER_IA_SWORD_KOKIRI
     PLAYER_MODELGROUP_BGS,              // PLAYER_IA_SWORD_BIGGORON
     PLAYER_MODELGROUP_10,               // PLAYER_IA_DEKU_STICK
     PLAYER_MODELGROUP_HAMMER,           // PLAYER_IA_HAMMER
@@ -120,10 +122,13 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
     { PLAYER_ANIMTYPE_2, PLAYER_MODELTYPE_LH_OPEN, PLAYER_MODELTYPE_RH_SHIELD, PLAYER_MODELTYPE_SHEATH_16,
       PLAYER_MODELTYPE_WAIST },
     /* PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD */
-    { PLAYER_ANIMTYPE_1, PLAYER_MODELTYPE_LH_SWORD, PLAYER_MODELTYPE_RH_CLOSED, PLAYER_MODELTYPE_SHEATH_19,
+    { PLAYER_ANIMTYPE_1, PLAYER_MODELTYPE_LH_KOKIRISWORD, PLAYER_MODELTYPE_RH_CLOSED, PLAYER_MODELTYPE_SHEATH_19,
       PLAYER_MODELTYPE_WAIST },
-    /* PLAYER_MODELGROUP_SWORD_AND_SHIELD */
-    { PLAYER_ANIMTYPE_1, PLAYER_MODELTYPE_LH_SWORD, PLAYER_MODELTYPE_RH_SHIELD, PLAYER_MODELTYPE_SHEATH_17,
+    /* PLAYER_MODELGROUP_KOKIRISWORD_AND_SHIELD */
+    { PLAYER_ANIMTYPE_1, PLAYER_MODELTYPE_LH_KOKIRISWORD, PLAYER_MODELTYPE_RH_SHIELD, PLAYER_MODELTYPE_SHEATH_17,
+      PLAYER_MODELTYPE_WAIST },
+    /* PLAYER_MODELGROUP_MASTERSWORD_AND_SHIELD */
+    { PLAYER_ANIMTYPE_1, PLAYER_MODELTYPE_LH_MASTERSWORD, PLAYER_MODELTYPE_RH_SHIELD, PLAYER_MODELTYPE_SHEATH_17,
       PLAYER_MODELTYPE_WAIST },
     /* PLAYER_MODELGROUP_DEFAULT */
     { PLAYER_ANIMTYPE_0, PLAYER_MODELTYPE_LH_OPEN, PLAYER_MODELTYPE_RH_OPEN, PLAYER_MODELTYPE_SHEATH_18,
@@ -164,8 +169,11 @@ u8 gPlayerModelTypes[PLAYER_MODELGROUP_MAX][PLAYER_MODELGROUPENTRY_MAX] = {
     /* PLAYER_MODELGROUP_BOTTLE */
     { PLAYER_ANIMTYPE_0, PLAYER_MODELTYPE_LH_BOTTLE, PLAYER_MODELTYPE_RH_OPEN, PLAYER_MODELTYPE_SHEATH_18,
       PLAYER_MODELTYPE_WAIST },
-    /* PLAYER_MODELGROUP_SWORD */
-    { PLAYER_ANIMTYPE_0, PLAYER_MODELTYPE_LH_SWORD, PLAYER_MODELTYPE_RH_OPEN, PLAYER_MODELTYPE_SHEATH_19,
+    /* PLAYER_MODELGROUP_KOKIRISWORD */
+    { PLAYER_ANIMTYPE_0, PLAYER_MODELTYPE_LH_KOKIRISWORD, PLAYER_MODELTYPE_RH_OPEN, PLAYER_MODELTYPE_SHEATH_19,
+      PLAYER_MODELTYPE_WAIST },
+    /* PLAYER_MODELGROUP_MASTERSWORD */
+    { PLAYER_ANIMTYPE_0, PLAYER_MODELTYPE_LH_MASTERSWORD, PLAYER_MODELTYPE_RH_OPEN, PLAYER_MODELTYPE_SHEATH_19,
       PLAYER_MODELTYPE_WAIST },
     /* PLAYER_MODELGROUP_MILKCANNON */
     { PLAYER_ANIMTYPE_4, PLAYER_MODELTYPE_LH_OPEN, PLAYER_MODELTYPE_RH_MILKCANNON, PLAYER_MODELTYPE_SHEATH_18,
@@ -288,18 +296,17 @@ Gfx* gPlayerLeftHandClosedDLs[] = {
     gLinkChildLeftFistFarDL,
 };
 
-// Identical to `sPlayerLeftHandSwordDLs` and unused
-Gfx* sPlayerLeftHandSwordDLs2[] = {
+Gfx* sPlayerLeftHandMasterSwordDLs[] = {
     gLinkAdultLeftHandHoldingMasterSwordNearDL,
     gLinkChildLeftFistAndKokiriSwordNearDL,
     gLinkAdultLeftHandHoldingMasterSwordFarDL,
     gLinkChildLeftFistAndKokiriSwordFarDL,
 };
 
-Gfx* sPlayerLeftHandSwordDLs[] = {
-    gLinkAdultLeftHandHoldingMasterSwordNearDL,
+Gfx* sPlayerLeftHandKokiriSwordDLs[] = {
+    gLinkAdultLeftHandHoldingKokiriSwordNearDL,
     gLinkChildLeftFistAndKokiriSwordNearDL,
-    gLinkAdultLeftHandHoldingMasterSwordFarDL,
+    gLinkAdultLeftHandHoldingKokiriSwordNearDL,
     gLinkChildLeftFistAndKokiriSwordFarDL,
 };
 
@@ -443,8 +450,8 @@ Gfx* sFirstPersonRightHandHoldingSlingshotDLs[] = {
 Gfx** sPlayerDListGroups[PLAYER_MODELTYPE_MAX] = {
     gPlayerLeftHandOpenDLs,           // PLAYER_MODELTYPE_LH_OPEN
     gPlayerLeftHandClosedDLs,         // PLAYER_MODELTYPE_LH_CLOSED
-    sPlayerLeftHandSwordDLs,          // PLAYER_MODELTYPE_LH_SWORD
-    sPlayerLeftHandSwordDLs2,         // PLAYER_MODELTYPE_LH_SWORD_2
+    sPlayerLeftHandKokiriSwordDLs,    // PLAYER_MODELTYPE_LH_KOKIRISWORD
+    sPlayerLeftHandMasterSwordDLs,   // PLAYER_MODELTYPE_LH_MASTERSWORD
     gPlayerLeftHandBgsDLs,            // PLAYER_MODELTYPE_LH_BGS
     sPlayerLeftHandHammerDLs,         // PLAYER_MODELTYPE_LH_HAMMER
     gPlayerLeftHandBoomerangDLs,      // PLAYER_MODELTYPE_LH_BOOMERANG
@@ -549,7 +556,7 @@ int Player_IsChildWithHylianShield(Player* this) {
 s32 Player_ActionToModelGroup(Player* this, s32 itemAction) {
     s32 modelGroup = sActionModelGroups[itemAction];
 
-    if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
+    if ((modelGroup == PLAYER_MODELGROUP_KOKIRISWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
         return PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD;
     } else {
@@ -886,11 +893,23 @@ void* sEyeTextures[][8] = {
       gLinkAdultSkel_eyes_roll_right_ci8_ci8, gLinkAdultSkel_eyes_shock_ci8_ci8, gLinkAdultSkel_eyes_unk_1_ci8_png_001_ci8, gLinkAdultSkel_eyes_unk_2_ci8_png_001_ci8 },
     { gLinkChildEyesOpenTex, gLinkChildEyesHalfTex, gLinkChildEyesClosedfTex, gLinkChildEyesRollLeftTex,
       gLinkChildEyesRollRightTex, gLinkChildEyesShockTex, gLinkChildEyesUnk1Tex, gLinkChildEyesUnk2Tex },
+    {
+    gLinkAdultSpookySkel_gerudo_red_eye_open_ci8_png_001_ci8, // Start of gerudo textures
+    gLinkAdultSpookySkel_gerudo_red_eye_half_ci8_png_001_ci8,
+    gLinkAdultSpookySkel_gerudo_red_eye_shut_ci8_png_001_ci8,
+    gLinkAdultSpookySkel_gerudo_red_eye_half_ci8_png_001_ci8,
+    },
 };
 
 void* sMouthTextures[][4] = {
     { gLinkAdultSkel_mouth_1_ci8_png_001_ci8, gLinkAdultSkel_mouth_2_ci8_png_001_ci8, gLinkAdultSkel_mouth_3_ci8_png_001_ci8, gLinkAdultSkel_mouth_4_ci8_png_001_ci8 },
     { gLinkChildMouth1Tex, gLinkChildMouth2Tex, gLinkChildMouth3Tex, gLinkChildMouth4Tex },
+    // {
+    //     gLinkAdultSpookySkel_mouth_1_ci8_png_001_ci8,
+    //     gLinkAdultSpookySkel_mouth_2_ci8_png_001_ci8,
+    //     gLinkAdultSpookySkel_mouth_3_ci8_png_001_ci8,
+    //     gLinkAdultSpookySkel_mouth_4_ci8_png_001_ci8,
+    // },
 };
 #endif
 
@@ -922,6 +941,7 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     Color_RGB8* color;
     s32 eyeIndex = (jointTable[22].x & 0xF) - 1;
     s32 mouthIndex = (jointTable[22].x >> 4) - 1;
+    Player* player = GET_PLAYER(play);
 
     OPEN_DISPS(play->state.gfxCtx, "../z_player_lib.c", 1721);
 
@@ -932,7 +952,12 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
 #ifndef AVOID_UB
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
 #else
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[gSaveContext.save.linkAge][eyeIndex]));
+    if (player->currentMask == PLAYER_MASK_GERUDO) {
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[2][eyeIndex]));
+    } else {
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[gSaveContext.save.linkAge][eyeIndex]));
+    }
+    
 #endif
 
     if (mouthIndex < 0) {
@@ -942,15 +967,19 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
 #ifndef AVOID_UB
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[mouthIndex]));
 #else
-    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.save.linkAge][mouthIndex]));
+    if (player->currentMask == PLAYER_MASK_GERUDO) {
+        // gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[2][mouthIndex]));
+    } else {
+        gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.save.linkAge][mouthIndex]));
+    }
 #endif
 
-    Player* player = GET_PLAYER(play);
-
     if (player->currentMask == PLAYER_MASK_ZORA) {
+        player->tunicColor = &sTopHatTunicColors[tunic];
         color = &sTopHatTunicColors[tunic];
     } else {
         // color = &gRainbow.color; // Use the rainbow color for the tunic
+        player->tunicColor = &sTunicColors[tunic];
         color = &sTunicColors[tunic];
     }
 
@@ -1794,8 +1823,8 @@ u32 Player_InitPauseDrawData(PlayState* play, u8* segment, SkelAnime* skelAnime)
 }
 
 u8 sPauseModelGroupBySword[] = {
-    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_SWORD_KOKIRI
-    PLAYER_MODELGROUP_SWORD_AND_SHIELD, // PLAYER_SWORD_MASTER
+    PLAYER_MODELGROUP_KOKIRISWORD_AND_SHIELD, // PLAYER_SWORD_KOKIRI
+    PLAYER_MODELGROUP_MASTERSWORD_AND_SHIELD, // PLAYER_SWORD_MASTER
     PLAYER_MODELGROUP_BGS,              // PLAYER_SWORD_BIGGORON
 };
 
@@ -1808,7 +1837,7 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     s32 dListOffset = 0;
     Gfx** dLists;
 
-    if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && !LINK_IS_ADULT &&
+    if ((modelGroup == PLAYER_MODELGROUP_KOKIRISWORD_AND_SHIELD) && !LINK_IS_ADULT &&
         (playerSwordAndShield[1] == PLAYER_SHIELD_HYLIAN)) {
         modelGroup = PLAYER_MODELGROUP_CHILD_HYLIAN_SHIELD;
     }

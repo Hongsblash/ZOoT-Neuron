@@ -3400,6 +3400,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_Player_Geldb"
+    include "build/src/overlays/actors/ovl_Player_Geldb/z_player_geldb.o"
+    include "build/src/overlays/actors/ovl_Player_Geldb/ovl_Player_Geldb_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"

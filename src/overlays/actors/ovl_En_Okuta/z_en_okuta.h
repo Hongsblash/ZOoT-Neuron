@@ -19,6 +19,7 @@ typedef struct EnOkuta {
     /* 0x0360 */ f32 jumpHeight;
     /* 0x0364 */ Vec3f headScale;
     /* 0x0370 */ ColliderCylinder collider;
+                 f32 speedXZ;
 } EnOkuta; // size = 0x03BC
 
 #endif

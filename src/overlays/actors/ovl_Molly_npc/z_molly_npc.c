@@ -8,7 +8,7 @@
 #include "assets/objects/object_molly_npc/object_molly_npc.h"
 
 // Makes it Z target-able: (ACTOR_FLAG_0)
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 void MollyNpc_Init(Actor* thisx, PlayState* play);
 void MollyNpc_Destroy(Actor* thisx, PlayState* play);
