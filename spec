@@ -3406,6 +3406,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_En_Spectral_Fist"
+    include "build/src/overlays/actors/ovl_En_Spectral_Fist/z_en_spectral_fist.o"
+    include "build/src/overlays/actors/ovl_En_Spectral_Fist/ovl_En_Spectral_Fist_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"
@@ -6103,6 +6109,13 @@ beginseg
     name "object_gi_milkcannon"
     romalign 0x1000
     include "build/assets/objects/object_gi_milkcannon/object_gi_milkcannon.o"
+    number 6
+endseg
+
+beginseg
+    name "object_en_spectral_fist"
+    romalign 0x1000
+    include "build/assets/objects/object_en_spectral_fist/object_en_spectral_fist.o"
     number 6
 endseg
 
@@ -10504,6 +10517,20 @@ beginseg
     name "milk_ranch_room_0"
     romalign 0x1000
     include "build/assets/scenes/milk_ranch/milk_ranch/milk_ranch_room_0.o"
+    number 3
+endseg
+
+beginseg
+    name "starting_depths_scene"
+    romalign 0x1000
+    include "build/assets/scenes/hollow/starting_depths/starting_depths_scene.o"
+    number 2
+endseg
+
+beginseg
+    name "starting_depths_room_0"
+    romalign 0x1000
+    include "build/assets/scenes/hollow/starting_depths/starting_depths_room_0.o"
     number 3
 endseg
 

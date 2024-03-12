@@ -13825,6 +13825,8 @@ void Player_Action_8084FBF4(Player* this, PlayState* play) {
 }
 
 s32 func_8084FCAC(Player* this, PlayState* play) {
+
+    #ifdef  ENABLE_DEBUG_FEATURES
     sControlInput = &play->state.input[0];
 
     if ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
@@ -13888,8 +13890,10 @@ s32 func_8084FCAC(Player* this, PlayState* play) {
 
         return 0;
     }
-
     return 1;
+    #else 
+    return 1;
+    #endif
 }
 
 void func_8084FF7C(Player* this) {

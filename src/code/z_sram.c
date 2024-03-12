@@ -56,7 +56,7 @@ static SavePlayerData sNewSavePlayerData = {
     },                                                  // adultEquips
     0,                                                  // unk_38
     { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },       // unk_3C
-    SCENE_LINKS_HOUSE,                                  // savedSceneId
+    SCENE_SAND_ROOM,                                  // savedSceneId
 };
 
 static ItemEquips sNewSaveEquips = {
@@ -413,6 +413,10 @@ void Sram_OpenSave(SramContext* sramCtx) {
             gSaveContext.save.entranceIndex = ENTR_GANONS_TOWER_0;
             break;
 
+        case SCENE_SAND_ROOM:
+            gSaveContext.save.entranceIndex = ENTR_SAND_ROOM_0;
+            break;
+
         default:
             if (gSaveContext.save.info.playerData.savedSceneId != SCENE_LINKS_HOUSE) {
                 gSaveContext.save.entranceIndex =
@@ -720,20 +724,26 @@ void Sram_InitSave(FileSelectState* fileSelect, SramContext* sramCtx) {
     u16* ptr;
     u16 checksum;
 
+    #ifdef ENABLE_DEBUG_FEATURES
     if (fileSelect->buttonIndex != 0) {
         Sram_InitNewSave();
     } else {
         Sram_InitDebugSave();
     }
+    #else
+    Sram_InitNewSave();
+    #endif
 
-    gSaveContext.save.entranceIndex = ENTR_LINKS_HOUSE_0;
+    gSaveContext.save.entranceIndex = ENTR_SAND_ROOM_0;
     gSaveContext.save.linkAge = LINK_AGE_CHILD;
     gSaveContext.save.dayTime = CLOCK_TIME(10, 0);
-    gSaveContext.save.cutsceneIndex = 0xFFF1;
+    gSaveContext.save.cutsceneIndex = 0x8000;
 
+    #ifdef ENABLE_DEBUG_FEATURES
     if (fileSelect->buttonIndex == 0) {
         gSaveContext.save.cutsceneIndex = 0;
     }
+    #endif
 
     for (offset = 0; offset < 8; offset++) {
         gSaveContext.save.info.playerData.playerName[offset] = fileSelect->fileNames[fileSelect->buttonIndex][offset];

@@ -125,3 +125,4 @@
 /* 0x6E */ DEFINE_SCENE(test_valley_scene, g_pn_29, SCENE_TEST_VALLEY, SDC_DEFAULT, 0, 0)
 /* 0x6E */ DEFINE_SCENE(sand_room_scene, g_pn_29, SCENE_SAND_ROOM, SDC_DEFAULT, 0, 0)
 /* 0x6E */ DEFINE_SCENE(milk_ranch_scene, g_pn_29, SCENE_MILK_RANCH, SDC_DEFAULT, 0, 0)
+/* 0x6E */ DEFINE_SCENE(starting_depths_scene, g_pn_29, SCENE_STARTING_DEPTHS, SDC_DEFAULT, 0, 0)

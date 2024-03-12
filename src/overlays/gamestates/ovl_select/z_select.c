@@ -45,6 +45,7 @@ void MapSelect_LoadGame(MapSelectState* this, s32 entranceIndex) {
 
 // "Translation" (Actual name)
 static SceneSelectEntry sScenes[] = {
+    { " -1:Starting Depths", MapSelect_LoadGame, ENTR_STARTING_DEPTHS_0 },
     { " 0:Sand Room", MapSelect_LoadGame, ENTR_SAND_ROOM_0 },
     { " 00:Milk Ranch", MapSelect_LoadGame, ENTR_MILK_RANCH_0 },
     { " 1:SPOT00", MapSelect_LoadGame, ENTR_HYRULE_FIELD_0 },
