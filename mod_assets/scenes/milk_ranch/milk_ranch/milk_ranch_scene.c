@@ -11,7 +11,7 @@
  * Header Child Day (Default)
 */
 SceneCmd milk_ranch_scene_header00[] = {
-    SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, NA_BGM_FIELD_LOGIC),
+    SCENE_CMD_SOUND_SETTINGS(0x00, 0x00, 0x02),
     SCENE_CMD_ROOM_LIST(1, milk_ranch_scene_roomList),
     SCENE_CMD_MISC_SETTINGS(0x00, 0x00),
     SCENE_CMD_COL_HEADER(&milk_ranch_collisionHeader),
@@ -98,6 +98,16 @@ EnvLightSettings milk_ranch_scene_header00_lightSettings[4] = {
         ((1 << 10) | 992),         // Blend Rate & Fog Near
         12800,                     // Fog Far
     },
+};
+
+Vec3s milk_ranch_camPosData[3] = {
+	{ 0, 0, 0 },
+	{ 4894, 1048, 22 },
+	{ 3960, -1, -1 },
+};
+
+BgCamInfo milk_ranch_camData[1] = {
+	{ CAM_SET_NONE, 3, &milk_ranch_camPosData[0] },
 };
 
 SurfaceType milk_ranch_polygonTypes[] = {
@@ -2199,7 +2209,7 @@ CollisionHeader milk_ranch_collisionHeader = {
 	1257,
 	milk_ranch_polygons,
 	milk_ranch_polygonTypes,
-	0,
+	milk_ranch_camData,
 	0,
 	0
 };

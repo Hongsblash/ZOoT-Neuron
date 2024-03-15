@@ -10995,6 +10995,28 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     sControlInput = input;
 
     // Check if an actor has already been spawned to avoid duplicates
+    if (this->currentMask == PLAYER_MASK_SKULL && !this->spawnedActor2) {
+        this->spawnedActor2 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SPECTRAL_FIST, this->actor.world.pos.x,
+                                        this->actor.world.pos.y + 120.0f, this->actor.world.pos.z + 50.0f, 0, this->actor.shape.rot.y, 0, 0);
+        if (this->spawnedActor2 != NULL) {
+            this->actor.shape.shadowDraw = NULL;
+        }
+    }
+
+    if (this->currentMask != PLAYER_MASK_SKULL && this->spawnedActor2) {
+        Actor_Kill(this->spawnedActor2);
+        this->spawnedActor2 = NULL;
+        this->actor.shape.shadowDraw = ActorShadow_DrawFeet;
+    }
+
+    if (this->currentMask == PLAYER_MASK_SKULL) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !this->spectralDownPunch) {
+            // Always start the basic attack on any B press, and initialize hold tracking
+            this->spectralDownPunch = 1;
+        }
+    }
+
+    // Check if an actor has already been spawned to avoid duplicates
     if (this->currentMask == PLAYER_MASK_GERUDO && !this->spawnedActor) {
         this->spawnedActor = Actor_Spawn(&play->actorCtx, play, ACTOR_PLAYER_GELDB, this->actor.world.pos.x,
                                         this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 0);

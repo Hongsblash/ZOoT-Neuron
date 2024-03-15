@@ -10,8 +10,8 @@
 /**
  * Header Child Day (Default)
 */
-#define LENGTH_MILK_RANCH_ROOM_0_HEADER00_OBJECTLIST 6
-#define LENGTH_MILK_RANCH_ROOM_0_HEADER00_ACTORLIST 9
+#define LENGTH_MILK_RANCH_ROOM_0_HEADER00_OBJECTLIST 8
+#define LENGTH_MILK_RANCH_ROOM_0_HEADER00_ACTORLIST 12
 SceneCmd milk_ranch_room_0_header00[] = {
     SCENE_CMD_ECHO_SETTINGS(0x00),
     SCENE_CMD_ROOM_BEHAVIOR(0x00, 0x00, false, false),
@@ -30,39 +30,17 @@ s16 milk_ranch_room_0_header00_objectList[LENGTH_MILK_RANCH_ROOM_0_HEADER00_OBJE
     OBJECT_INGATE,
     OBJECT_GELDB,
     OBJECT_TITE,
+    OBJECT_EN_SPECTRAL_FIST,
+    OBJECT_BOMBIWA,
 };
 
 ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER00_ACTORLIST] = {
-    // Tektite
-    {
-        /* Actor ID   */ ACTOR_EN_TITE,
-        /* Position   */ { 1605, -120, 1045 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
-    },
-
     // Ambient Sound Effects
     {
         /* Actor ID   */ ACTOR_EN_RIVER_SOUND,
         /* Position   */ { -1817, -120, 1466 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0015
-    },
-
-    // Crate
-    {
-        /* Actor ID   */ ACTOR_OBJ_KIBAKO2,
-        /* Position   */ { 1160, -120, -2376 },
-        /* Rotation   */ { 0x0, 0x0, 0x0 },
-        /* Parameters */ 0xFFFF
-    },
-
-    // Tektite
-    {
-        /* Actor ID   */ ACTOR_EN_TITE,
-        /* Position   */ { 1483, -120, 1257 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
     },
 
     // Breakable Pot
@@ -73,12 +51,68 @@ ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER0
         /* Parameters */ 0x4D03
     },
 
+    // Tektite
+    {
+        /* Actor ID   */ ACTOR_EN_TITE,
+        /* Position   */ { 1483, -120, 1257 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Crate
+    {
+        /* Actor ID   */ ACTOR_OBJ_KIBAKO2,
+        /* Position   */ { 1160, -120, -2376 },
+        /* Rotation   */ { 0x0, 0x0, 0x0 },
+        /* Parameters */ 0xFFFF
+    },
+
+    // Bombable Rock
+    {
+        /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
+        /* Position   */ { 1760, -120, 496 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Breakable Pot
+    {
+        /* Actor ID   */ ACTOR_OBJ_TSUBO,
+        /* Position   */ { 872, -120, 219 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x4F03
+    },
+
+    // Tektite
+    {
+        /* Actor ID   */ ACTOR_EN_TITE,
+        /* Position   */ { 1605, -120, 1045 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
     // Breakable Pot
     {
         /* Actor ID   */ ACTOR_OBJ_TSUBO,
         /* Position   */ { 840, -120, 212 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x5103
+    },
+
+    // Bombable Rock
+    {
+        /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
+        /* Position   */ { 1700, -120, 601 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Bombable Rock
+    {
+        /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
+        /* Position   */ { 1654, -120, 495 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
     },
 
     // Tektite
@@ -95,14 +129,6 @@ ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER0
         /* Position   */ { 1309, -120, -2241 },
         /* Rotation   */ { 0x0, 0xe38e, 0x6c },
         /* Parameters */ 0x0801
-    },
-
-    // Breakable Pot
-    {
-        /* Actor ID   */ ACTOR_OBJ_TSUBO,
-        /* Position   */ { 872, -120, 219 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x4F03
     },
 };
 

@@ -5792,6 +5792,7 @@ LodLimb gLinkTorsoLimb = {
 
 #include "gLinkAdultLeftHandHoldingMasterSwordNearDL.c"
 #include "gLinkAdultSkel.c"
+// #include "gAdultLinkSkel.c"
 #include "gLinkAdultRightHandHoldingHylianShieldNearDL.c"
 #include "gLinkAdultRightHandHoldingMilkCannonNearDL.c"
 #include "gLinkAdultRightHandNearDL.c"

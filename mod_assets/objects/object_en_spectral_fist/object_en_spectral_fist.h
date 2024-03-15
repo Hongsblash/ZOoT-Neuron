@@ -1,4 +1,2 @@
-#ifndef OBJECT_EN_SPECTRAL_FIST_H
-#define OBJECT_EN_SPECTRAL_FIST_H 1
-
-#endif
+#include "gSpectralFistSkel.h"
+#include "gSpectralFistStillAnim.h"

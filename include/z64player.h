@@ -865,12 +865,14 @@ typedef struct Player {
                  s16 initialYaw;
                  u8 spookySwapDone;
                  Actor* spawnedActor;
+                 Actor* spawnedActor2;
                  u8 startGerudoAttack;
                  u8 chargeGerudoSpinAttack;
                  u8 gerudoBlock;
                  u8 gerudoSideWalk;
                  u8 gerudoJump;
                  f32 bButtonHoldDuration;
+                 u8 spectralDownPunch;
                  Color_RGB8* tunicColor;
 } Player; // size = 0xA94
 
