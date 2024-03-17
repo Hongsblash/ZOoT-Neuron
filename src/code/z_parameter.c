@@ -2637,6 +2637,53 @@ void Magic_Update(PlayState* play) {
     }
 }
 
+void Aevum_DrawGauge(PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    s16 aevumGaugeY;
+    s16 slotXStart = R_MAGIC_METER_X; // Assuming we start at the same X as the magic meter
+    s16 slotWidth = 16; // Assuming your textures are 16x16
+    s16 slotHeight = 16; // Assuming your textures are 16x16
+    s16 spacing = 4; // Space between each Aevum gauge slot
+    s16 aevumLevel = 2;
+
+    s16 i; // Correcting variable declaration
+
+    OPEN_DISPS(play->state.gfxCtx, "../z_parameter.c", 2800);
+
+    // Determine Y position of the Aevum gauge
+    if (gSaveContext.save.info.playerData.healthCapacity > 0xA0) {
+        aevumGaugeY = R_MAGIC_METER_Y_LOWER + 20; // Below two rows of hearts
+    } else {
+        aevumGaugeY = R_MAGIC_METER_Y_HIGHER + 20; // Below one row of hearts
+    }
+
+    Gfx_SetupDL_39Overlay(play->state.gfxCtx);
+
+    // Draw all slots with the "Empty" texture first
+    for (i = 0; i < 3; i++) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255); // White color, full opacity
+        gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255); // White color, full opacity
+        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gAevumEmptyTex, slotWidth, slotHeight,
+                                      slotXStart + i * (slotWidth + spacing), aevumGaugeY, 
+                                      slotWidth, slotHeight, 1 << 10, 1 << 10);
+    }
+
+    // Overlay the "Full" texture on top of the "Empty" ones for full slots
+    for (i = 0; i < aevumLevel; i++) {
+        // Set the primitive color
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 18, 169, 216, 255); // RGB(18, 169, 216), Alpha 255 (fully opaque)
+
+        // Set the environment color (if needed, depending on how you are using it in your rendering)
+        // gDPSetEnvColor(OVERLAY_DISP++, 18, 169, 216, 255); // RGB(18, 169, 216), Alpha 255 (fully opaque)        
+        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gAevumFullTex, slotWidth, slotHeight,
+                                      slotXStart + i * (slotWidth + spacing), aevumGaugeY, 
+                                      slotWidth, slotHeight, 1 << 10, 1 << 10);
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx, "../z_parameter.c", 2850);
+}
+
+
 void Magic_DrawMeter(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 magicMeterY;
@@ -2652,7 +2699,7 @@ void Magic_DrawMeter(PlayState* play) {
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, sMagicBorderR, sMagicBorderG, sMagicBorderB, interfaceCtx->magicAlpha);
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
 
         OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicMeterEndTex, 8, 16, R_MAGIC_METER_X, magicMeterY, 8, 16,
@@ -3253,6 +3300,7 @@ void Interface_Draw(PlayState* play) {
         }
 
         Magic_DrawMeter(play);
+        Aevum_DrawGauge(play);
         Minimap_Draw(play);
 
         if ((R_PAUSE_BG_PRERENDER_STATE != PAUSE_BG_PRERENDER_PROCESS) &&

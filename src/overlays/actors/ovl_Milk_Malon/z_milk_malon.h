@@ -65,6 +65,7 @@ typedef struct MilkMalon {
     s16 damageState;
     f32 fwork[MM_FLOAT_COUNT];
     f32 vulnerableEndFrame;
+    Actor* spawnedActor;
 } MilkMalon; 
 
 #endif

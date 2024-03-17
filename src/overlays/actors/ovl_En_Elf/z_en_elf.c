@@ -319,7 +319,10 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
     s32 i;
 
     Actor_ProcessInitChain(thisx, sInitChain);
-    SkelAnime_Init(play, &this->skelAnime, &gFairySkel, &gFairyAnim, this->jointTable, this->morphTable, 15);
+    // SkelAnime_Init(play, &this->skelAnime, &gFairySkel, &gFairyAnim, this->jointTable, this->morphTable, 15);
+    
+    SkelAnime_InitFlex(play, &this->skelAnime, &gSpectralFairySkel, &gSpectralFairySkelIdleAnim, this->jointTable, this->morphTable, GSPECTRALFAIRYSKEL_NUM_LIMBS);
+    
     ActorShape_Init(&thisx->shape, 0.0f, NULL, 15.0f);
     thisx->shape.shadowAlpha = 0xFF;
 
@@ -1566,8 +1569,11 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
             gSPEndDisplayList(dListHead++);
             gDPSetEnvColor(POLY_XLU_DISP++, (u8)this->outerColor.r, (u8)this->outerColor.g, (u8)this->outerColor.b,
                            (u8)(envAlpha * alphaScale));
-            POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                           EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+            // POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+            //                                EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+
+            POLY_XLU_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, 
+                                           NULL, NULL, this, POLY_XLU_DISP);
 
             CLOSE_DISPS(play->state.gfxCtx, "../z_en_elf.c", 2793);
         }

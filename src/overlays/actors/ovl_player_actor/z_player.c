@@ -10994,10 +10994,28 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
     sControlInput = input;
 
+    Vec3f relativePos; // Relative position of the Spectral Fist in front of the player
+    f32 angleRadians;
+    Vec3f spawnPos;
+
+    // Initialize relative position in front of the player.
+    relativePos.x = 0.0f;
+    relativePos.y = 120.0f;
+    relativePos.z = 50.0f;
+
+    // Convert player's yaw rotation to radians for trigonometric calculations.
+    angleRadians = (this->actor.shape.rot.y / (f32)0x8000) * M_PI;
+
+    // Calculate new position based on player's rotation.
+    spawnPos.x = this->actor.world.pos.x + relativePos.z * sinf(angleRadians);
+    spawnPos.y = this->actor.world.pos.y + relativePos.y;
+    spawnPos.z = this->actor.world.pos.z + relativePos.z * cosf(angleRadians);
+
     // Check if an actor has already been spawned to avoid duplicates
     if (this->currentMask == PLAYER_MASK_SKULL && !this->spawnedActor2) {
-        this->spawnedActor2 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SPECTRAL_FIST, this->actor.world.pos.x,
-                                        this->actor.world.pos.y + 120.0f, this->actor.world.pos.z + 50.0f, 0, this->actor.shape.rot.y, 0, 0);
+        EffectSsIcePiece_SpawnBurst(play, &spawnPos, this->actor.scale.x * 0.5f);
+        this->spawnedActor2 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SPECTRAL_FIST, spawnPos.x,
+                                        spawnPos.y, spawnPos.z, 0, this->actor.shape.rot.y, 0, 0);
         if (this->spawnedActor2 != NULL) {
             this->actor.shape.shadowDraw = NULL;
         }

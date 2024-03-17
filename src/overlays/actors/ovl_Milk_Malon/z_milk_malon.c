@@ -207,7 +207,7 @@ void MilkMalon_Init(Actor* thisx, PlayState* play) {
     Effect_Add(play, &this->effectIndex, EFFECT_BLURE1, 0, 0, &slashBlure);
 
     // Set the initial action function
-    MilkMalon_SetupIdle(this, play);
+    MilkMalon_SetupFloatInAir(this, play);
 }
 
 void MilkMalon_Destroy(Actor* thisx, PlayState* play) {
@@ -665,7 +665,7 @@ void MilkMalon_Throw(MilkMalon* this, PlayState* play) {
     MilkMalon_MaintainFloat(this, play);
 
     if (Animation_OnFrame(&this->skelAnime, 14.0f)) {
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->ballPos.x, this->ballPos.y,
+        this->spawnedActor = Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->ballPos.x, this->ballPos.y,
                            this->ballPos.z, 0, 0, 0, FHGFIRE_ENERGY_BALL);
         Actor_PlaySfx(&this->actor, NA_SE_EN_FANTOM_MASIC2);
         Actor_PlaySfx(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DAMAGE);
@@ -839,7 +839,7 @@ void MilkMalon_Update(Actor* thisx, PlayState* play) {
     if (this->actionFunc == MilkMalon_StopAndBlock) {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->shieldCollider.base);
     }
-    
+
     if (this->swordState >= 1) {
         if (!(this->swordCollider.base.atFlags & AT_BOUNCED)) {
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->swordCollider.base);
