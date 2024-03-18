@@ -3412,6 +3412,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_En_Aevumtulip"
+    include "build/src/overlays/actors/ovl_En_Aevumtulip/z_en_aevumtulip.o"
+    include "build/src/overlays/actors/ovl_En_Aevumtulip/ovl_En_Aevumtulip_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"
@@ -6116,6 +6122,13 @@ beginseg
     name "object_en_spectral_fist"
     romalign 0x1000
     include "build/assets/objects/object_en_spectral_fist/object_en_spectral_fist.o"
+    number 6
+endseg
+
+beginseg
+    name "object_en_aevumtulip"
+    romalign 0x1000
+    include "build/assets/objects/object_en_aevumtulip/object_en_aevumtulip.o"
     number 6
 endseg
 

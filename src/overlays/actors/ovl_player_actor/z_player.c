@@ -10007,6 +10007,10 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     Collider_SetQuad(play, &this->meleeWeaponQuads[1], &this->actor, &D_80854650);
     Collider_InitQuad(play, &this->shieldQuad);
     Collider_SetQuad(play, &this->shieldQuad, &this->actor, &D_808546A0);
+
+    gSaveContext.save.info.playerData.isAevumAcquired = 1;
+    gSaveContext.save.info.playerData.aevum = 3;
+    gSaveContext.save.info.playerData.aevumLevel = 3;
 }
 
 static void (*D_80854738[])(PlayState* play, Player* this) = {
@@ -11031,6 +11035,12 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
         if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !this->spectralDownPunch) {
             // Always start the basic attack on any B press, and initialize hold tracking
             this->spectralDownPunch = 1;
+            if (gSaveContext.save.info.playerData.aevum >= 0) {
+                gSaveContext.save.info.playerData.aevum -= 1;
+            } else {
+                Player_InflictDamage(play, -64);
+                func_80832698(this, NA_SE_VO_LI_DAMAGE_S);
+            }
         }
     }
 

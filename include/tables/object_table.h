@@ -414,3 +414,4 @@
              DEFINE_OBJECT(object_milk_malon, OBJECT_MILK_MALON)
              DEFINE_OBJECT(object_gi_milkcannon, OBJECT_GI_MILKCANNON)
 DEFINE_OBJECT(object_en_spectral_fist, OBJECT_EN_SPECTRAL_FIST)
+DEFINE_OBJECT(object_en_aevumtulip, OBJECT_EN_AEVUMTULIP)

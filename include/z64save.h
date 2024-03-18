@@ -195,6 +195,9 @@ typedef struct {
     /* 0x38  0x0054 */ u32 unk_54; // this may be incorrect, currently used for alignment
     /* 0x3C  0x0058 */ char unk_58[0x0E];
     /* 0x4A  0x0066 */ s16 savedSceneId;
+                       u8 isAevumAcquired;
+                       s8 aevumLevel;
+                       s8 aevum;
 } SavePlayerData;
 
 // offsets in SaveInfo and SaveContext/Save
