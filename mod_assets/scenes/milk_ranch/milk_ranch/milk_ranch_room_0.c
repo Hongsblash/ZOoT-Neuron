@@ -10,7 +10,7 @@
 /**
  * Header Child Day (Default)
 */
-#define LENGTH_MILK_RANCH_ROOM_0_HEADER00_OBJECTLIST 8
+#define LENGTH_MILK_RANCH_ROOM_0_HEADER00_OBJECTLIST 9
 #define LENGTH_MILK_RANCH_ROOM_0_HEADER00_ACTORLIST 12
 SceneCmd milk_ranch_room_0_header00[] = {
     SCENE_CMD_ECHO_SETTINGS(0x00),
@@ -32,33 +32,10 @@ s16 milk_ranch_room_0_header00_objectList[LENGTH_MILK_RANCH_ROOM_0_HEADER00_OBJE
     OBJECT_TITE,
     OBJECT_EN_SPECTRAL_FIST,
     OBJECT_BOMBIWA,
+    OBJECT_OC,
 };
 
 ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER00_ACTORLIST] = {
-    // Ambient Sound Effects
-    {
-        /* Actor ID   */ ACTOR_EN_RIVER_SOUND,
-        /* Position   */ { -1817, -120, 1466 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0015
-    },
-
-    // Breakable Pot
-    {
-        /* Actor ID   */ ACTOR_OBJ_TSUBO,
-        /* Position   */ { 852, -120, 172 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x4D03
-    },
-
-    // Tektite
-    {
-        /* Actor ID   */ ACTOR_EN_TITE,
-        /* Position   */ { 1483, -120, 1257 },
-        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
-    },
-
     // Crate
     {
         /* Actor ID   */ ACTOR_OBJ_KIBAKO2,
@@ -67,10 +44,10 @@ ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER0
         /* Parameters */ 0xFFFF
     },
 
-    // Bombable Rock
+    // Tektite
     {
-        /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
-        /* Position   */ { 1760, -120, 496 },
+        /* Actor ID   */ ACTOR_EN_TITE,
+        /* Position   */ { 1375, -120, 1077 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
@@ -83,10 +60,34 @@ ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER0
         /* Parameters */ 0x4F03
     },
 
-    // Tektite
+    // Bombable Rock
     {
-        /* Actor ID   */ ACTOR_EN_TITE,
-        /* Position   */ { 1605, -120, 1045 },
+        /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
+        /* Position   */ { 1760, -120, 496 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
+    // Greenery
+    {
+        /* Actor ID   */ ACTOR_EN_WOOD02,
+        /* Position   */ { 1309, -120, -2241 },
+        /* Rotation   */ { 0x0, 0xe38e, 0x6c },
+        /* Parameters */ 0x0801
+    },
+
+    // Breakable Pot
+    {
+        /* Actor ID   */ ACTOR_OBJ_TSUBO,
+        /* Position   */ { 852, -120, 172 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x4D03
+    },
+
+    // Custom Actor
+    {
+        /* Actor ID   */ ACTOR_EN_OKUTA_SW97,
+        /* Position   */ { 1654, -120, 495 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
@@ -99,6 +100,14 @@ ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER0
         /* Parameters */ 0x5103
     },
 
+    // Tektite
+    {
+        /* Actor ID   */ ACTOR_EN_TITE,
+        /* Position   */ { 1483, -120, 1257 },
+        /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
+        /* Parameters */ 0x0000
+    },
+
     // Bombable Rock
     {
         /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
@@ -107,28 +116,20 @@ ActorEntry milk_ranch_room_0_header00_actorList[LENGTH_MILK_RANCH_ROOM_0_HEADER0
         /* Parameters */ 0x0000
     },
 
-    // Bombable Rock
+    // Ambient Sound Effects
     {
-        /* Actor ID   */ ACTOR_OBJ_BOMBIWA,
-        /* Position   */ { 1654, -120, 495 },
+        /* Actor ID   */ ACTOR_EN_RIVER_SOUND,
+        /* Position   */ { -1817, -120, 1466 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
-        /* Parameters */ 0x0000
+        /* Parameters */ 0x0015
     },
 
     // Tektite
     {
         /* Actor ID   */ ACTOR_EN_TITE,
-        /* Position   */ { 1375, -120, 1077 },
+        /* Position   */ { 1605, -120, 1045 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
-    },
-
-    // Greenery
-    {
-        /* Actor ID   */ ACTOR_EN_WOOD02,
-        /* Position   */ { 1309, -120, -2241 },
-        /* Rotation   */ { 0x0, 0xe38e, 0x6c },
-        /* Parameters */ 0x0801
     },
 };
 

@@ -100,16 +100,6 @@ EnvLightSettings milk_ranch_scene_header00_lightSettings[4] = {
     },
 };
 
-Vec3s milk_ranch_camPosData[3] = {
-	{ 0, 0, 0 },
-	{ 4894, 1048, 22 },
-	{ 3960, -1, -1 },
-};
-
-BgCamInfo milk_ranch_camData[1] = {
-	{ CAM_SET_NONE, 3, &milk_ranch_camPosData[0] },
-};
-
 SurfaceType milk_ranch_polygonTypes[] = {
 	{ 0x00000000, 0x00000000 },
 };
@@ -2209,7 +2199,7 @@ CollisionHeader milk_ranch_collisionHeader = {
 	1257,
 	milk_ranch_polygons,
 	milk_ranch_polygonTypes,
-	milk_ranch_camData,
+	0,
 	0,
 	0
 };

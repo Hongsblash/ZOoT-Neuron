@@ -3418,6 +3418,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_En_Okuta_Sw97"
+    include "build/src/overlays/actors/ovl_En_Okuta_Sw97/z_en_okuta_sw97.o"
+    include "build/src/overlays/actors/ovl_En_Okuta_Sw97/ovl_En_Okuta_Sw97_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"
@@ -6129,6 +6135,13 @@ beginseg
     name "object_en_aevumtulip"
     romalign 0x1000
     include "build/assets/objects/object_en_aevumtulip/object_en_aevumtulip.o"
+    number 6
+endseg
+
+beginseg
+    name "object_oc"
+    romalign 0x1000
+    include "build/assets/objects/object_oc/object_oc.o"
     number 6
 endseg
 

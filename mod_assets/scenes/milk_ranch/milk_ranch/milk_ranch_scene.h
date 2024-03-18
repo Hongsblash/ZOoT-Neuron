@@ -6,8 +6,6 @@ extern ActorEntry milk_ranch_scene_header00_playerEntryList[];
 extern TransitionActorEntry milk_ranch_scene_header00_transitionActors[];
 extern Spawn milk_ranch_scene_header00_entranceList[];
 extern EnvLightSettings milk_ranch_scene_header00_lightSettings[4];
-extern Vec3s milk_ranch_camPosData[3];
-extern BgCamInfo milk_ranch_camData[1];
 extern SurfaceType milk_ranch_polygonTypes[];
 extern CollisionPoly milk_ranch_polygons[];
 extern Vec3s milk_ranch_vertices[820];
