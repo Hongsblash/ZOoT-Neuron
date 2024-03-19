@@ -1,0 +1,17 @@
+extern u64 gGiAevumTulipDL_aevumStalk_ci8[];
+extern u64 gGiAevumTulipDL_aevumStalk_pal_rgba16[];
+extern u64 gGiAevumTulipDL_aevumLeaves1_ci8[];
+extern u64 gGiAevumTulipDL_aevumLeaves1_pal_rgba16[];
+extern u64 gGiAevumTulipDL_aevumLeaves_ci8[];
+extern u64 gGiAevumTulipDL_aevumLeaves_pal_rgba16[];
+extern Vtx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_vtx_cull[8];
+extern Vtx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_vtx_0[50];
+extern Gfx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_tri_0[];
+extern Vtx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_vtx_1[21];
+extern Gfx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_tri_1[];
+extern Vtx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_vtx_2[60];
+extern Gfx gGiAevumTulipDL_gGiAevumTulipDL_mesh_layer_Opaque_tri_2[];
+extern Gfx mat_gGiAevumTulipDL_aevumStalk_layerOpaque[];
+extern Gfx mat_gGiAevumTulipDL_aevumLeaves_layerOpaque[];
+extern Gfx mat_gGiAevumTulipDL_aevumFlower_layerOpaque[];
+extern Gfx gGiAevumTulipDL[];

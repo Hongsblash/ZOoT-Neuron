@@ -215,7 +215,7 @@ static Inventory sDebugSaveInventory = {
         ITEM_MAGIC_BEAN,          // SLOT_MAGIC_BEAN
         ITEM_HAMMER,              // SLOT_HAMMER
         ITEM_ARROW_LIGHT,         // SLOT_ARROW_LIGHT
-        ITEM_NAYRUS_LOVE,         // SLOT_NAYRUS_LOVE
+        ITEM_NONE,         // SLOT_NAYRUS_LOVE
         ITEM_BOTTLE_EMPTY,        // SLOT_BOTTLE_1
         ITEM_BOTTLE_POTION_RED,   // SLOT_BOTTLE_2
         ITEM_BOTTLE_POTION_GREEN, // SLOT_BOTTLE_3

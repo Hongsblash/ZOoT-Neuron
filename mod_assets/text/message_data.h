@@ -3347,10 +3347,10 @@ UNSKIPPABLE  ITEM_ICON("\x0D") "En utilisant la magie une \n"
 )
 
 DEFINE_MESSAGE(0x00AF, TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-UNSKIPPABLE ITEM_ICON("\x13") QUICKTEXT_ENABLE "You acquired the " COLOR(RED) "Witch's Palm" COLOR(DEFAULT) "!" QUICKTEXT_DISABLE "\n"
-"A relic shrouded in mystery.\n"
-"Its powers are concealed in\n"
-"whispers. Wield it with " COLOR(YELLOW) "[C]" COLOR(DEFAULT) "."
+UNSKIPPABLE ITEM_ICON("\x13") QUICKTEXT_ENABLE "You found an " COLOR(BLUE) "Aevum Tulip" COLOR(DEFAULT) "!" QUICKTEXT_DISABLE "\n"
+"A blossom born from the tears\n"
+"of saddened souls. Find them\n" 
+"to refill your " COLOR(LIGHTBLUE) "Aevum Gauge" COLOR(DEFAULT) "."
 ,
 UNSKIPPABLE ITEM_ICON("\x13") QUICKTEXT_ENABLE "Du hast die " COLOR(RED) "Hexenhand" COLOR(DEFAULT) " erlangt!" QUICKTEXT_DISABLE "\n"
 "Ein geheimnisvolles Relikt,\n"

@@ -6139,6 +6139,13 @@ beginseg
 endseg
 
 beginseg
+    name "object_gi_aevumtulip"
+    romalign 0x1000
+    include "build/assets/objects/object_gi_aevumtulip/object_gi_aevumtulip.o"
+    number 6
+endseg
+
+beginseg
     name "object_oc"
     romalign 0x1000
     include "build/assets/objects/object_oc/object_oc.o"

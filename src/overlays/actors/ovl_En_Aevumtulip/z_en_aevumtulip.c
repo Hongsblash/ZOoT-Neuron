@@ -53,6 +53,26 @@ void En_Aevumtulip_Update(Actor* thisx, PlayState* play) {
     Lights_PointGlowSetInfo(&this->lightInfoGlow, this->actor.world.pos.x, this->actor.world.pos.y + 25.0f,
                             this->actor.world.pos.z,  135, 206, 250, 100); // Custom values
 
+    // Actor_OfferGetItemNearby(&this->actor, play, GI_NAYRUS_LOVE);
+    Actor_OfferGetItem(&this->actor, play, GI_NAYRUS_LOVE, 30.0f, 50.0f);
+
+    if (Actor_HasParent(&this->actor, play)) {
+        Actor_Kill(&this->actor);
+
+        // Remove the glow light node
+        if (this->lightNodeGlow != NULL) {
+            LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeGlow);
+            this->lightNodeGlow = NULL;
+        }
+
+        // Remove the no-glow light node, if you also want to remove it
+        if (this->lightNodeNoGlow != NULL) {
+            LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
+            this->lightNodeNoGlow = NULL;
+        }
+        return;
+    }
+
     this->actionFunc(this, play);
 }
 
