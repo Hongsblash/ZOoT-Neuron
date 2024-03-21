@@ -33,7 +33,7 @@ ActorEntry starting_depths_room_0_header00_actorList[LENGTH_STARTING_DEPTHS_ROOM
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_EN_AEVUMTULIP,
-        /* Position   */ { -2, -120, 42 },
+        /* Position   */ { -2, -120, 227 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },
@@ -49,7 +49,7 @@ ActorEntry starting_depths_room_0_header00_actorList[LENGTH_STARTING_DEPTHS_ROOM
     // Custom Actor
     {
         /* Actor ID   */ ACTOR_EN_AEVUMTULIP,
-        /* Position   */ { -2, -120, 227 },
+        /* Position   */ { -2, -120, 42 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
     },

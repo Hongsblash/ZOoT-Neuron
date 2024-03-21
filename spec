@@ -3424,6 +3424,12 @@ beginseg
 endseg
 
 beginseg
+    name "ovl_En_Dekustickrefill"
+    include "build/src/overlays/actors/ovl_En_Dekustickrefill/z_en_dekustickrefill.o"
+    include "build/src/overlays/actors/ovl_En_Dekustickrefill/ovl_En_Dekustickrefill_reloc.o"
+endseg
+
+beginseg
     name "gameplay_keep"
     romalign 0x1000
     include "build/assets/objects/gameplay_keep/gameplay_keep.o"

@@ -28,9 +28,9 @@ s16 starting_depths_room_1_header00_objectList[LENGTH_STARTING_DEPTHS_ROOM_1_HEA
 };
 
 ActorEntry starting_depths_room_1_header00_actorList[LENGTH_STARTING_DEPTHS_ROOM_1_HEADER00_ACTORLIST] = {
-    // Deku Baba
+    // Custom Actor
     {
-        /* Actor ID   */ ACTOR_EN_DEKUBABA,
+        /* Actor ID   */ ACTOR_EN_DEKUSTICKREFILL,
         /* Position   */ { -322, -120, -158 },
         /* Rotation   */ { DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000), DEG_TO_BINANG(0.000) },
         /* Parameters */ 0x0000
