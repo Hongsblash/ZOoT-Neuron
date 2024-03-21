@@ -371,6 +371,8 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawOpa0, { gGiKokiriSwordDL } },
     // gold skulltula token, OBJECT_ST
     { GetItem_DrawSkullToken, { gSkulltulaTokenDL, gSkulltulaTokenFlameDL } },
+    // aevum tulip, OBJECT_EN_AEVUMTULIP
+    { GetItem_DrawOpa0, { gGiAevumTulipDL } },
 };
 
 /**

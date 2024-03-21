@@ -16,6 +16,11 @@ typedef struct En_Aevumtulip {
     LightNode* lightNodeGlow;
     LightInfo lightInfoNoGlow;
     LightNode* lightNodeNoGlow;
+    s16 despawnTimer;
+    s16 getItemId;
+    u8 collected;
+    u8 itemDropped;
+    s16 collectibleFlag;
 } En_Aevumtulip;
 
 #endif

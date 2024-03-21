@@ -783,6 +783,8 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM_NONE,
     // GI_TEXT_0
     GET_ITEM_NONE,
+    // GI_AEVUMTULIP
+    GET_ITEM(ITEM_AEVUM_TULIP, OBJECT_GI_AEVUMTULIP, GID_AEVUMTULIP, 0xAF, 0x80, CHEST_ANIM_SHORT),
 };
 
 #define GET_PLAYER_ANIM(group, type) D_80853914[group * PLAYER_ANIMTYPE_MAX + type]
@@ -10010,7 +10012,7 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     Collider_SetQuad(play, &this->shieldQuad, &this->actor, &D_808546A0);
 
     gSaveContext.save.info.playerData.isAevumAcquired = 1;
-    gSaveContext.save.info.playerData.aevum = 3;
+    gSaveContext.save.info.playerData.aevum = 1;
     gSaveContext.save.info.playerData.aevumLevel = 3;
 }
 
@@ -11033,15 +11035,12 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     }
 
     if (this->currentMask == PLAYER_MASK_SKULL) {
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !this->spectralDownPunch) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !this->spectralDownPunch && gSaveContext.save.info.playerData.aevum > 0) {
             // Always start the basic attack on any B press, and initialize hold tracking
             this->spectralDownPunch = 1;
             if (gSaveContext.save.info.playerData.aevum >= 0) {
                 gSaveContext.save.info.playerData.aevum -= 1;
-            } else {
-                Player_InflictDamage(play, -64);
-                func_80832698(this, NA_SE_VO_LI_DAMAGE_S);
-            }
+            } 
         }
     }
 

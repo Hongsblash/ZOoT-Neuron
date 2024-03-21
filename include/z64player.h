@@ -874,6 +874,7 @@ typedef struct Player {
                  f32 bButtonHoldDuration;
                  u8 spectralDownPunch;
                  Color_RGB8* tunicColor;
+                 u8 aevumCollect;
 } Player; // size = 0xA94
 
 #endif

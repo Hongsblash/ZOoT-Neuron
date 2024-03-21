@@ -79,7 +79,7 @@ static ColliderCylinderInit sOctorockColliderInit = {
     { 20, 40, -30, { 0, 0, 0 } },
 };
 
-static CollisionCheckInfoInit sColChkInfoInit = { 1, 15, 60, 100 };
+static CollisionCheckInfoInit sColChkInfoInit = { 30, 15, 60, 100 };
 
 static DamageTable sDamageTable = {
     /* Deku nut      */ DMG_ENTRY(0, 0x0),
@@ -624,19 +624,27 @@ void En_Okuta_Sw97_UpdateHeadScale(En_Okuta_Sw97* thisx) {
 void En_Okuta_Sw97_ColliderCheck(En_Okuta_Sw97* thisx, PlayState* play) {
     En_Okuta_Sw97* this = (En_Okuta_Sw97*)thisx;
 
+    // Detect if being attacked (AT collider has collision with AC collider)
     if (this->collider.base.acFlags & AC_HIT) {
-        this->collider.base.acFlags &= ~AC_HIT;
-        Actor_SetDropFlag(&this->actor, &this->collider.info, 1);
-        if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
+        this->collider.base.acFlags &= ~AC_HIT; // Reset AC flag
+        Actor_SetDropFlag(&this->actor, &this->collider.info, 1); // Flag for item drops (magic, heart, etc.)
 
-            this->actor.colChkInfo.health = 0;
-            this->actor.flags &= ~1;
-            if (this->actor.colChkInfo.damageEffect == 3) {
-                En_Okuta_Sw97_SetupFreeze(this);
-            } else {
-                En_Okuta_Sw97_SetupWaitToDie(this);
-            }
+        // Apply damage without setting health to 0
+        Actor_ApplyDamage(&this->actor); // Adjusts health based on damage received
+        Actor_SetColorFilter(&this->actor, COLORFILTER_COLORFLAG_RED, 200, COLORFILTER_BUFFLAG_OPA, 20);
+
+        // Check if the octorok's health has dropped to 0
+        if (this->actor.colChkInfo.health == 0) {
+            this->actor.flags &= ~1; // Unsetting a flag (probably related to being targetable/alive)
+            En_Okuta_Sw97_SetupWaitToDie(this);
+        } else if (this->actor.colChkInfo.damageEffect == 3) {
+            // If ice arrows are used used, freeze it.
+            En_Okuta_Sw97_SetupFreeze(this);
+        } else {
+            Actor_PlaySfx(&this->actor, NA_SE_EN_OCTAROCK_DEAD1);
+            En_Okuta_Sw97_SetupWaitToShoot(this);
         }
+        
     }
 }
 

@@ -1761,6 +1761,18 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         return item;
+    } else if (item == ITEM_AEVUM_TULIP) {
+        if (gSaveContext.save.info.playerData.isAevumAcquired &&
+            (gSaveContext.save.info.playerData.aevum < gSaveContext.save.info.playerData.aevumLevel)) {
+                gSaveContext.save.info.playerData.aevum += 1;
+
+            if (!GET_INFTABLE(INFTABLE_10F)) {
+                SET_INFTABLE(INFTABLE_10F);
+                return ITEM_NONE;
+            }
+        }
+
+        return item;
     } else if ((item >= ITEM_RUPEE_GREEN) && (item <= ITEM_INVALID_8)) {
         Rupees_ChangeBy(sRupeeRefillCounts[item - ITEM_RUPEE_GREEN]);
         return ITEM_NONE;
@@ -1939,6 +1951,12 @@ u8 Item_CheckObtainability(u8 item) {
         // "Magic Pot Get_Inf_Table( 25, 0x0100)=%d"
         osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", GET_INFTABLE(INFTABLE_198));
         if (!GET_INFTABLE(INFTABLE_198)) {
+            return ITEM_NONE;
+        } else {
+            return item;
+        }
+    } else if (item == ITEM_AEVUM_TULIP) {
+        if (!GET_INFTABLE(INFTABLE_10F)) {
             return ITEM_NONE;
         } else {
             return item;

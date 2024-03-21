@@ -10568,6 +10568,13 @@ beginseg
 endseg
 
 beginseg
+    name "starting_depths_room_1"
+    romalign 0x1000
+    include "build/assets/scenes/hollow/starting_depths/starting_depths_room_1.o"
+    number 3
+endseg
+
+beginseg
     name "bump_texture_static"
     romalign 0x1000
     include "build/baserom/bump_texture_static.o"

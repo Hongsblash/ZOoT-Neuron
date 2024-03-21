@@ -69,6 +69,7 @@ static void* sItemDropTex[] = {
     gDropRecoveryHeartTex, gDropBombTex,       gDropArrows1Tex,   gDropArrows2Tex,
     gDropArrows3Tex,       gDropBombTex,       gDropDekuNutTex,   gDropDekuStickTex,
     gDropMagicLargeTex,    gDropMagicSmallTex, gDropDekuSeedsTex, gDropKeySmallTex,
+    gDropAevumTulipTex
 };
 
 static u8 sItemDropIds[] = {
@@ -215,6 +216,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->scale = 0.03f;
             yOffset = 320.0f;
             break;
+        case ITEM00_AEVUM_TULIP:
         case ITEM00_MAGIC_LARGE:
             Actor_SetScale(&this->actor, 0.045 - 1e-10);
             this->scale = 0.045 - 1e-10;
@@ -327,6 +329,9 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             break;
         case ITEM00_MAGIC_SMALL:
             getItemId = GI_MAGIC_JAR_LARGE;
+            break;
+        case ITEM00_AEVUM_TULIP:
+            getItemId = GI_AEVUMTULIP;
             break;
         case ITEM00_SMALL_KEY:
             Item_Give(play, ITEM_SMALL_KEY);
@@ -677,6 +682,9 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         case ITEM00_MAGIC_SMALL:
             getItemId = GI_MAGIC_JAR_SMALL;
             break;
+        case ITEM00_AEVUM_TULIP:
+            getItemId = GI_AEVUMTULIP;
+            break;
         case ITEM00_SHIELD_DEKU:
             getItemId = GI_SHIELD_DEKU;
             break;
@@ -793,6 +801,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
             case ITEM00_MAGIC_SMALL:
             case ITEM00_SEEDS:
             case ITEM00_SMALL_KEY:
+            case ITEM00_AEVUM_TULIP:
                 EnItem00_DrawCollectible(this, play);
                 break;
             case ITEM00_SHIELD_DEKU:
@@ -851,19 +860,31 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
 
     POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 
-    if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
-        texIndex = 1;
-    } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
-        texIndex -= 3;
+    if (this->actor.params != ITEM00_AEVUM_TULIP) {
+        if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
+            texIndex = 1;
+        } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
+            texIndex -= 3;
+        } else if (this->actor.params == ITEM00_AEVUM_TULIP) {
+            texIndex = 12;
+        }
+
+        POLY_OPA_DISP = Gfx_SetupDL_66(POLY_OPA_DISP);
+
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
+
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "../z_en_item00.c", 1607),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
+    } else {
+        POLY_OPA_DISP = Gfx_SetupDL_66(POLY_OPA_DISP);
+
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDropAevumTulipTex));
+
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "../z_en_item00.c", 1607),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);  
     }
-
-    POLY_OPA_DISP = Gfx_SetupDL_66(POLY_OPA_DISP);
-
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
-
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, "../z_en_item00.c", 1607),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 
     CLOSE_DISPS(play->state.gfxCtx, "../z_en_item00.c", 1611);
 }
