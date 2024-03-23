@@ -329,6 +329,7 @@ void BgIceShelter_SetupIdle(BgIceShelter* this) {
 void BgIceShelter_Idle(BgIceShelter* this, PlayState* play) {
     s32 pad;
     s16 type = BGICESHELTER_GET_TYPE(&this->dyna.actor);
+    Player* player = GET_PLAYER(play);
 
     // Freeze King Zora
     if (type == RED_ICE_KING_ZORA) {
@@ -348,6 +349,16 @@ void BgIceShelter_Idle(BgIceShelter* this, PlayState* play) {
                 }
             }
 
+            BgIceShelter_SetupMelt(this);
+            Actor_PlaySfx(&this->dyna.actor, NA_SE_EV_ICE_MELT);
+        }
+    }
+
+    if (player->heldItemAction == PLAYER_IA_DEKU_STICK && player->blueDekuFlameTimer != 0) {
+        Vec3f sp30;
+        func_8002DBD0(&this->dyna.actor, &sp30, &player->meleeWeaponInfo[0].tip);
+        if (fabsf(sp30.x) < 70.0f && sp30.z < 70.0f && sp30.y < 70.0f) {
+            Math_Vec3f_Copy(&this->dyna.actor.home.pos, &player->meleeWeaponInfo[0].tip);
             BgIceShelter_SetupMelt(this);
             Actor_PlaySfx(&this->dyna.actor, NA_SE_EV_ICE_MELT);
         }
@@ -428,7 +439,7 @@ void BgIceShelter_Melt(BgIceShelter* this, PlayState* play) {
 
     if (this->alpha <= 0) {
         if (!BGICESHELTER_NO_SWITCH_FLAG(&this->dyna.actor)) {
-            Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
+            // Flags_SetSwitch(play, this->dyna.actor.params & 0x3F); // This shares a switch flag with Deku Tree webs. Interrupts blue deku stick behaviour. 
         }
 
         if (type == RED_ICE_KING_ZORA) {

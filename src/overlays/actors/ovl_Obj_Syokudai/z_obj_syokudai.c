@@ -185,13 +185,26 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
         if (interactionType != 0) {
             if (this->litTimer != 0) {
                 if (interactionType < 0) {
-                    if (player->unk_860 == 0) {
-                        player->unk_860 = 210;
-                        Audio_PlaySfxGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
-                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                             &gSfxDefaultReverb);
-                    } else if (player->unk_860 < 200) {
-                        player->unk_860 = 200;
+                    if ((this->actor.params & 0xF) == 0x1) { // check for actor.params for blue torch
+                        if (player->blueDekuFlameTimer == 0) {
+                            player->dekuFlameTimer = 0;
+                            player->blueDekuFlameTimer = 210; // start blue flame timer
+                            Audio_PlaySfxGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
+                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                &gSfxDefaultReverb);
+                        } else if (player->blueDekuFlameTimer < 200) { 
+                            player->blueDekuFlameTimer = 200; // restart timer if there's already an active timer upon interactor (already lit)
+                        }
+                    } else {
+                        if (player->dekuFlameTimer == 0) {
+                            player->blueDekuFlameTimer = 0;
+                            player->dekuFlameTimer = 210;
+                            Audio_PlaySfxGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
+                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                &gSfxDefaultReverb);
+                        } else if (player->dekuFlameTimer < 200) {
+                            player->dekuFlameTimer = 200; // restart timer if there's already an active timer upon interactor (already lit)
+                        }
                     }
                 } else if (dmgFlags & DMG_ARROW_NORMAL) {
                     arrow = (EnArrow*)this->colliderFlame.base.ac;
@@ -204,10 +217,16 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
                     this->litTimer = 50 * litTimeScale + 100;
                 }
             } else if ((torchType != 0) && (((interactionType > 0) && (dmgFlags & DMG_FIRE)) ||
-                                            ((interactionType < 0) && (player->unk_860 != 0)))) {
-
-                if ((interactionType < 0) && (player->unk_860 < 200)) {
-                    player->unk_860 = 200;
+                                            ((interactionType < 0) && (player->dekuFlameTimer != 0)) ||
+                                            ((interactionType < 0) && (player->blueDekuFlameTimer != 0)))) {
+                if ((this->actor.params & 0xF) == 0x1) {
+                    if ((interactionType < 0) && (player->blueDekuFlameTimer < 200)) {
+                        player->blueDekuFlameTimer = 200; // restart timer if there's already an active timer upon interactor (already lit)
+                    }
+                } else {
+                    if ((interactionType < 0) && (player->dekuFlameTimer < 200)) {
+                        player->dekuFlameTimer = 200; // restart timer if there's already an active timer upon interactor (already lit)
+                    }
                 }
                 if (torchCount == 0) {
                     this->litTimer = -1;
@@ -253,7 +272,15 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
         brightness = (u8)(Rand_ZeroOne() * 127.0f) + 128;
         func_8002F974(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
     }
-    Lights_PointSetColorAndRadius(&this->lightInfo, brightness, brightness, 0, lightRadius);
+
+    if ((this->actor.params & 0xF) == 0x1) {
+        // If the last hexadecimal digit of actor.params is 1, spawn the blue flame glow
+        Lights_PointSetColorAndRadius(&this->lightInfo, 85, 156, 200, lightRadius);
+    } else {
+        // Otherwise, spawn the orange flame glow
+        Lights_PointSetColorAndRadius(&this->lightInfo, brightness, brightness, 0, lightRadius);
+    }
+
     this->flameTexScroll++;
 }
 
@@ -289,9 +316,17 @@ void ObjSyokudai_Draw(Actor* thisx, PlayState* play) {
                    Gfx_TwoTexScroll(play->state.gfxCtx, G_TX_RENDERTILE, 0, 0, 0x20, 0x40, 1, 0,
                                     (this->flameTexScroll * -20) & 0x1FF, 0x20, 0x80));
 
-        gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 0, 255);
+        if ((this->actor.params & 0xF) == 0x1) {
+            // If the last hexadecimal digit of actor.params is 1, spawn the blue flame
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 0, 170, 255, 255);
 
-        gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 255, 0);
+        } else {
+            // Otherwise, spawn the orange flame
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 0, 255);
+
+            gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
+        }
 
         Matrix_Translate(0.0f, 52.0f, 0.0f, MTXMODE_APPLY);
         Matrix_RotateY(

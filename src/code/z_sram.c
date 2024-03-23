@@ -188,8 +188,8 @@ static SavePlayerData sDebugSavePlayerData = {
 };
 
 static ItemEquips sDebugSaveEquips = {
-    { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_MASK_SKULL, ITEM_MASK_GERUDO }, // buttonItems
-    { SLOT_BOW, SLOT_TRADE_ADULT, SLOT_OCARINA },                          // cButtonSlots
+    { ITEM_SWORD_MASTER, ITEM_BOW, ITEM_MASK_SKULL, ITEM_BOMB }, // buttonItems
+    { SLOT_BOW, SLOT_TRADE_ADULT, SLOT_BOMB },                          // cButtonSlots
     // equipment
     (EQUIP_VALUE_SWORD_MASTER << (EQUIP_TYPE_SWORD * 4)) | 
         (EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4)) | (EQUIP_VALUE_BOOTS_KOKIRI << (EQUIP_TYPE_BOOTS * 4)),

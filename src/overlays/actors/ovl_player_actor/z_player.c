@@ -2261,7 +2261,9 @@ void Player_InitBoomerangIA(PlayState* play, Player* this) {
 }
 
 void Player_InitItemAction(PlayState* play, Player* this, s8 itemAction) {
-    this->unk_860 = 0;
+    // this->unk_860 = 0;
+    this->dekuFlameTimer = 0;
+    this->blueDekuFlameTimer = 0;
     this->unk_85C = 0.0f;
     this->unk_858 = 0.0f;
 
@@ -10766,6 +10768,13 @@ static Vec3f D_808547B0 = { 0.0f, 0.5f, 0.0f };
 static Color_RGBA8 D_808547BC = { 255, 255, 100, 255 };
 static Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
 
+static Color_RGBA8 dekuStickBluePrim = { 0, 170, 255, 255 };
+static Color_RGBA8 dekuStickBlueEnv = { 0, 0, 255, 0 };
+
+// Deku stick colour/dekustick colour/ deku_stick colour
+// { { 0, 170, 255, 255 }, { 0, 0, 255 }, 35 }
+
+// Deku Stick burning logic
 void func_80848A04(PlayState* play, Player* this) {
     f32 temp;
 
@@ -10775,19 +10784,45 @@ void func_80848A04(PlayState* play, Player* this) {
     }
 
     temp = 1.0f;
-    if (DECR(this->unk_860) == 0) {
+    if (DECR(this->dekuFlameTimer) == 0) {
         Inventory_ChangeAmmo(ITEM_DEKU_STICK, -1);
-        this->unk_860 = 1;
+        this->dekuFlameTimer = 1;
         temp = 0.0f;
         this->unk_85C = temp;
-    } else if (this->unk_860 > 200) {
-        temp = (210 - this->unk_860) / 10.0f;
-    } else if (this->unk_860 < 20) {
-        temp = this->unk_860 / 20.0f;
+    } else if (this->dekuFlameTimer > 200) {
+        temp = (210 - this->dekuFlameTimer) / 10.0f;
+    } else if (this->dekuFlameTimer < 20) {
+        temp = this->dekuFlameTimer / 20.0f;
         this->unk_85C = temp;
     }
 
     func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0,
+                  temp * 200.0f, 0, 8);
+}
+
+// Deku Stick burning logic
+void Player_BurnDekuStickBlue(PlayState* play, Player* this) {
+    f32 temp;
+
+    if (this->unk_85C == 0.0f) {
+        Player_UseItem(play, this, 0xFF);
+        return;
+    }
+
+    temp = 1.0f;
+    if (DECR(this->blueDekuFlameTimer) == 0) {
+        Inventory_ChangeAmmo(ITEM_DEKU_STICK, -1);
+        this->blueDekuFlameTimer = 1;
+        temp = 0.0f;
+        this->unk_85C = temp;
+    } else if (this->blueDekuFlameTimer > 200) {
+        temp = (210 - this->blueDekuFlameTimer) / 10.0f;
+    } else if (this->blueDekuFlameTimer < 20) {
+        temp = this->blueDekuFlameTimer / 20.0f;
+        this->unk_85C = temp;
+    }
+
+    func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &dekuStickBluePrim, &dekuStickBlueEnv,
                   temp * 200.0f, 0, 8);
 }
 
@@ -11183,9 +11218,16 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     func_808473D4(play, this);
     func_80836BEC(this, play);
 
-    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_860 != 0)) {
-        func_80848A04(play, this);
-    } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
+    if (this->heldItemAction == PLAYER_IA_DEKU_STICK) {
+        if (this->dekuFlameTimer != 0) {
+            this->blueDekuFlameTimer = 0;
+            func_80848A04(play, this);
+        }
+        if (this->blueDekuFlameTimer != 0) {
+            this->dekuFlameTimer = 0;
+            Player_BurnDekuStickBlue(play, this);
+        }
+    } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->dekuFlameTimer < 0)) {
         this->unk_860++;
     }
 

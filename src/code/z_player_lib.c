@@ -690,7 +690,20 @@ int Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 y
     Vec3f diff;
     s32 pad;
 
-    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->unk_860 != 0)) {
+    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->dekuFlameTimer != 0)) {
+        Math_Vec3f_Diff(&this->meleeWeaponInfo[0].tip, pos, &diff);
+        return ((SQ(diff.x) + SQ(diff.z)) <= SQ(xzRange)) && (0.0f <= diff.y) && (diff.y <= yRange);
+    } else {
+        return false;
+    }
+}
+
+int Player_IsBlueBurningStickInRange(PlayState* play, Vec3f* pos, f32 xzRange, f32 yRange) {
+    Player* this = GET_PLAYER(play);
+    Vec3f diff;
+    s32 pad;
+
+    if ((this->heldItemAction == PLAYER_IA_DEKU_STICK) && (this->blueDekuFlameTimer != 0)) {
         Math_Vec3f_Diff(&this->meleeWeaponInfo[0].tip, pos, &diff);
         return ((SQ(diff.x) + SQ(diff.z)) <= SQ(xzRange)) && (0.0f <= diff.y) && (diff.y <= yRange);
     } else {

@@ -875,6 +875,9 @@ typedef struct Player {
                  u8 spectralDownPunch;
                  Color_RGB8* tunicColor;
                  u8 aevumCollect;
+                 s16 blueDekuFlameTimer;
+                 s16 dekuFlameTimer;
+                 f32 blueDekuLength;
 } Player; // size = 0xA94
 
 #endif

@@ -379,8 +379,11 @@ void BgYdanSp_BurnWallWeb(BgYdanSp* this, PlayState* play) {
             velocity.x = 6.5f * coss2 * distXYZ;
             velocity.y = 6.5f * coss * distXYZ;
             velocity.z = -6.5f * sins * distXYZ;
+
+            // spawn the orange flame
             EffectSsDeadDb_Spawn(play, &this->dyna.actor.home.pos, &velocity, &accel, 80, 6, 255, 255, 150, 170, 255, 0,
                                  0, 1, 0xE, 1);
+                                 
             rot2 += 0x2AAA;
         }
     }
@@ -394,7 +397,7 @@ void BgYdanSp_WallWebIdle(BgYdanSp* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->burnSwitchFlag) || (this->trisCollider.base.acFlags & AC_HIT)) {
         this->dyna.actor.home.pos.y = this->dyna.actor.world.pos.y + 80.0f;
         BgYdanSp_BurnWeb(this, play);
-    } else if (player->heldItemAction == PLAYER_IA_DEKU_STICK && player->unk_860 != 0) {
+    } else if ((player->heldItemAction == PLAYER_IA_DEKU_STICK && player->dekuFlameTimer != 0)) {
         func_8002DBD0(&this->dyna.actor, &sp30, &player->meleeWeaponInfo[0].tip);
         if (fabsf(sp30.x) < 100.0f && sp30.z < 1.0f && sp30.y < 200.0f) {
             OnePointCutscene_Init(play, 3020, 40, &this->dyna.actor, CAM_ID_MAIN);
