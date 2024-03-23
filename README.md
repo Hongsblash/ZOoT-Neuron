@@ -1,3 +1,7 @@
+# Content Warning
+
+Please be advised that this repository contains material that may not be suitable for all audiences. While the NSFW content is not immediately visible, delving into the assets and deeper directories could reveal material that some may find inappropriate or offensive. Viewer discretion is advised.
+
 # The Legend of Zelda: Ocarina of Time
 
 [![Build Status][jenkins-badge]][jenkins] [![Decompilation Progress][progress-badge]][progress] [![Contributors][contributors-badge]][contributors] [![Discord Channel][discord-badge]][discord]
